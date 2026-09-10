@@ -1641,7 +1641,9 @@ Client: _________________     Contractor: _________________`;
       const text = document.getElementById('aiResultText').value;
       if (!text) { showToast("Chop etish uchun hujjat mavjud emas!", "warning"); return; }
       const win = window.open('', '_blank');
+      if (!win) { showToast("Brauzer oyna ochishni blokladi, ruxsat bering!", "warning"); return; }
       win.document.write(`
+        <!DOCTYPE html>
         <html>
           <head>
             <title>Shartnoma - Chop etish</title>
@@ -1652,11 +1654,14 @@ Client: _________________     Contractor: _________________`;
           </head>
           <body>
             <pre>${text}</pre>
-            <script>window.print();</script>
           </body>
         </html>
       `);
       win.document.close();
+      setTimeout(() => {
+        win.focus();
+        win.print();
+      }, 250);
     }
 
     function publishAIToStore() {
