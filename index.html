@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AZIMXON.HUB — Raqamli Mahsulotlar & Frilans Bozori</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#080d1a',
+              surface: '#0f172a',
+              card: '#131e36',
+              green: '#10b981',
+              emerald: '#059669',
+              blue: '#3b82f6',
+              cyan: '#06b6d4',
+              amber: '#f59e0b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(16, 185, 129, 0.4);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 185, 129, 0.8);
+    }
+
+    /* Glass & Card styles */
+    .dark .main-card {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+    }
+    .light .main-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    .dark .sub-box {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .light .sub-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Left Sidebar Filter Item Active */
+    .sidebar-cat-btn.active {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Primary Green Button */
+    .btn-green-main {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+    .btn-green-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Modal Form styling */
+    .dark .modal-card {
+      background: #0b1120;
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .light .modal-card {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .dark .modal-input {
+      background: #0f172a;
+      border-color: #1e293b;
+      color: #ffffff;
+    }
+    .light .modal-input {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+
+    /* Drag & Drop Upload Zone */
+    .upload-zone {
+      border: 2px dashed rgba(16, 185, 129, 0.4);
+      transition: all 0.2s ease;
+      background: rgba(16, 185, 129, 0.03);
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body class="bg-[#080d1a] text-slate-100 min-h-screen antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Top Submenu Bar -->
+      <div class="flex items-center justify-between py-2.5 border-b border-slate-800/60 text-xs font-semibold text-slate-400 overflow-x-auto scrollbar-none gap-4">
+        <div class="flex items-center gap-6 whitespace-nowrap">
+          <button onclick="setFilterCategory('all')" class="flex items-center gap-1.5 hover:text-emerald-400 transition text-emerald-400 font-bold" id="navAllItems">
+            <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Tayyor mahsulotlar</span>
+          </button>
+          <button onclick="setFilterCategory('xizmat')" class="flex items-center gap-1.5 hover:text-emerald-400 transition">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+            <span>Frilanserlik xizmatlari</span>
+          </button>
+          <button onclick="openAIModal()" class="flex items-center gap-1.5 hover:text-cyan-400 transition text-cyan-400 font-bold">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cyan-400 animate-pulse"></i>
+            <span>AI Shartnoma Generatori</span>
+          </button>
+          <button onclick="openWalletModal()" class="flex items-center gap-1.5 hover:text-amber-400 transition text-amber-400 font-bold">
+            <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Hamyon & Keshbek: <span id="userWalletAmount">0</span> UZS</span>
+          </button>
+          <button onclick="openPostModal()" class="flex items-center gap-1.5 hover:text-emerald-400 transition text-emerald-400 font-extrabold">
+            <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+            <span>+ Mahsulot Joylash</span>
+          </button>
+        </div>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Light/Dark Toggle -->
+          <button onclick="toggleTheme()" class="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800" title="Rejimni o'zgartirish">
+            <i data-lucide="sun" id="themeIconSun" class="w-3.5 h-3.5 hidden"></i>
+            <i data-lucide="moon" id="themeIconMoon" class="w-3.5 h-3.5"></i>
+          </button>
+          <!-- Cart Icon -->
+          <button onclick="openCartDrawer()" class="relative p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-800 flex items-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+            <span id="cartCountBadge" class="w-4 h-4 rounded-full bg-emerald-500 text-slate-950 font-extrabold text-[10px] flex items-center justify-center">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Header Brand & Quick Search -->
+      <div class="py-3 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="resetFilters()">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-md shadow-emerald-500/20">
+            <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+              <i data-lucide="file-check-2" class="w-5 h-5 text-emerald-400"></i>
+            </div>
+          </div>
+          <div>
+            <span class="font-extrabold text-lg tracking-wide bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+              AZIMXON.HUB
+            </span>
+            <span class="text-[10px] ml-1.5 px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">
+              PLATFORMA
+            </span>
+          </div>
+        </div>
+
+        <!-- Center Search Input -->
+        <div class="flex-1 max-w-md hidden md:block">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="globalSearchInput" 
+              oninput="handleSearch(this.value)"
+              placeholder="Shartnoma, kurs ishi, PDF, video dars yoki kod qidiring..."
+              class="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+            >
+          </div>
+        </div>
+
+        <!-- Right Admin Action -->
+        <div class="flex items-center gap-2">
+          <button onclick="openPostModal()" class="btn-green-main px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">E'lon Qo'shish</span>
+          </button>
+          <button onclick="handleAdminAuthClick()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-300 border border-slate-800 flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span class="hidden sm:inline">Admin Panel</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN 2-COLUMN CONTAINER (LEFT SIDEBAR FILTERS) ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- ================= LEFT COLUMN: CATEGORIES & FORMATS SIDEBAR ================= -->
+      <aside class="lg:col-span-3 space-y-4">
+        
+        <div class="main-card rounded-2xl p-4 border space-y-3 sticky top-28">
+          
+          <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+            <h3 class="font-extrabold text-xs text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="layers" class="w-4 h-4 text-emerald-500"></i>
+              <span>Kategoriyalar</span>
+            </h3>
+            <span class="text-[10px] text-slate-400 font-bold" id="sidebarTotalCount">0 ta</span>
+          </div>
+
+          <!-- Vertical Left Sidebar Category Buttons -->
+          <div class="space-y-1.5 text-xs font-semibold" id="sidebarCategoryList">
+            
+            <button onclick="setFilterCategory('all')" class="sidebar-cat-btn active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition text-left">
+              <span class="flex items-center gap-2">
+                <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                <span>Barchasi</span>
+              </span>
+              <span class="text-[11px] px-1.5 py-0.2 rounded-md bg-black/20 text-white" id="countAll">0</span>
+            </button>
+
+            <button onclick="setFilterCategory('shartnoma')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition text-left">
+              <span class="flex items-center gap-2">
+                <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
+                <span>📄 Shartnomalar</span>
+              </span>
+              <span class="text-[10px] text-slate-500" id="countShartnoma">0</span>
+            </button>
+
+            <button onclick="setFilterCategory('pdf')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition text-left">
+              <span class="flex items-center gap-2">
+                <i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i>
+                <span>📚 PDF Qo'llanma & Kitoblar</span>
+              </span>
+              <span class="text-[10px] text-slate-500" id="countPdf">0</span>
+            </button>
+
+            <button onclick="setFilterCategory('video')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition text-left">
+              <span class="flex items-center gap-2">
+                <i data-lucide="video" class="w-4 h-4 text-blue-400"></i>
+                <span>🎥 Video Darsliklar</span>
+              </span>
+              <span class="text-[10px] text-slate-500" id="countVideo">0</span>
+            </button>
+
+            <button onclick="setFilterCategory('kod')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition text-left">
+              <span class="flex items-center gap-2">
+                <i data-lucide="code-2" class="w-4 h-4 text-purple-400"></i>
+                <span>💻 Tayyor Kodlar & Shablonlar</span>
+              </span>
+              <span class="text-[10px] text-slate-500" id="countKod">0</span>
+            </button>
+
+            <button onclick="setFilterCategory('xizmat')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition text-left">
+              <span class="flex items-center gap-2">
+                <i data-lucide="briefcase" class="w-4 h-4 text-amber-400"></i>
+                <span>💼 Xizmatlar & Kurs ishlari</span>
+              </span>
+              <span class="text-[10px] text-slate-500" id="countXizmat">0</span>
+            </button>
+
+          </div>
+
+          <!-- Quick Promo Banner on Left Side -->
+          <div class="p-3.5 rounded-xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border border-emerald-500/20 text-xs space-y-2 mt-4">
+            <div class="flex items-center gap-1.5 font-bold text-emerald-400">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>AI Yordamchi</span>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Qidirgan hujjatingizni topolmadingizmi? AI orqali 3 soniyada generatsiya qiling!
+            </p>
+            <button onclick="openAIModal()" class="w-full py-2 rounded-lg bg-slate-900 border border-emerald-500/30 text-emerald-400 font-bold text-[11px] hover:bg-emerald-500 hover:text-slate-950 transition">
+              AI bilan Tuzish →
+            </button>
+          </div>
+
+        </div>
+
+      </aside>
+
+      <!-- ================= RIGHT COLUMN: PRODUCTS SHOWCASE ================= -->
+      <section class="lg:col-span-9 space-y-4">
+        
+        <div class="flex items-center justify-between main-card p-4 rounded-2xl border">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+              <span>Raqamli Mahsulotlar & Fayllar</span>
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="productsCountSub">Platformada 0 ta mahsulot mavjud</p>
+          </div>
+
+          <button onclick="openPostModal()" class="btn-green-main px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+            <span>+ Fayl Yuklash</span>
+          </button>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Empty State (When no products added yet) -->
+        <div id="emptyCatalogState" class="text-center py-20 main-card rounded-2xl border border-dashed space-y-4">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto">
+            <i data-lucide="file-up" class="w-8 h-8"></i>
+          </div>
+          <div class="max-w-md mx-auto space-y-1">
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Platforma hozircha bo'sh</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Kompyuteringizdan shartnoma, referat, PDF kitob yoki video darslik fayllarini yuklang!
+            </p>
+          </div>
+          <button onclick="openPostModal()" class="btn-green-main px-6 py-2.5 rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-lg">
+            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+            <span>Faylni Yuklash & Joylash</span>
+          </button>
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. POST PRODUCT / GIG MODAL WITH FILE UPLOADER AT THE TOP -->
+  <div id="postModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-2xl max-w-lg w-full p-6 relative shadow-2xl my-8">
+      <button onclick="closePostModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <i data-lucide="file-plus-2" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Yangi Raqamli Mahsulot Qo'shish</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Shartnoma, PDF, video darslik yoki fayllarni yuklang</p>
+        </div>
+      </div>
+
+      <form onsubmit="handleNewProductSubmit(event)" class="space-y-3.5">
+        
+        <!-- ================= FAYL YUKLASH (DROPZONE / FILE PICKER) TEPASIDA ================= -->
+        <div>
+          <label class="text-xs font-bold text-slate-800 dark:text-emerald-400 flex items-center justify-between mb-1.5">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="upload-cloud" class="w-4 h-4 text-emerald-500"></i>
+              Faylni Yuklash (Kompyuterdan tanlash) <span class="text-rose-500">*</span>
+            </span>
+            <span class="text-[10px] text-slate-400 font-normal">PDF, DOCX, ZIP, MP4, PPTX</span>
+          </label>
+
+          <div 
+            id="fileDropZone" 
+            onclick="document.getElementById('prodFileInput').click()"
+            class="upload-zone rounded-xl p-4 text-center cursor-pointer relative"
+          >
+            <input 
+              type="file" 
+              id="prodFileInput" 
+              class="hidden" 
+              accept=".pdf,.doc,.docx,.zip,.rar,.mp4,.pptx,.xlsx" 
+              onchange="handleFileSelected(event)"
+            >
+            
+            <div id="fileUploadPrompt" class="space-y-1">
+              <div class="w-9 h-9 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-1 border border-emerald-500/20">
+                <i data-lucide="file-up" class="w-4 h-4"></i>
+              </div>
+              <p class="text-xs font-bold text-slate-900 dark:text-slate-200">
+                Faylni bu yerga sudrab tashlang yoki <span class="text-emerald-400 underline">tanlang</span>
+              </p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Word (.docx), PDF, Video dars yoki Zip arxivi</p>
+            </div>
+
+            <!-- Uploaded File Preview Badge (Hidden initially) -->
+            <div id="fileSelectedBadge" class="hidden p-2.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-400 font-semibold">
+              <div class="flex items-center gap-2 truncate">
+                <i data-lucide="file-check" class="w-4 h-4 flex-shrink-0"></i>
+                <span id="uploadedFileName" class="truncate">hujjat.docx</span>
+                <span id="uploadedFileSize" class="text-[10px] text-slate-400 font-mono">(0 KB)</span>
+              </div>
+              <button type="button" onclick="removeSelectedFile(event)" class="p-1 hover:text-rose-400 text-slate-400" title="Faylni o'chirish">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Mahsulot / Xizmat Nomi <span class="text-rose-500">*</span></label>
+          <input type="text" id="prodTitle" required placeholder="Masalan: Frilans Shartnomasi (Word + PDF)" class="modal-input w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Toifasi <span class="text-rose-500">*</span></label>
+            <select id="prodCategory" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+              <option value="shartnoma">📄 Shartnoma & Hujjat</option>
+              <option value="pdf">📚 PDF Kitob / Qo'llanma</option>
+              <option value="video">🎥 Video Darslik</option>
+              <option value="kod">💻 Tayyor Kod & Skript</option>
+              <option value="xizmat">💼 Xizmat & Kurs ishi</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Narxi (UZS) <span class="text-rose-500">*</span></label>
+            <input type="number" id="prodPrice" required placeholder="50000" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Sotuvchi / Muallif Ismi <span class="text-rose-500">*</span></label>
+            <input type="text" id="prodAuthor" required placeholder="Ismingiz" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Fayl formati / Hajmi</label>
+            <input type="text" id="prodFormat" placeholder="Masalan: .docx (12 bet)" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Muqova Rasm URL (ixtiyoriy)</label>
+          <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Batafsil Tavsif <span class="text-rose-500">*</span></label>
+          <textarea id="prodDesc" required rows="2" placeholder="Fayl yoki xizmat haqida batafsil ma'lumot..." class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+
+        <button type="submit" class="w-full btn-green-main py-3 rounded-xl font-bold text-xs">
+          Katalogga Joylash
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. AI DOCUMENT GENERATOR MODAL -->
+  <div id="aiModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-2xl max-w-lg w-full p-6 relative shadow-2xl my-8">
+      <button onclick="closeAIModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-base text-slate-900 dark:text-white">AI Shartnoma & Hujjat Generatori</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Sun'iy intellekt orqali 5 soniyada rasmiy shartnoma tuzish</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Qanday shartnoma yoki hujjat kerak?</label>
+          <input type="text" id="aiPromptInput" placeholder="Masalan: Veb-sayt yaratish uchun frilanserlik shartnomasi (30% avans)" class="modal-input w-full border rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-cyan-500">
+        </div>
+
+        <button onclick="generateAIDocument()" id="aiGenBtn" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xs flex items-center justify-center gap-2">
+          <i data-lucide="wand-2" class="w-4 h-4"></i>
+          <span>AI Orqali Generatsiya Qilish</span>
+        </button>
+
+        <div id="aiResultBox" class="hidden p-4 rounded-xl sub-box space-y-2 text-xs">
+          <div class="flex items-center justify-between font-bold text-cyan-400">
+            <span>Tayyorlangan Hujjat:</span>
+            <button onclick="copyAIText()" class="text-[11px] underline">Nusxa olish</button>
+          </div>
+          <pre id="aiResultText" class="font-mono text-[11px] text-slate-300 whitespace-pre-wrap max-h-48 overflow-y-auto"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. WALLET & CASHBACK MODAL -->
+  <div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="modal-card rounded-2xl max-w-md w-full p-6 relative shadow-2xl text-center">
+      <button onclick="closeWalletModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="wallet" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Shaxsiy Hamyon & Keshbek</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">Har bir xaridingizdan 5% keshbek hamyoningizga qaytadi</p>
+
+      <div class="p-4 rounded-xl sub-box mb-4">
+        <span class="text-xs text-slate-400 block">Mavjud Balans:</span>
+        <span class="text-2xl font-black text-emerald-400 mt-1 block" id="walletBalanceText">0 UZS</span>
+      </div>
+
+      <p class="text-[11px] text-slate-500">Do'stlaringizni taklif qilib, har bir do'stingiz uchun 10 000 UZS bonus oling!</p>
+    </div>
+  </div>
+
+  <!-- 4. CHECKOUT MODAL WITH CARD PAYMENT -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-2xl max-w-lg w-full p-6 relative shadow-2xl my-8">
+      <button onclick="closeCheckoutModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2 flex items-center gap-2">
+        <i data-lucide="file-check-2" class="w-5 h-5 text-emerald-500"></i>
+        <span>Buyurtmani rasmiylashtirish</span>
+      </h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">To'lovdan so'ng fayllarni darhol yuklab olasiz va Telegram/Emailingizga yuboriladi.</p>
+
+      <form onsubmit="handleCheckoutSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Ism va Familiyangiz <span class="text-rose-500">*</span></label>
+          <input type="text" id="orderName" required placeholder="Masalan: Ali Valiyev" class="modal-input w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Telefon raqamingiz <span class="text-rose-500">*</span></label>
+            <input type="tel" id="orderPhone" required placeholder="+998 90 123 45 67" value="+998 " oninput="formatPhone(this)" class="modal-input w-full border rounded-xl px-3 py-2 text-xs font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Telegram / Email <span class="text-rose-500">*</span></label>
+            <input type="text" id="orderTg" required placeholder="@username yoki email" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <!-- Karta raqamlari -->
+        <div class="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-slate-800 dark:text-emerald-300 flex items-center gap-1.5">
+              <i data-lucide="credit-card" class="w-4 h-4 text-emerald-500"></i>
+              To'lov Kartasi <span class="text-rose-500">*</span>
+            </label>
+            <div class="flex items-center gap-1 text-[10px] font-extrabold text-emerald-400">
+              <span class="px-1.5 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400">UZCARD</span>
+              <span class="px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-500">HUMO</span>
+              <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-500">VISA</span>
+            </div>
+          </div>
+
+          <div>
+            <input type="text" id="orderCard" required placeholder="8600 0000 0000 0000" maxlength="19" oninput="formatCard(this)" class="modal-input w-full border rounded-xl px-3 py-2 text-xs font-mono tracking-wider focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <input type="text" id="orderExp" required placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" class="modal-input w-full border rounded-xl px-3 py-2 text-xs font-mono text-center focus:outline-none focus:border-emerald-500">
+            <input type="text" id="orderHolder" required placeholder="KARTA EGASI" class="modal-input w-full border rounded-xl px-3 py-2 text-xs uppercase focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-100 dark:bg-slate-900 rounded-xl border flex items-center justify-between text-xs">
+          <span class="text-slate-400 font-semibold">Jami to'lov:</span>
+          <span id="checkoutTotalText" class="text-emerald-400 font-black text-sm">0 UZS</span>
+        </div>
+
+        <button type="submit" class="w-full btn-green-main py-3 rounded-xl font-bold text-xs">
+          To'lovni Tasdiqlash & Faylni Yuklab Olish
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. CART SLIDE DRAWER -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none">
+    <div id="cartBackdrop" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="cartPanel" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-slate-950/95 border-l border-slate-800 p-6 flex flex-col justify-between translate-x-full pointer-events-auto transition-transform duration-300 shadow-2xl">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <h3 class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-400"></i>
+          <span>Savatcha</span>
+        </h3>
+        <button onclick="closeCartDrawer()" class="p-1 text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div id="cartItemsList" class="flex-1 overflow-y-auto py-4 space-y-3"></div>
+
+      <div class="pt-4 border-t border-slate-800 space-y-3">
+        <div class="flex justify-between font-bold text-sm text-white">
+          <span>Jami:</span>
+          <span id="cartDrawerTotal" class="text-emerald-400 font-extrabold text-base">0 UZS</span>
+        </div>
+        <button onclick="openCheckoutFromCart()" class="w-full btn-green-main py-3 rounded-xl font-bold text-xs">
+          Xarid Qilish & Yuklab Olish
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <script>
+    let uploadedFileData = null;
+
+    let appState = {
+      products: JSON.parse(localStorage.getItem('azimxon_clean_products')) || [],
+      cart: JSON.parse(localStorage.getItem('azimxon_clean_cart')) || [],
+      wallet: parseInt(localStorage.getItem('azimxon_clean_wallet')) || 0,
+      currentCategory: 'all',
+      searchQuery: '',
+      theme: localStorage.getItem('azimxon_clean_theme') || 'dark',
+      activeCheckoutProduct: null
+    };
+
+    function formatUZS(val) {
+      return new Intl.NumberFormat('uz-UZ').format(val) + ' UZS';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      renderProducts();
+      updateCategoryCounts();
+      updateWalletUI();
+      updateCartBadge();
+      initDragAndDrop();
+      refreshLucide();
+    });
+
+    function refreshLucide() {
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Theme Switcher
+    function initTheme() {
+      const html = document.documentElement;
+      const sun = document.getElementById('themeIconSun');
+      const moon = document.getElementById('themeIconMoon');
+
+      if (appState.theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        document.body.classList.remove('bg-[#080d1a]', 'text-slate-100');
+        document.body.classList.add('bg-slate-100', 'text-slate-800');
+        if (sun && moon) { sun.classList.remove('hidden'); moon.classList.add('hidden'); }
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        document.body.classList.remove('bg-slate-100', 'text-slate-800');
+        document.body.classList.add('bg-[#080d1a]', 'text-slate-100');
+        if (sun && moon) { sun.classList.add('hidden'); moon.classList.remove('hidden'); }
+      }
+    }
+
+    function toggleTheme() {
+      appState.theme = appState.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('azimxon_clean_theme', appState.theme);
+      initTheme();
+      showToast(appState.theme === 'dark' ? "Tungi rejim yoqildi" : "Yorug' rejim yoqildi", "info");
+    }
+
+    // File Selection & Drag-and-Drop Handlers
+    function initDragAndDrop() {
+      const dropZone = document.getElementById('fileDropZone');
+      if (!dropZone) return;
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add('dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('dragover');
+        }, false);
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files.length > 0) {
+          processUploadedFile(files[0]);
+        }
+      });
+    }
+
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if (file) {
+        processUploadedFile(file);
+      }
+    }
+
+    function processUploadedFile(file) {
+      const fileName = file.name;
+      const fileSizeKB = (file.size / 1024).toFixed(1);
+      const ext = fileName.split('.').pop().toUpperCase();
+
+      uploadedFileData = {
+        name: fileName,
+        size: fileSizeKB + ' KB',
+        ext: '.' + ext.toLowerCase(),
+        lastModified: file.lastModified
+      };
+
+      // Auto-fill form fields
+      const titleInp = document.getElementById('prodTitle');
+      const formatInp = document.getElementById('prodFormat');
+      const catSelect = document.getElementById('prodCategory');
+
+      if (titleInp && !titleInp.value) {
+        // Remove extension from title
+        titleInp.value = fileName.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+      }
+
+      if (formatInp) {
+        formatInp.value = `${uploadedFileData.ext} (${uploadedFileData.size})`;
+      }
+
+      // Auto select category based on extension
+      if (catSelect) {
+        const lowExt = ext.toLowerCase();
+        if (lowExt === 'pdf') catSelect.value = 'pdf';
+        else if (['doc', 'docx'].includes(lowExt)) catSelect.value = 'shartnoma';
+        else if (['mp4', 'avi', 'mov'].includes(lowExt)) catSelect.value = 'video';
+        else if (['zip', 'rar', 'js', 'py', 'php', 'html'].includes(lowExt)) catSelect.value = 'kod';
+      }
+
+      // Show Selected Badge
+      document.getElementById('fileUploadPrompt').classList.add('hidden');
+      const badge = document.getElementById('fileSelectedBadge');
+      badge.classList.remove('hidden');
+      document.getElementById('uploadedFileName').textContent = fileName;
+      document.getElementById('uploadedFileSize').textContent = `(${uploadedFileData.size})`;
+
+      showToast(`Fayl biriktirildi: ${fileName} (${uploadedFileData.size})`, 'success');
+      refreshLucide();
+    }
+
+    function removeSelectedFile(e) {
+      e.stopPropagation();
+      uploadedFileData = null;
+      document.getElementById('prodFileInput').value = '';
+      document.getElementById('fileUploadPrompt').classList.remove('hidden');
+      document.getElementById('fileSelectedBadge').classList.add('hidden');
+    }
+
+    function updateCategoryCounts() {
+      const countAll = document.getElementById('countAll');
+      const countShartnoma = document.getElementById('countShartnoma');
+      const countPdf = document.getElementById('countPdf');
+      const countVideo = document.getElementById('countVideo');
+      const countKod = document.getElementById('countKod');
+      const countXizmat = document.getElementById('countXizmat');
+      const sidebarTotalCount = document.getElementById('sidebarTotalCount');
+
+      const total = appState.products.length;
+      if (countAll) countAll.textContent = total;
+      if (sidebarTotalCount) sidebarTotalCount.textContent = `${total} ta`;
+
+      if (countShartnoma) countShartnoma.textContent = appState.products.filter(p => p.category === 'shartnoma').length;
+      if (countPdf) countPdf.textContent = appState.products.filter(p => p.category === 'pdf').length;
+      if (countVideo) countVideo.textContent = appState.products.filter(p => p.category === 'video').length;
+      if (countKod) countKod.textContent = appState.products.filter(p => p.category === 'kod').length;
+      if (countXizmat) countXizmat.textContent = appState.products.filter(p => p.category === 'xizmat').length;
+    }
+
+    // Render Products Grid
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      const emptyState = document.getElementById('emptyCatalogState');
+      const countSub = document.getElementById('productsCountSub');
+      if (!grid) return;
+
+      updateCategoryCounts();
+
+      let filtered = appState.products.filter(p => {
+        const matchCat = appState.currentCategory === 'all' || p.category === appState.currentCategory;
+        const matchSearch = !appState.searchQuery || p.title.toLowerCase().includes(appState.searchQuery) || p.author.toLowerCase().includes(appState.searchQuery);
+        return matchCat && matchSearch;
+      });
+
+      if (countSub) countSub.textContent = `Platformada ${filtered.length} ta mahsulot mavjud`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="main-card rounded-2xl p-4 border flex flex-col justify-between hover:border-emerald-500 transition group">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                ${p.format || 'RAQAMLI'}
+              </span>
+              <span class="text-xs text-slate-400">${p.author}</span>
+            </div>
+
+            <h4 class="font-bold text-xs text-slate-900 dark:text-white line-clamp-2 mt-1 group-hover:text-emerald-400 transition">
+              ${p.title}
+            </h4>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+              ${p.desc}
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between mt-3">
+            <span class="font-black text-sm text-slate-900 dark:text-white">${formatUZS(p.price)}</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="addToCart(${p.id})" class="p-2 rounded-lg sub-box hover:text-emerald-400" title="Savatchaga">
+                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="openDirectCheckout(${p.id})" class="btn-green-main px-3 py-1.5 rounded-lg text-xs font-bold">
+                Xarid
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      refreshLucide();
+    }
+
+    // Category Filter Selection on Left Sidebar
+    function setFilterCategory(cat) {
+      appState.currentCategory = cat;
+      const btns = document.querySelectorAll('.sidebar-cat-btn');
+      btns.forEach(b => {
+        b.classList.remove('active');
+        b.classList.add('sub-box');
+      });
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.remove('sub-box');
+        event.currentTarget.classList.add('active');
+      }
+      renderProducts();
+    }
+
+    function handleSearch(val) {
+      appState.searchQuery = val.trim().toLowerCase();
+      renderProducts();
+    }
+
+    function resetFilters() {
+      appState.currentCategory = 'all';
+      appState.searchQuery = '';
+      const inp = document.getElementById('globalSearchInput');
+      if (inp) inp.value = '';
+      renderProducts();
+    }
+
+    // Add New Product Handler
+    function openPostModal() {
+      const m = document.getElementById('postModal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+      refreshLucide();
+    }
+    function closePostModal() {
+      const m = document.getElementById('postModal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
+
+    function handleNewProductSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('prodTitle').value.trim();
+      const category = document.getElementById('prodCategory').value;
+      const price = parseInt(document.getElementById('prodPrice').value);
+      const author = document.getElementById('prodAuthor').value.trim();
+      const format = document.getElementById('prodFormat').value.trim() || (uploadedFileData ? `${uploadedFileData.ext} (${uploadedFileData.size})` : 'Fayl');
+      const desc = document.getElementById('prodDesc').value.trim();
+
+      const newP = {
+        id: Date.now(),
+        title,
+        category,
+        price,
+        author,
+        format,
+        desc,
+        fileInfo: uploadedFileData
+      };
+
+      appState.products.unshift(newP);
+      localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+      renderProducts();
+      closePostModal();
+      e.target.reset();
+      removeSelectedFile({ stopPropagation: () => {} });
+      showToast(`"${title}" muvaffaqiyatli yuklandi va joylashtirildi! 🚀`, 'success');
+    }
+
+    // Cart Logic
+    function addToCart(id) {
+      const p = appState.products.find(i => i.id === id);
+      if (!p) return;
+      if (!appState.cart.find(i => i.id === id)) {
+        appState.cart.push(p);
+        localStorage.setItem('azimxon_clean_cart', JSON.stringify(appState.cart));
+        updateCartBadge();
+        showToast(`"${p.title}" savatchaga qo'shildi! 🛒`, 'success');
+      } else {
+        showToast("Fayl allaqachon savatchada mavjud", "info");
+      }
+    }
+
+    function updateCartBadge() {
+      const b = document.getElementById('cartCountBadge');
+      if (b) b.textContent = appState.cart.length;
+    }
+
+    function openCartDrawer() {
+      const d = document.getElementById('cartDrawer');
+      const p = document.getElementById('cartPanel');
+      const b = document.getElementById('cartBackdrop');
+      if (d && p && b) {
+        d.classList.remove('pointer-events-none');
+        b.classList.remove('opacity-0', 'pointer-events-none');
+        b.classList.add('opacity-100', 'pointer-events-auto');
+        p.classList.remove('translate-x-full');
+      }
+      renderCartList();
+    }
+
+    function closeCartDrawer() {
+      const d = document.getElementById('cartDrawer');
+      const p = document.getElementById('cartPanel');
+      const b = document.getElementById('cartBackdrop');
+      if (d && p && b) {
+        b.classList.remove('opacity-100', 'pointer-events-auto');
+        b.classList.add('opacity-0', 'pointer-events-none');
+        p.classList.add('translate-x-full');
+        setTimeout(() => d.classList.add('pointer-events-none'), 300);
+      }
+    }
+
+    function renderCartList() {
+      const list = document.getElementById('cartItemsList');
+      const totalText = document.getElementById('cartDrawerTotal');
+      if (!list) return;
+
+      if (appState.cart.length === 0) {
+        list.innerHTML = `<div class="text-center py-16 text-slate-500 text-xs">Savatchangiz bo'sh</div>`;
+        if (totalText) totalText.textContent = '0 UZS';
+        return;
+      }
+
+      list.innerHTML = appState.cart.map(i => `
+        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between gap-3 text-xs">
+          <div class="truncate">
+            <h5 class="font-bold text-white truncate">${i.title}</h5>
+            <span class="text-emerald-400 font-bold">${formatUZS(i.price)}</span>
+          </div>
+          <button onclick="removeCartItem(${i.id})" class="p-1.5 text-slate-400 hover:text-rose-400">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `).join('');
+
+      const total = appState.cart.reduce((s, i) => s + i.price, 0);
+      if (totalText) totalText.textContent = formatUZS(total);
+      refreshLucide();
+    }
+
+    function removeCartItem(id) {
+      appState.cart = appState.cart.filter(i => i.id !== id);
+      localStorage.setItem('azimxon_clean_cart', JSON.stringify(appState.cart));
+      updateCartBadge();
+      renderCartList();
+    }
+
+    // Direct Checkout & Card Payment
+    function openDirectCheckout(id) {
+      const p = appState.products.find(i => i.id === id);
+      if (!p) return;
+      appState.activeCheckoutProduct = p;
+      document.getElementById('checkoutTotalText').textContent = formatUZS(p.price);
+      openCheckoutModal();
+    }
+
+    function openCheckoutFromCart() {
+      if (appState.cart.length === 0) { showToast("Savatchangiz bo'sh!", "warning"); return; }
+      appState.activeCheckoutProduct = null;
+      const total = appState.cart.reduce((s, i) => s + i.price, 0);
+      document.getElementById('checkoutTotalText').textContent = formatUZS(total);
+      closeCartDrawer();
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal() {
+      const m = document.getElementById('checkoutModal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+      refreshLucide();
+    }
+    function closeCheckoutModal() {
+      const m = document.getElementById('checkoutModal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+      appState.activeCheckoutProduct = null;
+    }
+
+    // Formatters
+    function formatCard(input) {
+      let v = input.value.replace(/\D/g, '');
+      let f = '';
+      for (let i = 0; i < v.length; i++) {
+        if (i > 0 && i % 4 === 0) f += ' ';
+        f += v[i];
+      }
+      input.value = f.substring(0, 19);
+    }
+    function formatExpiry(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 2) input.value = v.substring(0, 2) + '/' + v.substring(2, 4);
+      else input.value = v;
+    }
+    function formatPhone(input) {
+      if (!input.value.startsWith('+998 ')) input.value = '+998 ';
+    }
+
+    function handleCheckoutSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('orderName').value.trim();
+      const tg = document.getElementById('orderTg').value.trim();
+      const card = document.getElementById('orderCard').value.trim();
+
+      if (card.replace(/\s/g, '').length < 16) {
+        showToast("Karta raqamini to'liq 16 xonali kiriting!", "warning");
+        return;
+      }
+
+      // Add 5% cashback to user wallet
+      const totalAmount = appState.activeCheckoutProduct ? appState.activeCheckoutProduct.price : appState.cart.reduce((s, i) => s + i.price, 0);
+      const cashback = Math.round(totalAmount * 0.05);
+      appState.wallet += cashback;
+      localStorage.setItem('azimxon_clean_wallet', appState.wallet);
+      updateWalletUI();
+
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+      if (!appState.activeCheckoutProduct) {
+        appState.cart = [];
+        localStorage.removeItem('azimxon_clean_cart');
+        updateCartBadge();
+      }
+
+      closeCheckoutModal();
+      e.target.reset();
+
+      showToast(`Rahmat, ${name}! To'lov qabul qilindi. Hujjat ${tg} ga yuborildi va +${formatUZS(cashback)} keshbek hisobingizga tushdi! 🎁`, 'success');
+    }
+
+    // AI Generator Modal
+    function openAIModal() {
+      const m = document.getElementById('aiModal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+      refreshLucide();
+    }
+    function closeAIModal() {
+      const m = document.getElementById('aiModal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
+
+    function generateAIDocument() {
+      const prompt = document.getElementById('aiPromptInput').value.trim();
+      if (!prompt) { showToast("Iltimos, hujjat mavzusini yozing", "warning"); return; }
+
+      const btn = document.getElementById('aiGenBtn');
+      btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> <span>AI Tayyorlamoqda...</span>`;
+      refreshLucide();
+
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="wand-2" class="w-4 h-4"></i> <span>AI Orqali Generatsiya Qilish</span>`;
+        const resBox = document.getElementById('aiResultBox');
+        const resText = document.getElementById('aiResultText');
+        resBox.classList.remove('hidden');
+        resText.textContent = `RASMIY XIZMAT KO'RSATISH SHARTNOMASI\n\nMavzu: ${prompt}\nSana: ${new Date().toLocaleDateString()}\n\n1. SHARTNOMA PREDMETI:\nIjrochi Buyurtmachining topshirig'iga binoan belgilangan vazifalarni sifatli bajarish majburiyatini oladi.\n\n2. TO'LOV TARTIBI:\nBuyurtmachi shartnoma imzolangandan so'ng 30% avans to'lovini amalga oshiradi.\n\n3. SIR SAQLASH (NDA):\nTomonlar ushbu loyiha doirasidagi barcha tijoriy sirlarni saqlashga kafolat beradilar.\n\n4. TARAFLARNING JAVOBGARLIGI:\nO'zbekiston Respublikasi Fuqarolik Kodeksi talablariga muvofiq tartibga solinadi.`;
+        refreshLucide();
+        showToast("Shartnoma AI orqali muvaffaqiyatli tayyorlandi!", "success");
+      }, 1200);
+    }
+
+    function copyAIText() {
+      const t = document.getElementById('aiResultText').textContent;
+      navigator.clipboard?.writeText(t);
+      showToast("Matn nusxalandi!", "info");
+    }
+
+    // Wallet UI
+    function updateWalletUI() {
+      const wEl = document.getElementById('userWalletAmount');
+      const bEl = document.getElementById('walletBalanceText');
+      if (wEl) wEl.textContent = new Intl.NumberFormat('uz-UZ').format(appState.wallet);
+      if (bEl) bEl.textContent = formatUZS(appState.wallet);
+    }
+
+    function openWalletModal() {
+      const m = document.getElementById('walletModal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+      refreshLucide();
+    }
+    function closeWalletModal() {
+      const m = document.getElementById('walletModal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
+
+    function handleAdminAuthClick() {
+      showToast("Admin boshqaruv tizimi tayyor va faol", "info");
+    }
+
+    // Toast
+    function showToast(msg, type = 'info') {
+      const cont = document.getElementById('toastContainer');
+      if (!cont) return;
+
+      const colors = {
+        success: 'bg-emerald-950/90 border-emerald-500/80 text-emerald-300',
+        warning: 'bg-amber-950/90 border-amber-500/80 text-amber-300',
+        info: 'bg-blue-950/90 border-blue-500/80 text-blue-300'
+      };
+
+      const t = document.createElement('div');
+      t.className = `p-3 rounded-xl border backdrop-blur-md shadow-2xl flex items-center gap-2.5 text-xs font-semibold toast-anim pointer-events-auto transition-all ${colors[type] || colors.info}`;
+      t.innerHTML = `<span>${msg}</span>`;
+
+      cont.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        setTimeout(() => t.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
