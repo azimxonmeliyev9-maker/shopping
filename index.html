@@ -141,6 +141,73 @@
       background: rgba(16, 185, 129, 0.08);
     }
 
+    /* Floating Animated AI Robot in bottom-right corner */
+    .floating-robot-ai {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 50;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .robot-glow-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.6), rgba(16, 185, 129, 0.6));
+      filter: blur(10px);
+      opacity: 0.75;
+      animation: robot-pulse 2.5s infinite;
+    }
+
+    @keyframes robot-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 0.95; }
+    }
+
+    .robot-body {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0f172a 0%, #06b6d4 100%);
+      border: 2px solid rgba(6, 182, 212, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
+      animation: float-anim 3s ease-in-out infinite;
+    }
+
+    @keyframes float-anim {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .robot-speech-bubble {
+      position: absolute;
+      right: 70px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #0f172a;
+      border: 1px solid rgba(6, 182, 212, 0.5);
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+      animation: bubble-fade 4s infinite ease-in-out;
+    }
+
+    @keyframes bubble-fade {
+      0%, 100% { opacity: 0.9; transform: translateY(-50%) scale(1); }
+      50% { opacity: 1; transform: translateY(-50%) scale(1.04); }
+    }
+
     #confetti-canvas {
       position: fixed;
       top: 0;
@@ -239,7 +306,8 @@
             <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">E'lon Qo'shish</span>
           </button>
-          <button onclick="handleAdminAuthClick()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-300 border border-slate-800 flex items-center gap-1.5">
+          <!-- Admin Panel Button with Credentials Check -->
+          <button onclick="handleAdminAuthClick()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-300 border border-slate-800 flex items-center gap-1.5 hover:border-emerald-500/50 transition">
             <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
             <span class="hidden sm:inline">Admin Panel</span>
           </button>
@@ -250,12 +318,12 @@
     </div>
   </header>
 
-  <!-- ================= MAIN 2-COLUMN CONTAINER (LEFT SIDEBAR FILTERS) ================= -->
+  <!-- ================= MAIN 2-COLUMN CONTAINER ================= -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
-      <!-- ================= LEFT COLUMN: CATEGORIES & FORMATS SIDEBAR ================= -->
+      <!-- ================= LEFT COLUMN: CATEGORIES SIDEBAR ================= -->
       <aside class="lg:col-span-3 space-y-4">
         
         <div class="main-card rounded-2xl p-4 border space-y-3 sticky top-28">
@@ -321,20 +389,6 @@
 
           </div>
 
-          <!-- Quick Promo Banner on Left Side -->
-          <div class="p-3.5 rounded-xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border border-emerald-500/20 text-xs space-y-2 mt-4">
-            <div class="flex items-center gap-1.5 font-bold text-emerald-400">
-              <i data-lucide="sparkles" class="w-4 h-4"></i>
-              <span>AI Yordamchi</span>
-            </div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">
-              Qidirgan hujjatingizni topolmadingizmi? AI orqali 3 soniyada generatsiya qiling!
-            </p>
-            <button onclick="openAIModal()" class="w-full py-2 rounded-lg bg-slate-900 border border-emerald-500/30 text-emerald-400 font-bold text-[11px] hover:bg-emerald-500 hover:text-slate-950 transition">
-              AI bilan Tuzish →
-            </button>
-          </div>
-
         </div>
 
       </aside>
@@ -385,6 +439,17 @@
 
   </main>
 
+  <!-- ================= FLOATING ANIMATED AI ROBOT (O'NG TARAF PASTDA) ================= -->
+  <div class="floating-robot-ai group" onclick="openAIModal()" title="AI Shartnoma & Hujjat Generatori">
+    <div class="robot-glow-ring"></div>
+    <div class="robot-speech-bubble hidden sm:block">
+      🤖 Salom! AI bilan shartnoma tuzamizmi?
+    </div>
+    <div class="robot-body">
+      <i data-lucide="bot" class="w-7 h-7 text-cyan-300"></i>
+    </div>
+  </div>
+
   <!-- ================= MODALS ================= -->
 
   <!-- 1. POST PRODUCT / GIG MODAL WITH FILE UPLOADER AT THE TOP -->
@@ -406,7 +471,7 @@
 
       <form onsubmit="handleNewProductSubmit(event)" class="space-y-3.5">
         
-        <!-- ================= FAYL YUKLASH (DROPZONE / FILE PICKER) TEPASIDA ================= -->
+        <!-- FAYL YUKLASH DROPZONE -->
         <div>
           <label class="text-xs font-bold text-slate-800 dark:text-emerald-400 flex items-center justify-between mb-1.5">
             <span class="flex items-center gap-1.5">
@@ -439,7 +504,7 @@
               <p class="text-[10px] text-slate-500 dark:text-slate-400">Word (.docx), PDF, Video dars yoki Zip arxivi</p>
             </div>
 
-            <!-- Uploaded File Preview Badge (Hidden initially) -->
+            <!-- Uploaded File Preview Badge -->
             <div id="fileSelectedBadge" class="hidden p-2.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-400 font-semibold">
               <div class="flex items-center gap-2 truncate">
                 <i data-lucide="file-check" class="w-4 h-4 flex-shrink-0"></i>
@@ -512,7 +577,7 @@
 
       <div class="flex items-center gap-2.5 mb-3">
         <div class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <i data-lucide="bot" class="w-5 h-5"></i>
         </div>
         <div>
           <h3 class="font-extrabold text-base text-slate-900 dark:text-white">AI Shartnoma & Hujjat Generatori</h3>
@@ -660,6 +725,111 @@
     </div>
   </div>
 
+  <!-- ================= 6. ADMIN AUTH LOGIN MODAL (GMAIL & KOD) ================= -->
+  <div id="adminAuthModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="modal-card rounded-2xl max-w-sm w-full p-6 relative shadow-2xl text-center">
+      <button onclick="closeAdminAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="lock" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Admin Tizimiga Kirish</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">Admin emailingiz va parolingizni kiriting</p>
+
+      <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-3 text-left">
+        <div>
+          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Admin Gmail:</label>
+          <input 
+            type="email" 
+            id="adminEmailInput" 
+            required 
+            placeholder="azimxonmeliyev9@gmail.com"
+            class="modal-input w-full border rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+          >
+        </div>
+
+        <div>
+          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Maxfiy Kod (Parol):</label>
+          <input 
+            type="password" 
+            id="adminCodeInput" 
+            required 
+            placeholder="Kodni kiriting (0307)"
+            class="modal-input w-full border rounded-xl px-3.5 py-2.5 text-xs text-center tracking-widest text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono"
+          >
+        </div>
+
+        <button type="submit" class="w-full btn-green-main py-2.5 rounded-xl font-bold text-xs mt-2">
+          Tizimga Kirish
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 7. FULL ADMIN DASHBOARD PANEL MODAL ================= -->
+  <div id="adminDashboardModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-2xl max-w-3xl w-full p-6 relative shadow-2xl my-6 max-h-[90vh] overflow-y-auto">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-5">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">AZIMXON.HUB — Admin Boshqaruv Markazi</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Admin: <span class="text-emerald-400 font-bold">azimxonmeliyev9@gmail.com</span></p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="adminLogout()" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold hover:bg-rose-500/30">
+            Chiqish
+          </button>
+          <button onclick="closeAdminDashboardModal()" class="text-slate-400 hover:text-white p-1">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick KPI Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mb-6">
+        <div class="p-3.5 rounded-xl sub-box">
+          <span class="text-[11px] text-slate-400 block">Jami Mahsulotlar</span>
+          <span class="text-lg font-black text-emerald-400 block mt-1" id="adminKpiTotalProducts">0 ta</span>
+        </div>
+        <div class="p-3.5 rounded-xl sub-box">
+          <span class="text-[11px] text-slate-400 block">Jami Savdolar</span>
+          <span class="text-lg font-black text-cyan-400 block mt-1" id="adminKpiTotalSales">0 UZS</span>
+        </div>
+        <div class="p-3.5 rounded-xl sub-box">
+          <span class="text-[11px] text-slate-400 block">Yuklab Olishlar</span>
+          <span class="text-lg font-black text-purple-400 block mt-1">100% Xavfsiz</span>
+        </div>
+        <div class="p-3.5 rounded-xl sub-box">
+          <span class="text-[11px] text-slate-400 block">Tizim Holati</span>
+          <span class="text-xs font-bold text-emerald-400 block mt-2 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Onlayn & Faol
+          </span>
+        </div>
+      </div>
+
+      <!-- Manage Products / Listings List -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white">Barcha Mahsulotlarni Boshqarish (O'chirish / Tahrirlash)</h4>
+          <span class="text-xs text-slate-500" id="adminItemsCount">0 ta fayl</span>
+        </div>
+
+        <div id="adminProductsManageList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1">
+          <!-- Dynamic products inside Admin panel -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Toast Notification Container -->
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
@@ -674,7 +844,8 @@
       currentCategory: 'all',
       searchQuery: '',
       theme: localStorage.getItem('azimxon_clean_theme') || 'dark',
-      activeCheckoutProduct: null
+      activeCheckoutProduct: null,
+      isAdminLoggedIn: false
     };
 
     function formatUZS(val) {
@@ -778,7 +949,6 @@
       const catSelect = document.getElementById('prodCategory');
 
       if (titleInp && !titleInp.value) {
-        // Remove extension from title
         titleInp.value = fileName.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
       }
 
@@ -786,7 +956,6 @@
         formatInp.value = `${uploadedFileData.ext} (${uploadedFileData.size})`;
       }
 
-      // Auto select category based on extension
       if (catSelect) {
         const lowExt = ext.toLowerCase();
         if (lowExt === 'pdf') catSelect.value = 'pdf';
@@ -795,7 +964,6 @@
         else if (['zip', 'rar', 'js', 'py', 'php', 'html'].includes(lowExt)) catSelect.value = 'kod';
       }
 
-      // Show Selected Badge
       document.getElementById('fileUploadPrompt').classList.add('hidden');
       const badge = document.getElementById('fileSelectedBadge');
       badge.classList.remove('hidden');
@@ -807,11 +975,14 @@
     }
 
     function removeSelectedFile(e) {
-      e.stopPropagation();
+      if (e && e.stopPropagation) e.stopPropagation();
       uploadedFileData = null;
-      document.getElementById('prodFileInput').value = '';
-      document.getElementById('fileUploadPrompt').classList.remove('hidden');
-      document.getElementById('fileSelectedBadge').classList.add('hidden');
+      const fileInp = document.getElementById('prodFileInput');
+      if (fileInp) fileInp.value = '';
+      const prompt = document.getElementById('fileUploadPrompt');
+      if (prompt) prompt.classList.remove('hidden');
+      const badge = document.getElementById('fileSelectedBadge');
+      if (badge) badge.classList.add('hidden');
     }
 
     function updateCategoryCounts() {
@@ -1174,8 +1345,104 @@
       if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
     }
 
+    // ================= ADMIN AUTH & DASHBOARD LOGIC =================
     function handleAdminAuthClick() {
-      showToast("Admin boshqaruv tizimi tayyor va faol", "info");
+      if (appState.isAdminLoggedIn) {
+        openAdminDashboardModal();
+      } else {
+        openAdminAuthModal();
+      }
+    }
+
+    function openAdminAuthModal() {
+      const m = document.getElementById('adminAuthModal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+      refreshLucide();
+    }
+    function closeAdminAuthModal() {
+      const m = document.getElementById('adminAuthModal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
+
+    function handleAdminLoginSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('adminEmailInput').value.trim().toLowerCase();
+      const code = document.getElementById('adminCodeInput').value.trim();
+
+      // Check specified credentials: azimxonmeliyev9@gmail.com and 0307
+      if (email === 'azimxonmeliyev9@gmail.com' && code === '0307') {
+        appState.isAdminLoggedIn = true;
+        closeAdminAuthModal();
+        e.target.reset();
+        showToast("Xush kelibsiz, Admin Azimxon! 🛡️", "success");
+        openAdminDashboardModal();
+      } else {
+        showToast("Noto'g'ri Gmail yoki Parol!", "warning");
+      }
+    }
+
+    function openAdminDashboardModal() {
+      const m = document.getElementById('adminDashboardModal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+      renderAdminDashboardData();
+      refreshLucide();
+    }
+    function closeAdminDashboardModal() {
+      const m = document.getElementById('adminDashboardModal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
+
+    function adminLogout() {
+      appState.isAdminLoggedIn = false;
+      closeAdminDashboardModal();
+      showToast("Admin hisobidan chiqildi", "info");
+    }
+
+    function renderAdminDashboardData() {
+      const kpiTotalProd = document.getElementById('adminKpiTotalProducts');
+      const kpiTotalSales = document.getElementById('adminKpiTotalSales');
+      const itemsCountText = document.getElementById('adminItemsCount');
+      const listEl = document.getElementById('adminProductsManageList');
+
+      const totalCount = appState.products.length;
+      if (kpiTotalProd) kpiTotalProd.textContent = `${totalCount} ta`;
+      if (itemsCountText) itemsCountText.textContent = `${totalCount} ta fayl`;
+
+      const totalSalesSum = appState.products.reduce((sum, p) => sum + p.price, 0);
+      if (kpiTotalSales) kpiTotalSales.textContent = formatUZS(totalSalesSum);
+
+      if (!listEl) return;
+
+      if (totalCount === 0) {
+        listEl.innerHTML = `<div class="text-center py-10 text-slate-500 text-xs">Hozircha birorta ham mahsulot qo'shilmagan.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = appState.products.map(p => `
+        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between gap-3 text-xs">
+          <div class="truncate flex-1">
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-mono text-[10px]">${p.format || 'Fayl'}</span>
+              <h5 class="font-bold text-white truncate">${p.title}</h5>
+            </div>
+            <span class="text-[11px] text-slate-400">Muallif: <strong class="text-slate-300">${p.author}</strong> • Narx: <span class="text-emerald-400 font-bold">${formatUZS(p.price)}</span></span>
+          </div>
+          <button onclick="adminDeleteProduct(${p.id})" class="p-2 rounded-lg bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 border border-rose-500/30 transition flex items-center gap-1 font-bold text-xs">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>O'chirish</span>
+          </button>
+        </div>
+      `).join('');
+
+      refreshLucide();
+    }
+
+    function adminDeleteProduct(id) {
+      appState.products = appState.products.filter(p => p.id !== id);
+      localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+      renderProducts();
+      renderAdminDashboardData();
+      showToast("Mahsulot admin tomonidan o'chirildi", "info");
     }
 
     // Toast
