@@ -996,98 +996,132 @@
   <!-- ================= MODALS ================= -->
 
   <!-- 0. SOFF VIDEO STUDIO & MASTER-KLASS MODAL -->
-  <div id="videoStudioModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-    <div class="modal-card rounded-3xl max-w-4xl w-full p-6 relative shadow-2xl my-6 max-h-[90vh] overflow-y-auto">
-      <button onclick="closeVideoStudioModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-1 z-10">
+  <div id="videoStudioModal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-3xl max-w-4xl w-full p-5 sm:p-7 relative shadow-2xl my-auto border border-emerald-500/30 max-h-[92vh] overflow-y-auto">
+      <button onclick="closeVideoStudioModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 transition z-20">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
+      <!-- Header -->
       <div class="flex items-center gap-3 mb-5">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center border border-emerald-500/30">
+        <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center border border-emerald-500/30">
           <i data-lucide="video" class="w-5 h-5"></i>
         </div>
         <div>
           <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-            <span>Soff Studio — Video Darslar & Master-Klasslar</span>
+            <span>Soff Studio — Video Darslar & Qo'llanmalar</span>
             <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-500 text-[10px] font-mono font-bold">HD 1080p</span>
           </h3>
-          <p class="text-xs text-slate-400">Kompyuter kasblari, dasturlash, 3D dizayn va video montaj darslari</p>
+          <p class="text-xs text-slate-400">Kompyuter kasblari, dasturlash, 3D dizayn va video montaj bo'yicha to'liq video darslar</p>
         </div>
       </div>
 
-      <!-- Main Video Player Screen Container -->
+      <!-- Main Grid: Video Player + Lessons Playlist -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
-        <!-- Video Player Box -->
+        <!-- Left: Active Video Player Container -->
         <div class="lg:col-span-8 space-y-3">
-          <div class="w-full aspect-video rounded-2xl bg-slate-950 border border-slate-800 relative overflow-hidden flex items-center justify-center group shadow-2xl">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
-            <div class="relative z-10 text-center space-y-3 p-4">
-              <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/40 group-hover:scale-110 transition cursor-pointer">
-                <i data-lucide="play" class="w-7 h-7 fill-white ml-1"></i>
-              </div>
-              <div>
-                <h4 class="font-black text-base text-white" id="studioActiveVideoTitle">Web Dasturlash — 0 dan Full-Stack gacha (1-dars)</h4>
-                <p class="text-xs text-slate-400 mt-1" id="studioActiveVideoDesc">HTML5, CSS3, JavaScript asoslari va real loyiha ustida amaliyot</p>
-              </div>
-            </div>
-            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-slate-300 font-mono bg-black/60 px-3 py-1.5 rounded-xl backdrop-blur-sm">
-              <span class="flex items-center gap-1.5 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Video Tayyor</span>
-              <span id="studioActiveVideoTime">18:45 / 45:00</span>
-            </div>
+          
+          <div class="w-full aspect-video rounded-2xl bg-slate-950 border border-slate-800 relative overflow-hidden shadow-2xl">
+            <!-- Actual Playable Video Player Frame -->
+            <iframe 
+              id="studioVideoIframe" 
+              class="w-full h-full rounded-2xl" 
+              src="https://www.youtube-nocookie.com/embed/kUMe1FH4CHE?enablejsapi=1" 
+              title="Soff Studio Video Player" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen
+            ></iframe>
           </div>
 
-          <div class="p-4 rounded-2xl sub-box flex items-center justify-between">
+          <!-- Video Details & Actions -->
+          <div class="p-4 rounded-2xl sub-box flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 font-black flex items-center justify-center">
-                AM
+                AZ
               </div>
               <div>
-                <h5 class="font-extrabold text-xs text-slate-900 dark:text-white">Azimxon Meliyev</h5>
-                <span class="text-[11px] text-slate-400">Senior Mentor • 12K+ kuzatuvchi</span>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white" id="studioActiveVideoTitle">1. Web Dasturlash — 0 dan Full-Stack gacha</h4>
+                <p class="text-[11px] text-slate-400" id="studioActiveVideoDesc">HTML5, CSS3, JavaScript, React va real loyiha amaliyoti</p>
               </div>
             </div>
-            <button onclick="showToast('Siz ushbu darsga muvaffaqiyatli obuna bo\'ldingiz!', 'success')" class="btn-green-main px-4 py-2 rounded-xl text-xs font-bold">
-              Obuna bo'lish
-            </button>
+
+            <div class="flex items-center gap-2">
+              <button onclick="downloadLessonMaterial()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
+                <i data-lucide="download-cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span id="studioDownloadBtnText">Dars fayli (.PDF)</span>
+              </button>
+              <button onclick="showToast('Siz ushbu darsga obuna bo\'ldingiz!', 'success')" class="btn-green-main px-4 py-2 rounded-xl text-xs font-bold">
+                Obuna bo'lish
+              </button>
+            </div>
           </div>
+
         </div>
 
-        <!-- Lessons Playlist Sidebar -->
-        <div class="lg:col-span-4 space-y-2">
-          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider">Mavjud Video Kurslar</h4>
-          <div class="space-y-2 max-h-80 overflow-y-auto pr-1 text-xs">
+        <!-- Right: Lessons Playlist -->
+        <div class="lg:col-span-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider">Video Darslar Ro'yxati</h4>
+            <span class="text-[11px] text-emerald-500 font-bold">5 ta kurs</span>
+          </div>
+
+          <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1 text-xs" id="studioLessonsPlaylist">
             
-            <div onclick="selectStudioLesson('Web Dasturlash — 0 dan Full-Stack gacha', '18:45', 'HTML, CSS, JS va React asoslari')" class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-bold cursor-pointer flex items-center justify-between">
+            <div onclick="selectStudioLesson(0)" id="studioLesson-0" class="studio-lesson-item p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-bold cursor-pointer transition flex items-center justify-between">
               <div class="truncate">
-                <p class="truncate text-xs">1. Web Dasturlash Asoslari</p>
-                <span class="text-[10px] font-normal text-slate-400">Full-Stack amaliyot</span>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-500 font-mono text-[9px]">Dasturlash</span>
+                  <span class="text-[10px] text-slate-400 font-normal">18:45</span>
+                </div>
+                <p class="truncate text-xs text-slate-900 dark:text-white font-bold">1. Web Dasturlash Asoslari</p>
               </div>
-              <span class="text-[10px] font-mono bg-emerald-500/20 px-1.5 py-0.5 rounded">Faol</span>
+              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/20 px-2 py-0.5 rounded-md">Faol</span>
             </div>
 
-            <div onclick="selectStudioLesson('Blender 3D — Modellashtirish & Render', '24:10', 'Blender 4.0, Shading, Lighting')" class="p-3 rounded-xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+            <div onclick="selectStudioLesson(1)" id="studioLesson-1" class="studio-lesson-item p-3 rounded-2xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
               <div class="truncate">
-                <p class="truncate text-xs font-bold">2. Blender 3D Modellashtirish</p>
-                <span class="text-[10px] text-slate-400">3D Render & PBR</span>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-500 font-mono text-[9px]">3D Dizayn</span>
+                  <span class="text-[10px] text-slate-400 font-normal">24:10</span>
+                </div>
+                <p class="truncate text-xs font-bold text-slate-900 dark:text-white">2. Blender 3D Modellashtirish</p>
               </div>
-              <span class="text-[10px] font-mono text-slate-400">24:10</span>
+              <i data-lucide="play-circle" class="w-4 h-4 text-slate-400"></i>
             </div>
 
-            <div onclick="selectStudioLesson('Figma UI/UX — Mobil Ilova Dizayni', '15:30', 'Auto-layout, Komponentlar, Prototype')" class="p-3 rounded-xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+            <div onclick="selectStudioLesson(2)" id="studioLesson-2" class="studio-lesson-item p-3 rounded-2xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
               <div class="truncate">
-                <p class="truncate text-xs font-bold">3. Figma UI/UX Master-klass</p>
-                <span class="text-[10px] text-slate-400">E-Commerce Dizayn</span>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-500 font-mono text-[9px]">UI/UX</span>
+                  <span class="text-[10px] text-slate-400 font-normal">15:30</span>
+                </div>
+                <p class="truncate text-xs font-bold text-slate-900 dark:text-white">3. Figma UI/UX Master-klass</p>
               </div>
-              <span class="text-[10px] font-mono text-slate-400">15:30</span>
+              <i data-lucide="play-circle" class="w-4 h-4 text-slate-400"></i>
             </div>
 
-            <div onclick="selectStudioLesson('Telegram Bot Yaratish (Python/Aiogram 3)', '32:00', 'To\'lovlar, Database, Docker')" class="p-3 rounded-xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+            <div onclick="selectStudioLesson(3)" id="studioLesson-3" class="studio-lesson-item p-3 rounded-2xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
               <div class="truncate">
-                <p class="truncate text-xs font-bold">4. Telegram Bot (Python 3)</p>
-                <span class="text-[10px] text-slate-400">Click & Payme integratsiya</span>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-500 font-mono text-[9px]">Python</span>
+                  <span class="text-[10px] text-slate-400 font-normal">32:00</span>
+                </div>
+                <p class="truncate text-xs font-bold text-slate-900 dark:text-white">4. Python Telegram Bot</p>
               </div>
-              <span class="text-[10px] font-mono text-slate-400">32:00</span>
+              <i data-lucide="play-circle" class="w-4 h-4 text-slate-400"></i>
+            </div>
+
+            <div onclick="selectStudioLesson(4)" id="studioLesson-4" class="studio-lesson-item p-3 rounded-2xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+              <div class="truncate">
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-500 font-mono text-[9px]">Video Montaj</span>
+                  <span class="text-[10px] text-slate-400 font-normal">21:15</span>
+                </div>
+                <p class="truncate text-xs font-bold text-slate-900 dark:text-white">5. Premiere Pro Montaj</p>
+              </div>
+              <i data-lucide="play-circle" class="w-4 h-4 text-slate-400"></i>
             </div>
 
           </div>
@@ -1747,32 +1781,123 @@
       }
     }
 
-    // Video Studio Modal
+    // Video Studio Modal & Real Video Player
+    const STUDIO_LESSONS = [
+      {
+        title: "1. Web Dasturlash — 0 dan Full-Stack gacha",
+        desc: "HTML5, CSS3, JavaScript, React va real loyiha ustida amaliyot",
+        videoUrl: "https://www.youtube-nocookie.com/embed/kUMe1FH4CHE?autoplay=1&enablejsapi=1",
+        materialFile: "Web_Dasturlash_Qollanma.pdf",
+        btnText: "Dars fayli (.PDF)"
+      },
+      {
+        title: "2. Blender 3D — Modellashtirish & 4K Render",
+        desc: "Blender 4.0, Shading, PBR teksturalar va Cycles render yoritish texnikasi",
+        videoUrl: "https://www.youtube-nocookie.com/embed/nIoXOplUvAw?autoplay=1&enablejsapi=1",
+        materialFile: "Blender_3D_Cheatsheet.pdf",
+        btnText: "3D Qo'llanma (.PDF)"
+      },
+      {
+        title: "3. Figma UI/UX — Mobil Ilova & Veb Dizayn",
+        desc: "Auto-layout, Komponentlar, dizayn tizimi va interaktiv prototip yaratish",
+        videoUrl: "https://www.youtube-nocookie.com/embed/jwCmIBJ8Jtc?autoplay=1&enablejsapi=1",
+        materialFile: "Figma_UI_Components.fig",
+        btnText: "Figma Fayli (.FIG)"
+      },
+      {
+        title: "4. Python Telegram Bot Yaratish (Aiogram 3)",
+        desc: "Click va Payme to'lov tizimlari, PostgreSQL bazasi va Docker deploy",
+        videoUrl: "https://www.youtube-nocookie.com/embed/NwBexX2k5q4?autoplay=1&enablejsapi=1",
+        materialFile: "Python_Bot_Source.zip",
+        btnText: "Kod manbasi (.ZIP)"
+      },
+      {
+        title: "5. Premiere Pro & Video Montaj Master-klass",
+        desc: "Rang korreksiyasi, sound design, dinamik o'tishlar va Reels montaj",
+        videoUrl: "https://www.youtube-nocookie.com/embed/8b51d_V_rZc?autoplay=1&enablejsapi=1",
+        materialFile: "Premiere_Presets.zip",
+        btnText: "Presetlar (.ZIP)"
+      }
+    ];
+
+    let activeStudioLessonIndex = 0;
+
     function openVideoStudioModal(filter = 'all') {
       const m = document.getElementById('videoStudioModal');
       if (m) {
         m.classList.remove('hidden');
         m.classList.add('flex');
+        if (filter === 'web') selectStudioLesson(0);
+        else if (filter === 'design') selectStudioLesson(2);
+        else if (filter === 'marketing') selectStudioLesson(4);
         refreshLucide();
       }
     }
 
     function closeVideoStudioModal() {
       const m = document.getElementById('videoStudioModal');
+      const iframe = document.getElementById('studioVideoIframe');
       if (m) {
         m.classList.add('hidden');
         m.classList.remove('flex');
+        // Stop video playback on modal close
+        if (iframe) {
+          const currentSrc = iframe.src;
+          iframe.src = '';
+          setTimeout(() => { iframe.src = currentSrc.replace('autoplay=1', 'autoplay=0'); }, 100);
+        }
       }
     }
 
-    function selectStudioLesson(title, time, desc) {
-      const t = document.getElementById('studioActiveVideoTitle');
-      const d = document.getElementById('studioActiveVideoDesc');
-      const tm = document.getElementById('studioActiveVideoTime');
-      if (t) t.textContent = title;
-      if (d) d.textContent = desc;
-      if (tm) tm.textContent = `${time} / 45:00`;
-      showToast(`Tanlandi: ${title}`, 'info');
+    function selectStudioLesson(index) {
+      if (index < 0 || index >= STUDIO_LESSONS.length) return;
+      activeStudioLessonIndex = index;
+      const l = STUDIO_LESSONS[index];
+
+      const iframe = document.getElementById('studioVideoIframe');
+      const title = document.getElementById('studioActiveVideoTitle');
+      const desc = document.getElementById('studioActiveVideoDesc');
+      const btnText = document.getElementById('studioDownloadBtnText');
+
+      if (iframe) iframe.src = l.videoUrl;
+      if (title) title.textContent = l.title;
+      if (desc) desc.textContent = l.desc;
+      if (btnText) btnText.textContent = l.btnText;
+
+      // Update playlist active styles
+      document.querySelectorAll('.studio-lesson-item').forEach((item, i) => {
+        if (i === index) {
+          item.className = "studio-lesson-item p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-bold cursor-pointer transition flex items-center justify-between";
+        } else {
+          item.className = "studio-lesson-item p-3 rounded-2xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300";
+        }
+      });
+
+      refreshLucide();
+      showToast(`Yuklandi: ${l.title}`, 'info');
+    }
+
+    function downloadLessonMaterial() {
+      const l = STUDIO_LESSONS[activeStudioLessonIndex];
+      const blob = new Blob([`======================================================
+SOFF STUDIO / AZIMXON.HUB — DARSLIK MATERIALLARI
+======================================================
+Mavzu: ${l.title}
+Tavsif: ${l.desc}
+Muallif / Mentor: Azimxon Meliyev
+Platforma: SOFF.HUB / AZIMXON.HUB
+Sana: ${new Date().toLocaleDateString('uz-UZ')}
+
+1. ASOSIY REJA VA TAVSIYALAR:
+- Video darsdagi barcha kodlar va shablonlar to'liq tekshirilgan.
+- Amaliyot qilish uchun dasturlarni o'rnating va loyihani takrorlang.
+- Savollar bo'lsa chat bo'limida mentorga murojaat qilishingiz mumkin.
+======================================================`], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = l.materialFile || `Dars_Materiali_${Date.now()}.txt`;
+      a.click();
+      showToast(`Material yuklab olindi: ${l.materialFile}`, 'success');
     }
 
     // File Selection & Drag-and-Drop Handlers
