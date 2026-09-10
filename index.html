@@ -224,104 +224,168 @@
   <!-- Confetti Canvas -->
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl transition-colors">
+  <!-- ================= TOP NAVIGATION BAR (SOFF / AZIMXON MARKET STYLE) ================= -->
+  <header class="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <!-- Top Submenu Bar -->
-      <div class="flex items-center justify-between py-2.5 border-b border-slate-800/60 text-xs font-semibold text-slate-400 overflow-x-auto scrollbar-none gap-4">
-        <div class="flex items-center gap-6 whitespace-nowrap">
-          <button onclick="switchAppView('market')" class="flex items-center gap-1.5 hover:text-emerald-400 transition text-emerald-400 font-bold" id="navMarketBtn">
-            <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span>Tayyor mahsulotlar</span>
-          </button>
-          <button onclick="switchAppView('market'); setFilterCategory('xizmat');" class="flex items-center gap-1.5 hover:text-amber-400 transition text-slate-300 font-semibold">
-            <i data-lucide="briefcase" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span>Frilanserlik xizmatlari</span>
-          </button>
-          <button onclick="switchAppView('market'); setFilterCategory('3d');" class="flex items-center gap-1.5 hover:text-cyan-400 transition text-slate-300 font-semibold">
-            <i data-lucide="box" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span>3D & Grafika</span>
-          </button>
-          <button onclick="openAIModal()" class="flex items-center gap-1.5 hover:text-purple-400 transition text-purple-400 font-bold">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-400 animate-pulse"></i>
-            <span>AI xizmatlari</span>
-          </button>
-          <button onclick="switchAppView('seller')" class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 font-extrabold transition" id="navSellerBtn">
-            <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
-            <span>Sotuvchi bo'limi</span>
-          </button>
-          <button onclick="openPostModal()" class="flex items-center gap-1.5 hover:text-emerald-400 transition text-emerald-400 font-extrabold">
-            <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
-            <span>+ Ish Joylash</span>
-          </button>
+      <!-- 1. MAIN TOP ROW: LOGO, KATALOG BTN, SEARCH BAR, ORDER & ACTION ICONS -->
+      <div class="py-3 flex items-center justify-between gap-3 sm:gap-4">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center gap-2.5 cursor-pointer flex-shrink-0" onclick="switchAppView('market'); resetFilters();">
+          <div class="flex items-center gap-1.5">
+            <span class="text-2xl font-black italic tracking-tighter text-emerald-500 font-sans">//</span>
+            <span class="font-extrabold text-2xl tracking-tight text-slate-900 dark:text-white flex items-center">
+              SOFF<span class="text-emerald-500 text-xs ml-1 font-mono uppercase bg-emerald-500/10 dark:bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/30">HUB</span>
+            </span>
+          </div>
         </div>
 
-        <!-- Right Controls -->
-        <div class="flex items-center gap-3">
-          <!-- Balance Badge from Screenshot -->
-          <button onclick="openWalletModal()" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-300 flex items-center gap-1.5 transition">
-            <i data-lucide="wallet" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span>Balance — <span id="userWalletAmount" class="text-emerald-400">0</span> so'm</span>
+        <!-- Katalog Button with Dropdown -->
+        <div class="relative hidden md:block">
+          <button onclick="toggleCatalogDropdown()" id="katalogBtn" class="px-4 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs flex items-center gap-2 border border-emerald-500/30 transition">
+            <i data-lucide="menu" class="w-4 h-4"></i>
+            <span>Katalog</span>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-0.5 transition-transform duration-200" id="katalogChevron"></i>
           </button>
-          <!-- Light/Dark Toggle -->
-          <button onclick="toggleTheme()" class="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800" title="Rejimni o'zgartirish">
-            <i data-lucide="sun" id="themeIconSun" class="w-3.5 h-3.5 hidden"></i>
-            <i data-lucide="moon" id="themeIconMoon" class="w-3.5 h-3.5"></i>
-          </button>
-          <!-- Cart Icon -->
-          <button onclick="openCartDrawer()" class="relative p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-800 flex items-center gap-1">
-            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
-            <span id="cartCountBadge" class="w-4 h-4 rounded-full bg-emerald-500 text-slate-950 font-extrabold text-[10px] flex items-center justify-center">0</span>
-          </button>
-        </div>
-      </div>
 
-      <!-- Main Header Brand & Quick Search -->
-      <div class="py-3 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="resetFilters()">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 p-0.5 shadow-md shadow-cyan-500/20">
-            <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-              <i data-lucide="cpu" class="w-5 h-5 text-cyan-400"></i>
+          <!-- Katalog Dropdown Menu -->
+          <div id="katalogDropdownMenu" class="absolute left-0 top-full mt-2 w-72 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 hidden z-50 transition-all">
+            <div class="text-[11px] font-bold text-slate-400 px-3 py-1.5 uppercase">Barcha Kategoriyalar</div>
+            <button onclick="setFilterCategory('ilmiy'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-500"></i>
+              <span>Ilmiy va Akademik xizmatlar</span>
+            </button>
+            <button onclick="setFilterCategory('dizayn'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="palette" class="w-4 h-4 text-emerald-500"></i>
+              <span>Dizayn</span>
+            </button>
+            <button onclick="setFilterCategory('dasturlash'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="code-2" class="w-4 h-4 text-emerald-500"></i>
+              <span>Dasturlash xizmatlari</span>
+            </button>
+            <button onclick="setFilterCategory('3d'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="box" class="w-4 h-4 text-emerald-500"></i>
+              <span>3D Dizayn va Vizualizatsiya</span>
+            </button>
+            <button onclick="setFilterCategory('marketing'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="megaphone" class="w-4 h-4 text-emerald-500"></i>
+              <span>Marketing va SMM</span>
+            </button>
+            <button onclick="setFilterCategory('video'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="video" class="w-4 h-4 text-emerald-500"></i>
+              <span>Audio va Video</span>
+            </button>
+            <button onclick="setFilterCategory('biznes'); toggleCatalogDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-emerald-500/10 hover:text-emerald-500 text-left transition">
+              <i data-lucide="briefcase" class="w-4 h-4 text-emerald-500"></i>
+              <span>Biznes</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Center Search Bar with "Barchasi" Dropdown and Search Button -->
+        <div class="flex-1 max-w-xl mx-1 sm:mx-2">
+          <div class="flex items-center bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl overflow-hidden focus-within:border-emerald-500 transition shadow-inner">
+            <div class="hidden sm:flex items-center px-3 border-r border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900/50">
+              <select id="searchCategorySelect" onchange="setFilterCategory(this.value)" class="bg-transparent text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer py-2 pr-1 font-medium">
+                <option value="all">Barchasi</option>
+                <option value="ilmiy">Ilmiy ishlar</option>
+                <option value="dizayn">Dizayn</option>
+                <option value="dasturlash">Dasturlash</option>
+                <option value="3d">3D Dizayn</option>
+                <option value="marketing">Marketing & SMM</option>
+                <option value="video">Audio & Video</option>
+                <option value="biznes">Biznes</option>
+              </select>
             </div>
-          </div>
-          <div>
-            <span class="font-extrabold text-lg tracking-wide bg-gradient-to-r from-cyan-400 via-emerald-300 to-teal-400 bg-clip-text text-transparent">
-              AZIMXON.HUB
-            </span>
-            <span class="text-[10px] ml-1.5 px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 font-bold">
-              DIGITAL MARKET
-            </span>
-          </div>
-        </div>
-
-        <!-- Center Search Input -->
-        <div class="flex-1 max-w-md hidden md:block">
-          <div class="relative">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
             <input 
               type="text" 
               id="globalSearchInput" 
               oninput="handleSearch(this.value)"
-              placeholder="3D model, PDF darslik, video kurs, dasturiy kod yoki xizmat qidiring..."
-              class="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-cyan-500"
+              placeholder="Qidiring..."
+              class="w-full bg-transparent px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none"
             >
+            <button onclick="handleSearch(document.getElementById('globalSearchInput').value)" class="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition flex items-center justify-center">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </button>
           </div>
         </div>
 
-        <!-- Right Admin Action -->
-        <div class="flex items-center gap-2">
-          <button onclick="openPostModal()" class="btn-green-main px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
-            <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">+ E'lon Joylash</span>
+        <!-- Right Action Buttons -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5">
+          <!-- Buyurtma berish Button -->
+          <button onclick="openPostModal()" class="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold transition">
+            <i data-lucide="list-plus" class="w-4 h-4 text-emerald-500"></i>
+            <span>Buyurtma berish</span>
           </button>
-          <!-- Admin Panel Button with Credentials Check -->
-          <button onclick="handleAdminAuthClick()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-300 border border-slate-800 flex items-center gap-1.5 hover:border-cyan-500/50 transition">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span class="hidden sm:inline">Admin Panel</span>
+
+          <!-- Wishlist Heart -->
+          <button onclick="switchAppView('seller'); setSellerTab('wishlist');" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition relative" title="Tanlanganlar">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Cart Icon -->
+          <button onclick="openCartDrawer()" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition relative" title="Savatcha">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <span id="cartCountBadge" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-emerald-500 text-slate-950 font-black text-[9px] flex items-center justify-center">0</span>
+          </button>
+
+          <!-- Chat Icon -->
+          <button onclick="switchAppView('seller'); setSellerTab('chat');" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition relative" title="Chat">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+          </button>
+
+          <!-- User Profile Avatar (switches to Seller Dashboard) -->
+          <button onclick="switchAppView('seller')" class="p-1 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700 transition flex items-center gap-1.5" title="Sotuvchi / Foydalanuvchi Profili">
+            <div class="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
+              <i data-lucide="user" class="w-4 h-4"></i>
+            </div>
           </button>
         </div>
 
+      </div>
+
+      <!-- 2. SUB-NAVIGATION ROW (EXACT MATCH TO SCREENSHOT) -->
+      <div class="flex items-center justify-between py-2 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-400 overflow-x-auto scrollbar-none gap-6">
+        <div class="flex items-center gap-6 whitespace-nowrap">
+          <button onclick="switchAppView('market'); resetFilters();" class="flex items-center gap-1.5 hover:text-emerald-500 transition text-emerald-600 dark:text-emerald-400 font-bold" id="navMarketBtn">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Tayyor mahsulotlar</span>
+          </button>
+          <button onclick="switchAppView('market'); setFilterCategory('dasturlash');" class="flex items-center gap-1.5 hover:text-emerald-500 transition text-slate-700 dark:text-slate-300 font-semibold" id="navServicesBtn">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+            <span>Frilanserlik xizmatlari</span>
+          </button>
+          <button onclick="openVideoStudioModal()" class="flex items-center gap-1.5 hover:text-emerald-500 transition text-slate-700 dark:text-slate-300 font-semibold" id="navStudioBtn">
+            <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-500"></i>
+            <span>Soff Studio</span>
+          </button>
+          <button onclick="openAIModal()" class="flex items-center gap-1.5 hover:text-purple-400 transition text-purple-600 dark:text-purple-400 font-bold">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-500 animate-pulse"></i>
+            <span>AI xizmatlari</span>
+          </button>
+          <button onclick="switchAppView('seller')" class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-extrabold transition" id="navSellerBtn">
+            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+            <span>Sotuvchi bo'lish</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Admin Panel Button -->
+          <button onclick="handleAdminAuthClick()" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] font-bold text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-800 flex items-center gap-1">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-400"></i>
+            <span>Admin</span>
+          </button>
+          <!-- Balance Pill -->
+          <button onclick="openWalletModal()" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] border border-emerald-500/20">
+            <span>Balans: <span id="userWalletAmount">0</span> so'm</span>
+          </button>
+          <!-- Theme switch -->
+          <button onclick="toggleTheme()" class="p-1 text-slate-500 hover:text-amber-400" title="Rejim">
+            <i data-lucide="moon" id="themeIconMoon" class="w-4 h-4"></i>
+            <i data-lucide="sun" id="themeIconSun" class="w-4 h-4 hidden"></i>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -330,243 +394,295 @@
   <!-- ================= MAIN APP CONTAINER (MARKET & SELLER DASHBOARD VIEWS) ================= -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-    <!-- ================= VIEW 1: MARKET & CATALOG VIEW ================= -->
+    <!-- ================= VIEW 1: MARKET & CATALOG VIEW (EXACT MATCH TO SOFF SCREENSHOT) ================= -->
     <div id="marketView" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
       <!-- ================= LEFT COLUMN: CATEGORIES SIDEBAR ================= -->
       <aside class="lg:col-span-3 space-y-4">
         
-        <div class="main-card rounded-2xl p-4 border space-y-3 sticky top-28">
+        <div class="main-card rounded-2xl p-3 border space-y-1.5 sticky top-28">
           
-          <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-            <h3 class="font-extrabold text-xs text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
-              <span>Ishlar & Xizmatlar</span>
-            </h3>
-            <span class="text-[10px] text-slate-400 font-bold" id="sidebarTotalCount">0 ta</span>
-          </div>
+          <button onclick="setFilterCategory('all')" id="catBtn-all" class="sidebar-cat-btn active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition text-left text-xs font-bold">
+            <span class="flex items-center gap-3">
+              <i data-lucide="layout-grid" class="w-4 h-4"></i>
+              <span>Barcha xizmatlar & ishlar</span>
+            </span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded-md bg-black/20 text-white" id="countAll">0</span>
+          </button>
 
-          <!-- Vertical Left Sidebar Category Buttons -->
-          <div class="space-y-1.5 text-xs font-semibold" id="sidebarCategoryList">
-            
-            <button onclick="setFilterCategory('all')" class="sidebar-cat-btn active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="layout-grid" class="w-4 h-4"></i>
-                <span>Barcha Ishlar</span>
-              </span>
-              <span class="text-[11px] px-1.5 py-0.2 rounded-md bg-black/20 text-white" id="countAll">0</span>
-            </button>
+          <!-- 1. Ilmiy va Akademik xizmatlar -->
+          <button onclick="setFilterCategory('ilmiy')" id="catBtn-ilmiy" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">Ilmiy va Akademik xizmatlar</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="countIlmiy">0</span>
+          </button>
 
-            <button onclick="setFilterCategory('3d')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-cyan-400 hover:border-cyan-500/50 transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="box" class="w-4 h-4 text-cyan-400"></i>
-                <span>🎨 3D Modellar & Renderlar</span>
-              </span>
-              <span class="text-[10px] text-slate-500" id="count3d">0</span>
-            </button>
+          <!-- 2. Dizayn -->
+          <button onclick="setFilterCategory('dizayn')" id="catBtn-dizayn" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">Dizayn</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="countDizayn">0</span>
+          </button>
 
-            <button onclick="setFilterCategory('pdf')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i>
-                <span>📚 PDF Darslik & Kitoblar</span>
-              </span>
-              <span class="text-[10px] text-slate-500" id="countPdf">0</span>
-            </button>
+          <!-- 3. Dasturlash xizmatlari -->
+          <button onclick="setFilterCategory('dasturlash')" id="catBtn-dasturlash" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">Dasturlash xizmatlari</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="countDasturlash">0</span>
+          </button>
 
-            <button onclick="setFilterCategory('video')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-blue-400 hover:border-blue-500/50 transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="video" class="w-4 h-4 text-blue-400"></i>
-                <span>🎥 Video Qo'llanma & Kurs</span>
-              </span>
-              <span class="text-[10px] text-slate-500" id="countVideo">0</span>
-            </button>
+          <!-- 4. 3D Dizayn va Vizualizatsiya -->
+          <button onclick="setFilterCategory('3d')" id="catBtn-3d" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-cyan-500/10 text-cyan-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="box" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">3D Dizayn va Vizualizatsiya</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="count3d">0</span>
+          </button>
 
-            <button onclick="setFilterCategory('kod')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-purple-400 hover:border-purple-500/50 transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="code-2" class="w-4 h-4 text-purple-400"></i>
-                <span>💻 Tayyor Kod & Skriptlar</span>
-              </span>
-              <span class="text-[10px] text-slate-500" id="countKod">0</span>
-            </button>
+          <!-- 5. Marketing va SMM -->
+          <button onclick="setFilterCategory('marketing')" id="catBtn-marketing" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="megaphone" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">Marketing va SMM</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="countMarketing">0</span>
+          </button>
 
-            <button onclick="setFilterCategory('dizayn')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-rose-400 hover:border-rose-500/50 transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="palette" class="w-4 h-4 text-rose-400"></i>
-                <span>🖼️ Grafik Dizayn & UI/UX</span>
-              </span>
-              <span class="text-[10px] text-slate-500" id="countDizayn">0</span>
-            </button>
+          <!-- 6. Audio va Video -->
+          <button onclick="setFilterCategory('video')" id="catBtn-video" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="video" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">Audio va Video</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="countVideo">0</span>
+          </button>
 
-            <button onclick="setFilterCategory('xizmat')" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-amber-400 hover:border-amber-500/50 transition text-left">
-              <span class="flex items-center gap-2">
-                <i data-lucide="briefcase" class="w-4 h-4 text-amber-400"></i>
-                <span>💼 Kompyuter Xizmatlari</span>
-              </span>
-              <span class="text-[10px] text-slate-500" id="countXizmat">0</span>
-            </button>
-
-          </div>
+          <!-- 7. Biznes -->
+          <button onclick="setFilterCategory('biznes')" id="catBtn-biznes" class="sidebar-cat-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl sub-box text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition text-left text-xs font-semibold">
+            <span class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+              </div>
+              <span class="truncate">Biznes</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="countBiznes">0</span>
+          </button>
 
         </div>
 
       </aside>
 
-      <!-- ================= RIGHT COLUMN: PRODUCTS SHOWCASE & TEMPLATES ================= -->
+      <!-- ================= RIGHT COLUMN: HERO BANNER, POPULAR CARDS & PRODUCTS ================= -->
       <section class="lg:col-span-9 space-y-6">
         
-        <!-- ⚡ MASHHUR RAQAMLI ISHLAR & XIZMATLAR (HERO SHOWCASE) -->
-        <div class="main-card p-5 rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-900/90 via-slate-950/90 to-cyan-950/20 backdrop-blur-xl shadow-xl relative overflow-hidden">
+        <!-- 🟢 HERO BANNER (MATCHES SOFF SCREENSHOT EXACTLY) -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-500/20 via-teal-500/15 to-emerald-600/25 border border-emerald-500/30 relative overflow-hidden shadow-lg backdrop-blur-md">
           
-          <div class="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+            
+            <!-- Left Headline & Action -->
+            <div class="lg:col-span-6 space-y-4">
+              <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+                <span class="text-emerald-600 dark:text-emerald-400">Video darslar</span> va foydali<br>
+                kontentlarni tomosha qiling
+              </h1>
 
-          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 relative z-10">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 font-extrabold text-[11px] uppercase tracking-wider flex items-center gap-1">
-                  <i data-lucide="zap" class="w-3.5 h-3.5 fill-cyan-400"></i> Kompyuterda Bajarilgan Ishlar
+              <!-- Tag Pills -->
+              <div class="flex flex-wrap gap-2 text-[11px] font-bold">
+                <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('vlog')">
+                  Foydali vlog
                 </span>
-                <span class="text-xs text-slate-400 font-medium hidden sm:inline">100% Raqamli va Tayyor Aktivlar</span>
+                <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('english')">
+                  Ingliz tili
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('productivity')">
+                  Produktivlik
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('all')">
+                  Turli yo'nalishlar
+                </span>
               </div>
-              <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1.5 flex items-center gap-2">
-                <span>⚡ Ommabop Kompyuter Ishlari & Darsliklar</span>
-              </h2>
-            </div>
-            
-            <button onclick="openPostModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-cyan-500/20">
-              <i data-lucide="upload-cloud" class="w-4 h-4"></i>
-              <span>O'z Ishingizni Joylash</span>
-            </button>
-          </div>
 
-          <!-- 6 Digital Works Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative z-10">
-            
-            <!-- 1. 3D Modellar & Renderlar -->
-            <div onclick="setFilterCategory('3d')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-cyan-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <!-- CTA Button -->
               <div>
-                <div class="flex items-center justify-between mb-2">
-                  <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:scale-110 transition">
-                    <i data-lucide="box" class="w-4 h-4"></i>
-                  </div>
-                  <span class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md">Blender / 3D Max</span>
-                </div>
-                <h4 class="font-extrabold text-xs text-white group-hover:text-cyan-300 transition">🎨 3D Modellar & Renderlar</h4>
-                <p class="text-[11px] text-slate-400 mt-1 leading-snug">3D render rasmlar, o'yin aktivlari (.blend, .obj, .fbx), animatsiyalar.</p>
-              </div>
-              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-cyan-400 font-bold">
-                <span>Katalogda ko'rish</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+                <button onclick="openVideoStudioModal()" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-0.5">
+                  <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+                  <span>Videolarni ko'rish</span>
+                </button>
               </div>
             </div>
 
-            <!-- 2. PDF Darsliklar -->
-            <div onclick="setFilterCategory('pdf')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/50 transition cursor-pointer group flex flex-col justify-between">
-              <div>
+            <!-- Right Interactive Video Cards Preview (Matches screenshot layout) -->
+            <div class="lg:col-span-6 grid grid-cols-2 gap-2.5">
+              
+              <!-- Card 1: Web Dasturlash -->
+              <div onclick="openVideoStudioModal('web')" class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md hover:border-emerald-500 transition cursor-pointer group relative overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
-                  <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 group-hover:scale-110 transition">
-                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                  <span class="text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">KURS</span>
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center group-hover:scale-110 transition shadow-sm">
+                    <i data-lucide="play" class="w-2.5 h-2.5 fill-white ml-0.5"></i>
                   </div>
-                  <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">PDF E-Kitob</span>
                 </div>
-                <h4 class="font-extrabold text-xs text-white group-hover:text-emerald-300 transition">📚 PDF Darslik & Qo'llanmalar</h4>
-                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Dasturlash, IT, dizayn va kompyuter kasblari bo'yicha to'liq qo'llanmalar.</p>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">Web Dasturlash</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">0 dan Full-Stack gacha • 1.2k+ talabalar</p>
               </div>
-              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-emerald-400 font-bold">
-                <span>Katalogda ko'rish</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
-              </div>
-            </div>
 
-            <!-- 3. Video Qo'llanmalar -->
-            <div onclick="setFilterCategory('video')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-500/50 transition cursor-pointer group flex flex-col justify-between">
-              <div>
+              <!-- Card 2: UI/UX Design -->
+              <div onclick="openVideoStudioModal('design')" class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md hover:border-emerald-500 transition cursor-pointer group relative overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
-                  <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 group-hover:scale-110 transition">
-                    <i data-lucide="video" class="w-4 h-4"></i>
+                  <span class="text-[9px] font-mono font-bold bg-purple-500/20 text-purple-500 px-1.5 py-0.5 rounded">UI/UX</span>
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center group-hover:scale-110 transition shadow-sm">
+                    <i data-lucide="play" class="w-2.5 h-2.5 fill-white ml-0.5"></i>
                   </div>
-                  <span class="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md">Full HD Video</span>
                 </div>
-                <h4 class="font-extrabold text-xs text-white group-hover:text-blue-300 transition">🎥 Video Kurs & Qo'llanmalar</h4>
-                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Video montaj, Photoshop, 3D Max va dasturlash video master-klasslari.</p>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">UI/UX Design</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">Figma'da amaliy dars • 820 talaba</p>
               </div>
-              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-blue-400 font-bold">
-                <span>Katalogda ko'rish</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
-              </div>
-            </div>
 
-            <!-- 4. Tayyor Kodlar -->
-            <div onclick="setFilterCategory('kod')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-purple-500/50 transition cursor-pointer group flex flex-col justify-between">
-              <div>
+              <!-- Card 3: Marketing -->
+              <div onclick="openVideoStudioModal('marketing')" class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md hover:border-emerald-500 transition cursor-pointer group relative overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
-                  <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/30 group-hover:scale-110 transition">
-                    <i data-lucide="code-2" class="w-4 h-4"></i>
+                  <span class="text-[9px] font-mono font-bold bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded">SMM</span>
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center group-hover:scale-110 transition shadow-sm">
+                    <i data-lucide="play" class="w-2.5 h-2.5 fill-white ml-0.5"></i>
                   </div>
-                  <span class="text-[10px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md">Kod & Skript</span>
                 </div>
-                <h4 class="font-extrabold text-xs text-white group-hover:text-purple-300 transition">💻 Tayyor Kod & Telegram Botlar</h4>
-                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Veb-sayt shablonlari, Telegram botlar, Python avtomatlashtirish skriptlari.</p>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">Marketing Strategiya</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">Target & Konversiya • 10:15</p>
               </div>
-              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-purple-400 font-bold">
-                <span>Katalogda ko'rish</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
-              </div>
-            </div>
 
-            <!-- 5. Grafik Dizayn -->
-            <div onclick="setFilterCategory('dizayn')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-rose-500/50 transition cursor-pointer group flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <div class="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center border border-rose-500/30 group-hover:scale-110 transition">
-                    <i data-lucide="palette" class="w-4 h-4"></i>
-                  </div>
-                  <span class="text-[10px] font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md">Figma / PSD</span>
+              <!-- Card 4: Mentor Profile -->
+              <div class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-600 flex items-center justify-center font-black text-xs">
+                  AZ
                 </div>
-                <h4 class="font-extrabold text-xs text-white group-hover:text-rose-300 transition">🖼️ Grafik Dizayn & UI/UX</h4>
-                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Figma UI to'plamlar, bannerlar, logotiplar, Instagram post shablonlari.</p>
+                <div class="truncate flex-1">
+                  <h5 class="font-bold text-xs text-slate-900 dark:text-white truncate">Azimxon M.</h5>
+                  <span class="text-[10px] text-emerald-500 font-semibold block">Top Mentor</span>
+                </div>
               </div>
-              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-rose-400 font-bold">
-                <span>Katalogda ko'rish</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
-              </div>
-            </div>
 
-            <!-- 6. Kompyuter Xizmatlari -->
-            <div onclick="setFilterCategory('xizmat')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-500/50 transition cursor-pointer group flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30 group-hover:scale-110 transition">
-                    <i data-lucide="briefcase" class="w-4 h-4"></i>
-                  </div>
-                  <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">Buyurtma Ish</span>
-                </div>
-                <h4 class="font-extrabold text-xs text-white group-hover:text-amber-300 transition">💼 Kompyuter & Frilans Xizmatlari</h4>
-                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Sayt yaratish, 3D modellashtirish, video montaj va dasturlash xizmatlari.</p>
-              </div>
-              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-amber-400 font-bold">
-                <span>Katalogda ko'rish</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
-              </div>
             </div>
 
           </div>
 
+          <!-- Carousel Dots Indicator -->
+          <div class="flex items-center justify-center gap-1.5 mt-5">
+            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="w-2 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+            <span class="w-2 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+            <span class="w-2 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+          </div>
+
+        </div>
+
+        <!-- ⚡ MASHHUR KATEGORIYALAR (6 CARDS GRID - EXACT MATCH TO SCREENSHOT) -->
+        <div class="space-y-3">
+          <h3 class="font-extrabold text-sm text-slate-900 dark:text-white">Mashhur kategoriyalar</h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            
+            <!-- 1. Ilmiy ish -->
+            <div onclick="setFilterCategory('ilmiy')" class="p-4 rounded-2xl main-card border hover:border-emerald-500 transition cursor-pointer flex items-center gap-3.5 group">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0">
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Ilmiy ish</h4>
+                <span class="text-[11px] text-emerald-500 font-bold font-mono">1.5mln +</span>
+              </div>
+            </div>
+
+            <!-- 2. AI generatsiyalar -->
+            <div onclick="openAIModal()" class="p-4 rounded-2xl main-card border hover:border-emerald-500 transition cursor-pointer flex items-center gap-3.5 group">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">AI generatsiyalar</h4>
+                <span class="text-[11px] text-emerald-500 font-bold font-mono">1K +</span>
+              </div>
+            </div>
+
+            <!-- 3. 3D Modellar -->
+            <div onclick="setFilterCategory('3d')" class="p-4 rounded-2xl main-card border hover:border-emerald-500 transition cursor-pointer flex items-center gap-3.5 group">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0">
+                <i data-lucide="box" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">3D Modellar</h4>
+                <span class="text-[11px] text-emerald-500 font-bold font-mono">500+</span>
+              </div>
+            </div>
+
+            <!-- 4. Dizayn shablonlari -->
+            <div onclick="setFilterCategory('dizayn')" class="p-4 rounded-2xl main-card border hover:border-emerald-500 transition cursor-pointer flex items-center gap-3.5 group">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0">
+                <i data-lucide="palette" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Dizayn shablonlari</h4>
+                <span class="text-[11px] text-emerald-500 font-bold font-mono">1.5K +</span>
+              </div>
+            </div>
+
+            <!-- 5. Veb saytlar -->
+            <div onclick="setFilterCategory('dasturlash')" class="p-4 rounded-2xl main-card border hover:border-emerald-500 transition cursor-pointer flex items-center gap-3.5 group">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0">
+                <i data-lucide="code-2" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Veb saytlar</h4>
+                <span class="text-[11px] text-emerald-500 font-bold font-mono">500+</span>
+              </div>
+            </div>
+
+            <!-- 6. Shablonlar -->
+            <div onclick="setFilterCategory('all')" class="p-4 rounded-2xl main-card border hover:border-emerald-500 transition cursor-pointer flex items-center gap-3.5 group">
+              <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center flex-shrink-0">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Shablonlar</h4>
+                <span class="text-[11px] text-emerald-500 font-bold font-mono">2k+</span>
+              </div>
+            </div>
+
+          </div>
         </div>
 
         <!-- Products Header Bar -->
         <div class="flex items-center justify-between main-card p-4 rounded-2xl border">
           <div>
             <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-ping"></span>
-              <span>Raqamli Ishlar & Fayllar Katalogi</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+              <span id="activeCategoryHeaderTitle">Barcha Raqamli Ishlar & Xizmatlar</span>
             </h2>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="productsCountSub">Platformada 0 ta mahsulot mavjud</p>
           </div>
 
           <button onclick="openPostModal()" class="btn-green-main px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
             <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
-            <span>+ Fayl / Xizmat Yuklash</span>
+            <span>+ Fayl / Xizmat Joylash</span>
           </button>
         </div>
 
@@ -577,13 +693,13 @@
 
         <!-- Empty State (When no products added yet) -->
         <div id="emptyCatalogState" class="text-center py-20 main-card rounded-2xl border border-dashed space-y-4">
-          <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center mx-auto">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center justify-center mx-auto">
             <i data-lucide="box" class="w-8 h-8"></i>
           </div>
           <div class="max-w-md mx-auto space-y-1">
-            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Platforma hozircha bo'sh</h3>
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Ushbu bo'limda hozircha mahsulot yo'q</h3>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Kompyuteringizdan 3D modellar, PDF darsliklar, video kurslar, tayyor kodlar yoki grafik dizayn ishlaringizni yuklang!
+              Kompyuteringizdan 3D modellar, ilmiy ishlar, dizaynlar, dasturlash kodlari yoki videolaringizni yuklang!
             </p>
           </div>
           <button onclick="openPostModal()" class="btn-green-main px-6 py-2.5 rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-lg">
@@ -852,7 +968,21 @@
 
   </main>
 
-  <!-- ================= FLOATING ANIMATED AI ROBOT (O'NG TARAF PASTDA) ================= -->
+  <!-- ================= FLOATING ACTION CONTROLS (SCREENSHOT STYLE) ================= -->
+  
+  <!-- 1. Center Bottom Glowing Quick Play Button -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+    <button onclick="openVideoStudioModal()" class="w-13 h-13 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center shadow-2xl shadow-emerald-500/60 hover:scale-110 transition-transform cursor-pointer border-2 border-white/40 group p-3.5" title="Soff Studio — Videolarni ko'rish">
+      <i data-lucide="play" class="w-6 h-6 fill-white ml-0.5 group-hover:scale-110 transition-transform"></i>
+    </button>
+  </div>
+
+  <!-- 2. Bottom Right Floating Telegram Button -->
+  <a href="https://t.me/azimxon_meliyev" target="_blank" class="fixed bottom-6 right-24 z-40 w-13 h-13 p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-xl shadow-emerald-500/40 hover:scale-110 transition-transform border border-emerald-400/50" title="Telegramda Bog'lanish (@azimxon_meliyev)">
+    <i data-lucide="send" class="w-5 h-5"></i>
+  </a>
+
+  <!-- 3. Floating Animated AI Robot -->
   <div class="floating-robot-ai group" onclick="openAIModal()" title="AI Kompyuter & Ijodiy Yordamchi">
     <div class="robot-glow-ring"></div>
     <div class="robot-speech-bubble hidden sm:block">
@@ -864,6 +994,109 @@
   </div>
 
   <!-- ================= MODALS ================= -->
+
+  <!-- 0. SOFF VIDEO STUDIO & MASTER-KLASS MODAL -->
+  <div id="videoStudioModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-3xl max-w-4xl w-full p-6 relative shadow-2xl my-6 max-h-[90vh] overflow-y-auto">
+      <button onclick="closeVideoStudioModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-1 z-10">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center border border-emerald-500/30">
+          <i data-lucide="video" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <span>Soff Studio — Video Darslar & Master-Klasslar</span>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-500 text-[10px] font-mono font-bold">HD 1080p</span>
+          </h3>
+          <p class="text-xs text-slate-400">Kompyuter kasblari, dasturlash, 3D dizayn va video montaj darslari</p>
+        </div>
+      </div>
+
+      <!-- Main Video Player Screen Container -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Video Player Box -->
+        <div class="lg:col-span-8 space-y-3">
+          <div class="w-full aspect-video rounded-2xl bg-slate-950 border border-slate-800 relative overflow-hidden flex items-center justify-center group shadow-2xl">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
+            <div class="relative z-10 text-center space-y-3 p-4">
+              <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/40 group-hover:scale-110 transition cursor-pointer">
+                <i data-lucide="play" class="w-7 h-7 fill-white ml-1"></i>
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white" id="studioActiveVideoTitle">Web Dasturlash — 0 dan Full-Stack gacha (1-dars)</h4>
+                <p class="text-xs text-slate-400 mt-1" id="studioActiveVideoDesc">HTML5, CSS3, JavaScript asoslari va real loyiha ustida amaliyot</p>
+              </div>
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-slate-300 font-mono bg-black/60 px-3 py-1.5 rounded-xl backdrop-blur-sm">
+              <span class="flex items-center gap-1.5 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Video Tayyor</span>
+              <span id="studioActiveVideoTime">18:45 / 45:00</span>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl sub-box flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 font-black flex items-center justify-center">
+                AM
+              </div>
+              <div>
+                <h5 class="font-extrabold text-xs text-slate-900 dark:text-white">Azimxon Meliyev</h5>
+                <span class="text-[11px] text-slate-400">Senior Mentor • 12K+ kuzatuvchi</span>
+              </div>
+            </div>
+            <button onclick="showToast('Siz ushbu darsga muvaffaqiyatli obuna bo\'ldingiz!', 'success')" class="btn-green-main px-4 py-2 rounded-xl text-xs font-bold">
+              Obuna bo'lish
+            </button>
+          </div>
+        </div>
+
+        <!-- Lessons Playlist Sidebar -->
+        <div class="lg:col-span-4 space-y-2">
+          <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider">Mavjud Video Kurslar</h4>
+          <div class="space-y-2 max-h-80 overflow-y-auto pr-1 text-xs">
+            
+            <div onclick="selectStudioLesson('Web Dasturlash — 0 dan Full-Stack gacha', '18:45', 'HTML, CSS, JS va React asoslari')" class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-bold cursor-pointer flex items-center justify-between">
+              <div class="truncate">
+                <p class="truncate text-xs">1. Web Dasturlash Asoslari</p>
+                <span class="text-[10px] font-normal text-slate-400">Full-Stack amaliyot</span>
+              </div>
+              <span class="text-[10px] font-mono bg-emerald-500/20 px-1.5 py-0.5 rounded">Faol</span>
+            </div>
+
+            <div onclick="selectStudioLesson('Blender 3D — Modellashtirish & Render', '24:10', 'Blender 4.0, Shading, Lighting')" class="p-3 rounded-xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+              <div class="truncate">
+                <p class="truncate text-xs font-bold">2. Blender 3D Modellashtirish</p>
+                <span class="text-[10px] text-slate-400">3D Render & PBR</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400">24:10</span>
+            </div>
+
+            <div onclick="selectStudioLesson('Figma UI/UX — Mobil Ilova Dizayni', '15:30', 'Auto-layout, Komponentlar, Prototype')" class="p-3 rounded-xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+              <div class="truncate">
+                <p class="truncate text-xs font-bold">3. Figma UI/UX Master-klass</p>
+                <span class="text-[10px] text-slate-400">E-Commerce Dizayn</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400">15:30</span>
+            </div>
+
+            <div onclick="selectStudioLesson('Telegram Bot Yaratish (Python/Aiogram 3)', '32:00', 'To\'lovlar, Database, Docker')" class="p-3 rounded-xl sub-box hover:border-emerald-500 transition cursor-pointer flex items-center justify-between text-slate-700 dark:text-slate-300">
+              <div class="truncate">
+                <p class="truncate text-xs font-bold">4. Telegram Bot (Python 3)</p>
+                <span class="text-[10px] text-slate-400">Click & Payme integratsiya</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400">32:00</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 
   <!-- 1. POST PRODUCT / DIGITAL GIG MODAL -->
   <div id="postModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
@@ -939,13 +1172,14 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Toifasi <span class="text-rose-500">*</span></label>
-            <select id="prodCategory" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-cyan-500">
-              <option value="3d">🎨 3D Model & Render</option>
-              <option value="pdf">📚 PDF Darslik & Qo'llanma</option>
-              <option value="video">🎥 Video Kurs & Qo'llanma</option>
-              <option value="kod">💻 Tayyor Kod & Skript</option>
-              <option value="dizayn">🖼️ Grafik Dizayn & UI/UX</option>
-              <option value="xizmat">💼 Kompyuter Xizmati & Frilans</option>
+            <select id="prodCategory" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+              <option value="ilmiy">🎓 Ilmiy va Akademik xizmatlar</option>
+              <option value="dizayn">🎨 Dizayn & UI/UX</option>
+              <option value="dasturlash">💻 Dasturlash & Tayyor Kodlar</option>
+              <option value="3d">🧊 3D Dizayn va Vizualizatsiya</option>
+              <option value="marketing">📢 Marketing va SMM</option>
+              <option value="video">🎥 Audio va Video</option>
+              <option value="biznes">💼 Biznes & Moliyaviy modellar</option>
             </select>
           </div>
           <div>
@@ -1368,8 +1602,80 @@
   <script>
     let uploadedFileData = null;
 
+    const DEFAULT_DEMO_PRODUCTS = [
+      {
+        id: 101,
+        title: "Mustaqil Ish & Diplom Himoyasi Taqdimot Shablonlari (100+ PPTX, PDF)",
+        category: "ilmiy",
+        price: 95000,
+        author: "Akademik Markaz",
+        format: "PPTX / PDF (45 MB)",
+        desc: "Bakalavr va magistratura diplom himoyasi, ilmiy maqolalar va hisobotlar uchun tayyor grafik shablonlar to'plami."
+      },
+      {
+        id: 102,
+        title: "E-Commerce Market Veb-sayt & Mobil Ilova Figma UI/UX Shablon (50+ Ekran)",
+        category: "dizayn",
+        price: 85000,
+        author: "Soff Design Studio",
+        format: ".fig (68 MB)",
+        desc: "Zamonaviy dizayn tizimi, Dark va Light rejim, to'liq Auto-layout komponentlar va mobil moslashuvchanlik."
+      },
+      {
+        id: 103,
+        title: "Telegram Click & Payme To'lov Boti (Python 3.11 / Aiogram 3 / PostgreSQL)",
+        category: "dasturlash",
+        price: 250000,
+        author: "Backend Dev Azimxon",
+        format: "Python Source (.zip)",
+        desc: "Tayyor avtomatlashtirilgan to'lov boti, admin boshqaruv paneli, avtomatik Excel hisobotlar va Dockerfile."
+      },
+      {
+        id: 104,
+        title: "Kiberpank Uchar Avtomobil 3D Modeli & Render (.blend, .fbx, 4K PBR)",
+        category: "3d",
+        price: 140000,
+        author: "3D Studio Azimxon",
+        format: ".blend / .fbx (120 MB)",
+        desc: "Toza topologiya, 4K PBR teksturalar (Metallic, Roughness, Normal), High-Poly, Cycles va Eevee moslashuvchan render."
+      },
+      {
+        id: 105,
+        title: "Instagram & Telegram SMM Kontent Reja + 50 ta Tayyor Post Shablonlari",
+        category: "marketing",
+        price: 80000,
+        author: "Digital Media",
+        format: "Canva / PSD (90 MB)",
+        desc: "Kopirayting matnlari, 30 kunlik reja, reklama target sozlamalari va yuqori konversiya strategiyasi."
+      },
+      {
+        id: 106,
+        title: "Adobe Premiere Pro & After Effects Master-klass Video Kursi (18 ta Dars)",
+        category: "video",
+        price: 180000,
+        author: "Video Mentor",
+        format: "Full HD Video (.mp4)",
+        desc: "Noldan montaj, sound design, rang korreksiyasi va dinamik Reels/Shorts tayyorlash bo'yicha to'liq amaliy kurs."
+      },
+      {
+        id: 107,
+        title: "Avtomatlashtirilgan Moliyaviy Model & Buxgalteriya Excel Shablonlari",
+        category: "biznes",
+        price: 70000,
+        author: "Biznes Ekspert",
+        format: "Excel (.xlsx)",
+        desc: "Kirim-chiqim hisobi, P&L, Cash Flow va startap daromad-zarar prognoz formulalari bilan avtomatlashtirilgan."
+      }
+    ];
+
+    let storedProducts = JSON.parse(localStorage.getItem('azimxon_clean_products'));
+    if (!storedProducts || storedProducts.length === 0) {
+      storedProducts = DEFAULT_DEMO_PRODUCTS;
+      localStorage.setItem('azimxon_clean_products', JSON.stringify(storedProducts));
+    }
+
     let appState = {
-      products: JSON.parse(localStorage.getItem('azimxon_clean_products')) || [],
+      products: storedProducts,
       cart: JSON.parse(localStorage.getItem('azimxon_clean_cart')) || [],
       wallet: parseInt(localStorage.getItem('azimxon_clean_wallet')) || 0,
       currentCategory: 'all',
@@ -1407,12 +1713,12 @@
         html.classList.remove('dark');
         html.classList.add('light');
         document.body.classList.remove('bg-[#080d1a]', 'text-slate-100');
-        document.body.classList.add('bg-slate-100', 'text-slate-800');
+        document.body.classList.add('bg-slate-50', 'text-slate-800');
         if (sun && moon) { sun.classList.remove('hidden'); moon.classList.add('hidden'); }
       } else {
         html.classList.remove('light');
         html.classList.add('dark');
-        document.body.classList.remove('bg-slate-100', 'text-slate-800');
+        document.body.classList.remove('bg-slate-50', 'text-slate-800');
         document.body.classList.add('bg-[#080d1a]', 'text-slate-100');
         if (sun && moon) { sun.classList.add('hidden'); moon.classList.remove('hidden'); }
       }
@@ -1423,6 +1729,50 @@
       localStorage.setItem('azimxon_clean_theme', appState.theme);
       initTheme();
       showToast(appState.theme === 'dark' ? "Tungi rejim yoqildi" : "Yorug' rejim yoqildi", "info");
+    }
+
+    // Katalog Dropdown
+    function toggleCatalogDropdown() {
+      const menu = document.getElementById('katalogDropdownMenu');
+      const chevron = document.getElementById('katalogChevron');
+      if (menu) {
+        const isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+          menu.classList.remove('hidden');
+          if (chevron) chevron.classList.add('rotate-180');
+        } else {
+          menu.classList.add('hidden');
+          if (chevron) chevron.classList.remove('rotate-180');
+        }
+      }
+    }
+
+    // Video Studio Modal
+    function openVideoStudioModal(filter = 'all') {
+      const m = document.getElementById('videoStudioModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+        refreshLucide();
+      }
+    }
+
+    function closeVideoStudioModal() {
+      const m = document.getElementById('videoStudioModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function selectStudioLesson(title, time, desc) {
+      const t = document.getElementById('studioActiveVideoTitle');
+      const d = document.getElementById('studioActiveVideoDesc');
+      const tm = document.getElementById('studioActiveVideoTime');
+      if (t) t.textContent = title;
+      if (d) d.textContent = desc;
+      if (tm) tm.textContent = `${time} / 45:00`;
+      showToast(`Tanlandi: ${title}`, 'info');
     }
 
     // File Selection & Drag-and-Drop Handlers
@@ -1490,11 +1840,12 @@
       if (catSelect) {
         const lowExt = ext.toLowerCase();
         if (['blend', 'obj', 'fbx', 'stl', 'c4d', '3ds', 'gltf', 'dae'].includes(lowExt)) catSelect.value = '3d';
-        else if (lowExt === 'pdf') catSelect.value = 'pdf';
-        else if (['mp4', 'avi', 'mov', 'mkv', 'webm'].includes(lowExt)) catSelect.value = 'video';
-        else if (['zip', 'rar', 'js', 'py', 'php', 'html', 'cpp', 'ts', 'java', 'json'].includes(lowExt)) catSelect.value = 'kod';
+        else if (['pdf', 'docx', 'doc', 'pptx', 'ppt'].includes(lowExt)) catSelect.value = 'ilmiy';
+        else if (['mp4', 'avi', 'mov', 'mkv', 'webm', 'mp3'].includes(lowExt)) catSelect.value = 'video';
+        else if (['zip', 'rar', 'js', 'py', 'php', 'html', 'cpp', 'ts', 'java', 'json', 'sql'].includes(lowExt)) catSelect.value = 'dasturlash';
         else if (['psd', 'ai', 'fig', 'png', 'jpg', 'jpeg', 'svg'].includes(lowExt)) catSelect.value = 'dizayn';
-        else catSelect.value = 'xizmat';
+        else if (['xlsx', 'xls', 'csv'].includes(lowExt)) catSelect.value = 'biznes';
+        else catSelect.value = 'marketing';
       }
 
       document.getElementById('fileUploadPrompt').classList.add('hidden');
@@ -1520,24 +1871,26 @@
 
     function updateCategoryCounts() {
       const countAll = document.getElementById('countAll');
-      const count3d = document.getElementById('count3d');
-      const countPdf = document.getElementById('countPdf');
-      const countVideo = document.getElementById('countVideo');
-      const countKod = document.getElementById('countKod');
+      const countIlmiy = document.getElementById('countIlmiy');
       const countDizayn = document.getElementById('countDizayn');
-      const countXizmat = document.getElementById('countXizmat');
+      const countDasturlash = document.getElementById('countDasturlash');
+      const count3d = document.getElementById('count3d');
+      const countMarketing = document.getElementById('countMarketing');
+      const countVideo = document.getElementById('countVideo');
+      const countBiznes = document.getElementById('countBiznes');
       const sidebarTotalCount = document.getElementById('sidebarTotalCount');
 
       const total = appState.products.length;
       if (countAll) countAll.textContent = total;
       if (sidebarTotalCount) sidebarTotalCount.textContent = `${total} ta`;
 
-      if (count3d) count3d.textContent = appState.products.filter(p => p.category === '3d').length;
-      if (countPdf) countPdf.textContent = appState.products.filter(p => p.category === 'pdf').length;
-      if (countVideo) countVideo.textContent = appState.products.filter(p => p.category === 'video').length;
-      if (countKod) countKod.textContent = appState.products.filter(p => p.category === 'kod').length;
+      if (countIlmiy) countIlmiy.textContent = appState.products.filter(p => p.category === 'ilmiy').length;
       if (countDizayn) countDizayn.textContent = appState.products.filter(p => p.category === 'dizayn').length;
-      if (countXizmat) countXizmat.textContent = appState.products.filter(p => p.category === 'xizmat').length;
+      if (countDasturlash) countDasturlash.textContent = appState.products.filter(p => p.category === 'dasturlash').length;
+      if (count3d) count3d.textContent = appState.products.filter(p => p.category === '3d').length;
+      if (countMarketing) countMarketing.textContent = appState.products.filter(p => p.category === 'marketing').length;
+      if (countVideo) countVideo.textContent = appState.products.filter(p => p.category === 'video').length;
+      if (countBiznes) countBiznes.textContent = appState.products.filter(p => p.category === 'biznes').length;
     }
 
     // Render Products Grid
@@ -1565,19 +1918,19 @@
       if (emptyState) emptyState.classList.add('hidden');
 
       grid.innerHTML = filtered.map(p => `
-        <div class="main-card rounded-2xl p-4 border flex flex-col justify-between hover:border-emerald-500 transition group">
+        <div class="main-card rounded-2xl p-4 border flex flex-col justify-between hover:border-emerald-500 transition group shadow-sm">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                ${p.format || 'RAQAMLI'}
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/25 uppercase">
+                ${p.category || 'RAQAMLI'}
               </span>
-              <span class="text-xs text-slate-400">${p.author}</span>
+              <span class="text-xs text-slate-400 font-medium">${p.author}</span>
             </div>
 
-            <h4 class="font-bold text-xs text-slate-900 dark:text-white line-clamp-2 mt-1 group-hover:text-emerald-400 transition">
+            <h4 class="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 mt-1 group-hover:text-emerald-500 transition">
               ${p.title}
             </h4>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
               ${p.desc}
             </p>
           </div>
@@ -1585,10 +1938,10 @@
           <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between mt-3">
             <span class="font-black text-sm text-slate-900 dark:text-white">${formatUZS(p.price)}</span>
             <div class="flex items-center gap-1.5">
-              <button onclick="addToCart(${p.id})" class="p-2 rounded-lg sub-box hover:text-emerald-400" title="Savatchaga">
+              <button onclick="addToCart(${p.id})" class="p-2 rounded-xl sub-box hover:text-emerald-500 transition" title="Savatchaga">
                 <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
               </button>
-              <button onclick="openDirectCheckout(${p.id})" class="btn-green-main px-3 py-1.5 rounded-lg text-xs font-bold">
+              <button onclick="openDirectCheckout(${p.id})" class="btn-green-main px-3.5 py-1.5 rounded-xl text-xs font-bold">
                 Xarid
               </button>
             </div>
@@ -1600,17 +1953,43 @@
     }
 
     // Category Filter Selection on Left Sidebar
+    const CATEGORY_NAMES = {
+      'all': 'Barcha Raqamli Ishlar & Xizmatlar',
+      'ilmiy': 'Ilmiy va Akademik xizmatlar',
+      'dizayn': 'Grafik Dizayn & UI/UX',
+      'dasturlash': 'Dasturlash xizmatlari & Tayyor Kodlar',
+      '3d': '3D Dizayn va Vizualizatsiya',
+      'marketing': 'Marketing va SMM xizmatlari',
+      'video': 'Audio va Video Master-klasslar',
+      'biznes': 'Biznes va Moliyaviy modellar'
+    };
+
     function setFilterCategory(cat) {
       appState.currentCategory = cat;
+      
+      // Update sidebar active buttons
       const btns = document.querySelectorAll('.sidebar-cat-btn');
       btns.forEach(b => {
         b.classList.remove('active');
         b.classList.add('sub-box');
       });
-      if (event && event.currentTarget) {
-        event.currentTarget.classList.remove('sub-box');
-        event.currentTarget.classList.add('active');
+
+      const activeSidebarBtn = document.getElementById('catBtn-' + cat);
+      if (activeSidebarBtn) {
+        activeSidebarBtn.classList.remove('sub-box');
+        activeSidebarBtn.classList.add('active');
       }
+
+      // Update Search dropdown
+      const searchSel = document.getElementById('searchCategorySelect');
+      if (searchSel) searchSel.value = cat;
+
+      // Update Title
+      const titleEl = document.getElementById('activeCategoryHeaderTitle');
+      if (titleEl && CATEGORY_NAMES[cat]) {
+        titleEl.textContent = CATEGORY_NAMES[cat];
+      }
+
       renderProducts();
     }
 
@@ -1624,7 +2003,9 @@
       appState.searchQuery = '';
       const inp = document.getElementById('globalSearchInput');
       if (inp) inp.value = '';
-      renderProducts();
+      const sel = document.getElementById('searchCategorySelect');
+      if (sel) sel.value = 'all';
+      setFilterCategory('all');
     }
 
     // Add New Product Handler
