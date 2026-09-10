@@ -393,14 +393,155 @@
 
       </aside>
 
-      <!-- ================= RIGHT COLUMN: PRODUCTS SHOWCASE ================= -->
-      <section class="lg:col-span-9 space-y-4">
+      <!-- ================= RIGHT COLUMN: PRODUCTS SHOWCASE & TEMPLATES ================= -->
+      <section class="lg:col-span-9 space-y-6">
         
+        <!-- ⚡ 1-BOSISHDA TAYYOR SHARTNOMA SHABLONLARI (QUICK TEMPLATES HERO SECTION) -->
+        <div class="main-card p-5 rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-900/90 via-slate-950/90 to-cyan-950/20 backdrop-blur-xl shadow-xl relative overflow-hidden">
+          
+          <div class="absolute -right-10 -top-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 relative z-10">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 font-extrabold text-[11px] uppercase tracking-wider flex items-center gap-1">
+                  <i data-lucide="zap" class="w-3.5 h-3.5 fill-cyan-400"></i> AI Generator
+                </span>
+                <span class="text-xs text-slate-400 font-medium hidden sm:inline">1 soniyada tayyor bo'ladi</span>
+              </div>
+              <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1.5 flex items-center gap-2">
+                <span>⚡ 1-Bosishda Tayyor Shartnoma Shablonlari</span>
+              </h2>
+            </div>
+            
+            <button onclick="openAIModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-cyan-500/20">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>AI Studioni Ochish</span>
+            </button>
+          </div>
+
+          <!-- 6 Quick Templates Interactive Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative z-10">
+            
+            <!-- 1. Frilans -->
+            <div onclick="openWithTemplate('frilans')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-cyan-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:scale-110 transition">
+                    <i data-lucide="code-2" class="w-4 h-4"></i>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md">30% Avans</span>
+                </div>
+                <h4 class="font-extrabold text-xs text-white group-hover:text-cyan-300 transition">💻 Frilans & Sayt yaratish</h4>
+                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Dasturchi, dizayner va buyurtmachi o'rtasidagi rasmiy shartnoma.</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-cyan-400 font-bold">
+                <span>Shablonni ochish</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+              </div>
+            </div>
+
+            <!-- 2. NDA -->
+            <div onclick="openWithTemplate('nda')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-purple-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/30 group-hover:scale-110 transition">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md">Yuridik Kuch</span>
+                </div>
+                <h4 class="font-extrabold text-xs text-white group-hover:text-purple-300 transition">🔒 Maxfiylik kelishuvi (NDA)</h4>
+                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Tijorat sirlari, manba kodlari va ma'lumotlarni himoyalash.</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-purple-400 font-bold">
+                <span>Shablonni ochish</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+              </div>
+            </div>
+
+            <!-- 3. Ofis Ijara -->
+            <div onclick="openWithTemplate('ijara')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30 group-hover:scale-110 transition">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">12 Oylik</span>
+                </div>
+                <h4 class="font-extrabold text-xs text-white group-hover:text-amber-300 transition">🏢 Ofis / Xona ijarasi</h4>
+                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Mulkdor va ijarachi o'rtasidagi rasmiy binoni ijaraga berish shartnomasi.</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-amber-400 font-bold">
+                <span>Shablonni ochish</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+              </div>
+            </div>
+
+            <!-- 4. Oldi-sotdi -->
+            <div onclick="openWithTemplate('oldi_sotdi')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 group-hover:scale-110 transition">
+                    <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">Dalolatnoma</span>
+                </div>
+                <h4 class="font-extrabold text-xs text-white group-hover:text-emerald-300 transition">🛍️ Oldi-sotdi & Qabul qilish</h4>
+                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Dastur, raqamli fayl va mulkni topshirish-qabul qilish akti.</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-emerald-400 font-bold">
+                <span>Shablonni ochish</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+              </div>
+            </div>
+
+            <!-- 5. Hamkorlik -->
+            <div onclick="openWithTemplate('hamkorlik')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 group-hover:scale-110 transition">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md">50/50 Ulush</span>
+                </div>
+                <h4 class="font-extrabold text-xs text-white group-hover:text-blue-300 transition">🤝 Hamkorlik shartnomasi</h4>
+                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Sheriklar o'rtasida daromad va vazifalarni taqsimlash kelishuvi.</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-blue-400 font-bold">
+                <span>Shablonni ochish</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+              </div>
+            </div>
+
+            <!-- 6. Tilxat -->
+            <div onclick="openWithTemplate('tilxat')" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-rose-500/50 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center border border-rose-500/30 group-hover:scale-110 transition">
+                    <i data-lucide="receipt" class="w-4 h-4"></i>
+                  </div>
+                  <span class="text-[10px] font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md">FK 732-modda</span>
+                </div>
+                <h4 class="font-extrabold text-xs text-white group-hover:text-rose-300 transition">📜 Qarz tilxati (Notarial)</h4>
+                <p class="text-[11px] text-slate-400 mt-1 leading-snug">Mablag'larni qarzga berish va belgilangan muddatda qaytarish tilxati.</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-rose-400 font-bold">
+                <span>Shablonni ochish</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition"></i>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Products Header Bar -->
         <div class="flex items-center justify-between main-card p-4 rounded-2xl border">
           <div>
             <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-              <span>Raqamli Mahsulotlar & Fayllar</span>
+              <span>Foydalanuvchilar Mahsulotlari & Fayllari</span>
             </h2>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="productsCountSub">Platformada 0 ta mahsulot mavjud</p>
           </div>
@@ -1488,6 +1629,11 @@
         custom: "Ushbu tilxat O'zbekiston Respublikasi FK 732-moddasiga muvofiq tuzildi va yuridik kuchga ega."
       }
     };
+
+    function openWithTemplate(key) {
+      openAIModal();
+      selectAITemplate(key);
+    }
 
     function selectAITemplate(key) {
       const data = AI_TEMPLATES_DATA[key];
