@@ -2003,46 +2003,7 @@
                   <p class="text-[11px] text-slate-400">Eng ko'p sotilayotgan raqamli ishlar</p>
                 </div>
 
-                <div class="space-y-2.5 pt-1 text-xs">
-                  <div>
-                    <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
-                      <span class="flex items-center gap-1.5"><i data-lucide="box" class="w-3.5 h-3.5 text-cyan-400"></i> 3D Modellar & Render</span>
-                      <span class="font-mono text-cyan-400 font-bold">36%</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                      <div class="bg-cyan-400 h-2 rounded-full" style="width: 36%"></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
-                      <span class="flex items-center gap-1.5"><i data-lucide="code-2" class="w-3.5 h-3.5 text-purple-400"></i> Dasturlash & Botlar</span>
-                      <span class="font-mono text-purple-400 font-bold">28%</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                      <div class="bg-purple-400 h-2 rounded-full" style="width: 28%"></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
-                      <span class="flex items-center gap-1.5"><i data-lucide="palette" class="w-3.5 h-3.5 text-rose-400"></i> Figma UI/UX Dizayn</span>
-                      <span class="font-mono text-rose-400 font-bold">20%</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                      <div class="bg-rose-400 h-2 rounded-full" style="width: 20%"></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
-                      <span class="flex items-center gap-1.5"><i data-lucide="video" class="w-3.5 h-3.5 text-emerald-400"></i> Video Kurslar & Ta'lim</span>
-                      <span class="font-mono text-emerald-400 font-bold">16%</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                      <div class="bg-emerald-400 h-2 rounded-full" style="width: 16%"></div>
-                    </div>
-                  </div>
+                <div id="adminCategoryDistributionContainer" class="space-y-2.5 pt-1 text-xs">
                 </div>
               </div>
             </div>
@@ -3982,6 +3943,19 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
       adminOrders.unshift(newOrder);
       localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
 
+      // Update matching seller in adminSellers
+      const sNameLower = sellerName.toLowerCase();
+      const matchedSeller = adminSellers.find(s => {
+        const sn = s.name.toLowerCase();
+        return sn === sNameLower || sn.includes(sNameLower.split(' ')[0]) || sNameLower.includes(sn.split(' ')[0]);
+      });
+      if (matchedSeller) {
+        const commRate = Number(document.getElementById('adminCommissionInput')?.value || 10) / 100;
+        matchedSeller.totalSalesSum = (Number(matchedSeller.totalSalesSum) || 0) + totalAmount;
+        matchedSeller.balance = Math.round(matchedSeller.totalSalesSum * (1 - commRate));
+        localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+      }
+
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
       if (!appState.activeCheckoutProduct) {
@@ -4245,45 +4219,48 @@ ${details ? `Особенности: ${details}\n` : ''}
     const DEFAULT_ADMIN_SELLERS = [
       {
         id: 1,
-        name: "Azimxon Meliyev",
+        name: "3D Studio Azimxon",
         email: "azimxonmeliyev9@gmail.com",
         phone: "+998 90 123 45 67",
         specialty: "3D Modeller & Founder",
         category: "3d",
-        activeListings: 12,
-        totalSalesSum: 6450000,
-        balance: 5805000,
+        activeListings: 1,
+        totalSalesSum: 280000,
+        balance: 252000,
         rating: 5.0,
         status: "faol",
-        avatar: "AM"
+        avatar: "AM",
+        joinedDate: "2025-11-14"
       },
       {
         id: 2,
-        name: "Soff Design Studio",
-        email: "info@soffdesign.uz",
-        phone: "+998 93 555 11 22",
-        specialty: "UI/UX & Grafik Dizayn",
-        category: "dizayn",
-        activeListings: 8,
-        totalSalesSum: 4850000,
-        balance: 4365000,
-        rating: 4.9,
-        status: "faol",
-        avatar: "SD"
-      },
-      {
-        id: 3,
         name: "Backend Dev Azimxon",
         email: "backend@azimxon.dev",
         phone: "+998 97 777 88 99",
         specialty: "Python & Telegram Botlar",
         category: "dasturlash",
-        activeListings: 6,
-        totalSalesSum: 7200000,
-        balance: 6480000,
+        activeListings: 1,
+        totalSalesSum: 250000,
+        balance: 225000,
         rating: 4.9,
         status: "faol",
-        avatar: "BD"
+        avatar: "BD",
+        joinedDate: "2025-12-01"
+      },
+      {
+        id: 3,
+        name: "Soff Design Studio",
+        email: "info@soffdesign.uz",
+        phone: "+998 93 555 11 22",
+        specialty: "UI/UX & Grafik Dizayn",
+        category: "dizayn",
+        activeListings: 1,
+        totalSalesSum: 85000,
+        balance: 76500,
+        rating: 4.9,
+        status: "faol",
+        avatar: "SD",
+        joinedDate: "2026-01-10"
       },
       {
         id: 4,
@@ -4292,26 +4269,58 @@ ${details ? `Особенности: ${details}\n` : ''}
         phone: "+998 91 222 33 44",
         specialty: "Ilmiy & Taqdimot Muallifi",
         category: "ilmiy",
-        activeListings: 15,
-        totalSalesSum: 3450000,
-        balance: 3105000,
+        activeListings: 1,
+        totalSalesSum: 95000,
+        balance: 85500,
         rating: 4.8,
         status: "faol",
-        avatar: "AM"
+        avatar: "AM",
+        joinedDate: "2026-02-05"
       },
       {
         id: 5,
-        name: "Video Maker Pro",
+        name: "Video Mentor",
         email: "media@video.uz",
         phone: "+998 90 999 44 55",
         specialty: "Video Montaj & VFX",
         category: "video",
-        activeListings: 4,
-        totalSalesSum: 2700000,
-        balance: 2430000,
+        activeListings: 1,
+        totalSalesSum: 180000,
+        balance: 162000,
         rating: 4.7,
         status: "faol",
-        avatar: "VM"
+        avatar: "VM",
+        joinedDate: "2026-02-18"
+      },
+      {
+        id: 6,
+        name: "Biznes Ekspert",
+        email: "biznes@expert.uz",
+        phone: "+998 90 777 66 55",
+        specialty: "Biznes & Buxgalteriya",
+        category: "biznes",
+        activeListings: 1,
+        totalSalesSum: 70000,
+        balance: 63000,
+        rating: 4.8,
+        status: "faol",
+        avatar: "BE",
+        joinedDate: "2026-03-01"
+      },
+      {
+        id: 7,
+        name: "Digital Media",
+        email: "smm@digitalmedia.uz",
+        phone: "+998 94 333 11 22",
+        specialty: "SMM & Target Marketing",
+        category: "marketing",
+        activeListings: 1,
+        totalSalesSum: 80000,
+        balance: 72000,
+        rating: 4.9,
+        status: "faol",
+        avatar: "DM",
+        joinedDate: "2026-03-10"
       }
     ];
 
@@ -4323,7 +4332,7 @@ ${details ? `Особенности: ${details}\n` : ''}
         buyerName: "Ali Valiyev",
         buyerPhone: "+998 90 111 22 33",
         productTitle: "Kiberpank Uchar Avtomobil 3D Modeli (.blend)",
-        sellerName: "Azimxon Meliyev",
+        sellerName: "3D Studio Azimxon",
         amount: 140000,
         paymentGateway: "Payme",
         date: "2026-09-11 09:15",
@@ -4367,7 +4376,7 @@ ${details ? `Особенности: ${details}\n` : ''}
         buyerName: "Jasur Rustamov",
         buyerPhone: "+998 97 123 99 88",
         productTitle: "Adobe Premiere Pro & After Effects Master-klass",
-        sellerName: "Video Maker Pro",
+        sellerName: "Video Mentor",
         amount: 180000,
         paymentGateway: "Payme",
         date: "2026-09-08 16:45",
@@ -4377,15 +4386,44 @@ ${details ? `Особенности: ${details}\n` : ''}
         id: "ORD-9806",
         buyerName: "Shahzod Aliyev",
         buyerPhone: "+998 90 777 66 55",
-        productTitle: "Moliyaviy Model & Buxgalteriya Excel Shablonlari",
+        productTitle: "Avtomatlashtirilgan Moliyaviy Model & Buxgalteriya Excel Shablonlari",
         sellerName: "Biznes Ekspert",
         amount: 70000,
         paymentGateway: "Click",
         date: "2026-09-07 10:10",
         status: "Muvaffaqiyatli"
+      },
+      {
+        id: "ORD-9807",
+        buyerName: "Madina Karimova",
+        buyerPhone: "+998 91 555 44 33",
+        productTitle: "Instagram & Telegram SMM Kontent Reja + 50 ta Tayyor Post",
+        sellerName: "Digital Media",
+        amount: 80000,
+        paymentGateway: "Payme",
+        date: "2026-09-06 15:20",
+        status: "Muvaffaqiyatli"
+      },
+      {
+        id: "ORD-9808",
+        buyerName: "Otabek G'aniyev",
+        buyerPhone: "+998 93 111 44 77",
+        productTitle: "Kiberpank Uchar Avtomobil 3D Modeli (.blend)",
+        sellerName: "3D Studio Azimxon",
+        amount: 140000,
+        paymentGateway: "Uzcard",
+        date: "2026-09-05 12:00",
+        status: "Muvaffaqiyatli"
       }
     ];
 
+    if (!localStorage.getItem('azimxon_calc_synced_v3')) {
+      localStorage.setItem('azimxon_admin_sellers', JSON.stringify(DEFAULT_ADMIN_SELLERS));
+      localStorage.setItem('azimxon_admin_orders', JSON.stringify(DEFAULT_ADMIN_ORDERS));
+      localStorage.setItem('azimxon_calc_synced_v3', 'true');
+    }
+
+    let adminSellers = JSON.parse(localStorage.getItem('azimxon_admin_sellers')) || DEFAULT_ADMIN_SELLERS;
     let adminOrders = JSON.parse(localStorage.getItem('azimxon_admin_orders')) || DEFAULT_ADMIN_ORDERS;
 
     let adminCredentials = JSON.parse(localStorage.getItem('azimxon_admin_creds')) || {
@@ -4566,10 +4604,30 @@ ${details ? `Особенности: ${details}\n` : ''}
       const totalProductsCount = appState.products.length;
       const totalSellersCount = adminSellers.length;
       const totalOrdersCount = adminOrders.length;
-      
-      const ordersRevenueSum = adminOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0);
-      const grossSalesSum = 24650000 + ordersRevenueSum; // Base historical turnover + dynamic orders
       const commissionRate = Number(document.getElementById('adminCommissionInput')?.value || 10) / 100;
+      
+      // Update each seller's active listings count and total sales dynamically
+      adminSellers.forEach(s => {
+        const sNameLower = s.name.toLowerCase();
+        const sellerProducts = appState.products.filter(p => {
+          const pAuth = (p.author || '').toLowerCase();
+          return pAuth === sNameLower || pAuth.includes(sNameLower.split(' ')[0]) || (p.category && p.category === s.category);
+        });
+        s.activeListings = sellerProducts.length;
+
+        const sellerOrders = adminOrders.filter(o => {
+          const oSell = (o.sellerName || '').toLowerCase();
+          return oSell === sNameLower || oSell.includes(sNameLower.split(' ')[0]) || (o.sellerName && s.name && s.name.toLowerCase().includes(o.sellerName.toLowerCase().split(' ')[0]));
+        });
+        const sellerOrdersSum = sellerOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0);
+        if (sellerOrdersSum > 0 || !s.totalSalesSum) {
+          s.totalSalesSum = sellerOrdersSum;
+        }
+        s.balance = Math.round(s.totalSalesSum * (1 - commissionRate));
+      });
+
+      const ordersRevenueSum = adminOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0);
+      const grossSalesSum = ordersRevenueSum;
       const platformProfitSum = Math.round(grossSalesSum * commissionRate);
 
       // 2. Update KPI Elements in Header & Overview Pane
@@ -4580,7 +4638,7 @@ ${details ? `Особенности: ${details}\n` : ''}
       const kpiPlatformProfit = document.getElementById('adKpiPlatformProfit');
 
       if (kpiGrossSales) kpiGrossSales.textContent = formatUZS(grossSalesSum);
-      if (kpiTotalOrders) kpiTotalOrders.textContent = `${totalOrdersCount + 152} ta`;
+      if (kpiTotalOrders) kpiTotalOrders.textContent = `${totalOrdersCount} ta`;
       if (kpiTotalSellers) kpiTotalSellers.textContent = `${totalSellersCount} ta`;
       if (kpiTotalProducts) kpiTotalProducts.textContent = `${totalProductsCount} ta`;
       if (kpiPlatformProfit) kpiPlatformProfit.textContent = formatUZS(platformProfitSum);
@@ -4595,6 +4653,44 @@ ${details ? `Особенности: ${details}\n` : ''}
       if (badgeProducts) badgeProducts.textContent = totalProductsCount;
       if (badgeOrders) badgeOrders.textContent = totalOrdersCount;
       if (totalOrdersSumText) totalOrdersSumText.textContent = formatUZS(ordersRevenueSum);
+
+      // Render Dynamic Category Distribution Progress
+      const catContainer = document.getElementById('adminCategoryDistributionContainer');
+      if (catContainer) {
+        const catMap = {
+          '3d': { name: "3D Modellar & Render", color: "cyan", icon: "box" },
+          'dasturlash': { name: "Dasturlash & Botlar", color: "purple", icon: "code-2" },
+          'dizayn': { name: "Figma UI/UX Dizayn", color: "rose", icon: "palette" },
+          'video': { name: "Video Kurslar & Ta'lim", color: "emerald", icon: "video" },
+          'ilmiy': { name: "Ilmiy & Taqdimotlar", color: "amber", icon: "graduation-cap" },
+          'biznes': { name: "Biznes & Excel Shablonlar", color: "blue", icon: "briefcase" },
+          'marketing': { name: "SMM & Marketing", color: "orange", icon: "megaphone" }
+        };
+
+        const catCounts = {};
+        appState.products.forEach(p => {
+          const c = p.category || 'boshqa';
+          catCounts[c] = (catCounts[c] || 0) + 1;
+        });
+
+        const catKeys = Object.keys(catCounts);
+        catContainer.innerHTML = catKeys.map(ck => {
+          const meta = catMap[ck] || { name: ck.toUpperCase(), color: "emerald", icon: "file" };
+          const count = catCounts[ck];
+          const percent = totalProductsCount > 0 ? Math.round((count / totalProductsCount) * 100) : 0;
+          return `
+            <div>
+              <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
+                <span class="flex items-center gap-1.5"><i data-lucide="${meta.icon}" class="w-3.5 h-3.5 text-${meta.color}-400"></i> ${meta.name} (${count} ta)</span>
+                <span class="font-mono text-${meta.color}-400 font-bold">${percent}%</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div class="bg-${meta.color}-400 h-2 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
 
       // Render tab specific components
       renderAdminOverviewPanes();
@@ -4930,8 +5026,10 @@ ${details ? `Особенности: ${details}\n` : ''}
       }
 
       tbody.innerHTML = list.map(p => {
-        const soldCount = Math.floor((p.id * 7) % 35) + 3;
-        const totalEarned = soldCount * p.price;
+        const pTitleShort = (p.title || '').toLowerCase().slice(0, 15);
+        const productOrders = adminOrders.filter(o => o.productTitle && (o.productTitle.toLowerCase().includes(pTitleShort) || (p.title && p.title.toLowerCase().includes(o.productTitle.toLowerCase().slice(0, 15)))));
+        const soldCount = productOrders.length;
+        const totalEarned = productOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0) || (soldCount * p.price);
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
@@ -4997,14 +5095,34 @@ ${details ? `Особенности: ${details}\n` : ''}
       const grid = document.getElementById('adminAnalyticsCardsGrid');
       if (!grid) return;
 
-      const metrics = [
-        { title: "🧊 3D Modellar & Renderlar", share: "36%", sum: "8 874 000 UZS", sales: "64 ta", color: "cyan" },
-        { title: "💻 Telegram Botlar & Python", share: "28%", sum: "6 902 000 UZS", sales: "38 ta", color: "purple" },
-        { title: "🎨 Figma UI/UX & Dizayn", share: "20%", sum: "4 930 000 UZS", sales: "52 ta", color: "rose" },
-        { title: "🎥 Video Kurslar & Montaj", share: "16%", sum: "3 944 000 UZS", sales: "24 ta", color: "emerald" },
-        { title: "🎓 Akademik Taqdimotlar", share: "12%", sum: "2 958 000 UZS", sales: "32 ta", color: "amber" },
-        { title: "💼 Biznes & Excel Modellar", share: "8%", sum: "1 972 000 UZS", sales: "28 ta", color: "blue" }
-      ];
+      const catMap = {
+        '3d': { title: "🧊 3D Modellar & Renderlar", color: "cyan" },
+        'dasturlash': { title: "💻 Telegram Botlar & Python", color: "purple" },
+        'dizayn': { title: "🎨 Figma UI/UX & Dizayn", color: "rose" },
+        'video': { title: "🎥 Video Kurslar & Montaj", color: "emerald" },
+        'ilmiy': { title: "🎓 Akademik Taqdimotlar", color: "amber" },
+        'biznes': { title: "💼 Biznes & Excel Modellar", color: "blue" },
+        'marketing': { title: "📢 SMM & Marketing", color: "orange" }
+      };
+
+      const totalProductsCount = appState.products.length;
+      const metrics = Object.entries(catMap).map(([key, meta]) => {
+        const prods = appState.products.filter(p => p.category === key);
+        const count = prods.length;
+        const share = totalProductsCount > 0 ? Math.round((count / totalProductsCount) * 100) : 0;
+        const ordersInCat = adminOrders.filter(o => {
+          const matchProd = appState.products.find(p => p.title.toLowerCase().includes(o.productTitle.toLowerCase().slice(0, 15)) || o.productTitle.toLowerCase().includes(p.title.toLowerCase().slice(0, 15)));
+          return matchProd && matchProd.category === key;
+        });
+        const sum = ordersInCat.reduce((s, ord) => s + (Number(ord.amount) || 0), 0);
+        return {
+          title: meta.title,
+          share: `${share}%`,
+          sum: formatUZS(sum),
+          sales: `${ordersInCat.length} ta`,
+          color: meta.color
+        };
+      });
 
       grid.innerHTML = metrics.map(m => `
         <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
