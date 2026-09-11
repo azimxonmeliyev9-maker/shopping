@@ -39,6 +39,7 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -1654,7 +1655,7 @@
   </div>
 
   <!-- 5. CART SLIDE DRAWER -->
-  <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none">
+  <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
     <div id="cartBackdrop" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
     <div id="cartPanel" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-slate-950/95 border-l border-slate-800 p-6 flex flex-col justify-between translate-x-full pointer-events-auto transition-transform duration-300 shadow-2xl">
       
@@ -2821,10 +2822,9 @@
       storedProducts = null;
     }
 
-    if (!localStorage.getItem('azimxon_force_restore_v5') || !Array.isArray(storedProducts) || storedProducts.length === 0 || !storedProducts[0]?.title_uz) {
-      storedProducts = [...DEFAULT_DEMO_PRODUCTS];
+    if (!Array.isArray(storedProducts) || storedProducts.length === 0 || !storedProducts[0]?.title_uz) {
+      storedProducts = JSON.parse(JSON.stringify(DEFAULT_DEMO_PRODUCTS));
       localStorage.setItem('azimxon_clean_products', JSON.stringify(storedProducts));
-      localStorage.setItem('azimxon_force_restore_v5', 'true');
     }
 
     let appState = {
@@ -3451,6 +3451,9 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
     }
 
     function updateCategoryCounts() {
+      if (!Array.isArray(appState.products) || appState.products.length === 0) {
+        appState.products = JSON.parse(JSON.stringify(DEFAULT_DEMO_PRODUCTS));
+      }
       const countAll = document.getElementById('countAll');
       const countIlmiy = document.getElementById('countIlmiy');
       const countDizayn = document.getElementById('countDizayn');
@@ -3480,6 +3483,11 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
       const emptyState = document.getElementById('emptyCatalogState');
       const countSub = document.getElementById('productsCountSub');
       if (!grid) return;
+
+      if (!Array.isArray(appState.products) || appState.products.length === 0) {
+        appState.products = JSON.parse(JSON.stringify(DEFAULT_DEMO_PRODUCTS));
+        localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+      }
 
       updateCategoryCounts();
 
@@ -3814,7 +3822,7 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
       const p = document.getElementById('cartPanel');
       const b = document.getElementById('cartBackdrop');
       if (d && p && b) {
-        d.classList.remove('pointer-events-none');
+        d.classList.remove('hidden');
         b.classList.remove('opacity-0', 'pointer-events-none');
         b.classList.add('opacity-100', 'pointer-events-auto');
         p.classList.remove('translate-x-full');
@@ -3830,7 +3838,9 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
         b.classList.remove('opacity-100', 'pointer-events-auto');
         b.classList.add('opacity-0', 'pointer-events-none');
         p.classList.add('translate-x-full');
-        setTimeout(() => d.classList.add('pointer-events-none'), 300);
+        setTimeout(() => {
+          d.classList.add('hidden');
+        }, 300);
       }
     }
 
