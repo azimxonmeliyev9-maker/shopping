@@ -370,15 +370,25 @@
           </button>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5">
+          <!-- Global Language Switcher (UZ / RU / EN) -->
+          <div class="flex items-center bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg px-2 py-0.5 shadow-sm">
+            <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-500 mr-1.5 flex-shrink-0"></i>
+            <select id="globalLanguageSelect" onchange="setGlobalLanguage(this.value)" class="bg-transparent text-[11px] font-extrabold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer pr-1">
+              <option value="uz">🇺🇿 O'zbek</option>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="en">🇬🇧 English</option>
+            </select>
+          </div>
+
           <!-- Admin Panel Button -->
           <button onclick="handleAdminAuthClick()" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] font-bold text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-800 flex items-center gap-1">
             <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span>Admin</span>
+            <span id="txtAdminBtn">Admin</span>
           </button>
           <!-- Balance Pill -->
           <button onclick="openWalletModal()" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] border border-emerald-500/20">
-            <span>Balans: <span id="userWalletAmount">0</span> so'm</span>
+            <span id="txtBalanceLabel">Balans:</span> <span id="userWalletAmount" class="ml-1">0</span> <span id="txtCurrencyUnit">so'm</span>
           </button>
           <!-- Theme switch -->
           <button onclick="toggleTheme()" class="p-1 text-slate-500 hover:text-amber-400" title="Rejim">
@@ -513,64 +523,64 @@
             <div class="w-full flex-shrink-0 p-6 sm:p-8">
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div class="lg:col-span-6 space-y-4">
-                  <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold uppercase tracking-wider">
+                  <span id="heroSlide1Badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-[10px] font-bold uppercase tracking-wider">
                     🎬 1-Slayd • Video Ta'lim
                   </span>
-                  <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+                  <h1 id="heroSlide1Title" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
                     <span class="text-emerald-600 dark:text-emerald-400">Video darslar</span> va foydali<br>
                     kontentlarni tomosha qiling
                   </h1>
                   <div class="flex flex-wrap gap-2 text-[11px] font-bold">
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('web')">
+                    <span id="heroSlide1Tag1" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('web')">
                       Foydali vlog
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('design')">
+                    <span id="heroSlide1Tag2" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('design')">
                       Ingliz tili
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('marketing')">
+                    <span id="heroSlide1Tag3" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('marketing')">
                       Produktivlik
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('all')">
+                    <span id="heroSlide1Tag4" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-emerald-500 transition" onclick="openVideoStudioModal('all')">
                       Turli yo'nalishlar
                     </span>
                   </div>
                   <div>
                     <button onclick="openVideoStudioModal()" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-lg shadow-emerald-500/30 transition transform hover:-translate-y-0.5">
                       <i data-lucide="play" class="w-4 h-4 fill-white"></i>
-                      <span>Videolarni ko'rish</span>
+                      <span id="heroSlide1BtnText">Videolarni ko'rish</span>
                     </button>
                   </div>
                 </div>
                 <div class="lg:col-span-6 grid grid-cols-2 gap-2.5">
                   <div onclick="openVideoStudioModal('web')" class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md hover:border-emerald-500 transition cursor-pointer group">
                     <div class="flex items-center justify-between mb-2">
-                      <span class="text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">KURS</span>
+                      <span id="heroSlide1Card1Badge" class="text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">KURS</span>
                       <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center group-hover:scale-110 transition shadow-sm">
                         <i data-lucide="play" class="w-2.5 h-2.5 fill-white ml-0.5"></i>
                       </div>
                     </div>
-                    <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">Web Dasturlash</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5">0 dan Full-Stack gacha • 1.2k+ talabalar</p>
+                    <h4 id="heroSlide1Card1Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">Web Dasturlash</h4>
+                    <p id="heroSlide1Card1Desc" class="text-[10px] text-slate-400 mt-0.5">0 dan Full-Stack gacha • 1.2k+ talabalar</p>
                   </div>
                   <div onclick="openVideoStudioModal('design')" class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md hover:border-emerald-500 transition cursor-pointer group">
                     <div class="flex items-center justify-between mb-2">
-                      <span class="text-[9px] font-mono font-bold bg-purple-500/20 text-purple-500 px-1.5 py-0.5 rounded">UI/UX</span>
+                      <span id="heroSlide1Card2Badge" class="text-[9px] font-mono font-bold bg-purple-500/20 text-purple-500 px-1.5 py-0.5 rounded">UI/UX</span>
                       <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center group-hover:scale-110 transition shadow-sm">
                         <i data-lucide="play" class="w-2.5 h-2.5 fill-white ml-0.5"></i>
                       </div>
                     </div>
-                    <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">UI/UX Design</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5">Figma'da amaliy dars • 820 talaba</p>
+                    <h4 id="heroSlide1Card2Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">UI/UX Design</h4>
+                    <p id="heroSlide1Card2Desc" class="text-[10px] text-slate-400 mt-0.5">Figma'da amaliy dars • 820 talaba</p>
                   </div>
                   <div onclick="openVideoStudioModal('marketing')" class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md hover:border-emerald-500 transition cursor-pointer group">
                     <div class="flex items-center justify-between mb-2">
-                      <span class="text-[9px] font-mono font-bold bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded">SMM</span>
+                      <span id="heroSlide1Card3Badge" class="text-[9px] font-mono font-bold bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded">SMM</span>
                       <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center group-hover:scale-110 transition shadow-sm">
                         <i data-lucide="play" class="w-2.5 h-2.5 fill-white ml-0.5"></i>
                       </div>
                     </div>
-                    <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">Marketing Strategiya</h4>
-                    <p class="text-[10px] text-slate-400 mt-0.5">Target & Konversiya • 10:15</p>
+                    <h4 id="heroSlide1Card3Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition leading-snug">Marketing Strategiya</h4>
+                    <p id="heroSlide1Card3Desc" class="text-[10px] text-slate-400 mt-0.5">Target & Konversiya • 10:15</p>
                   </div>
                   <div class="p-3 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-md flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-600 flex items-center justify-center font-black text-xs">
@@ -589,28 +599,28 @@
             <div class="w-full flex-shrink-0 p-6 sm:p-8">
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div class="lg:col-span-6 space-y-4">
-                  <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold uppercase tracking-wider">
+                  <span id="heroSlide2Badge" class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold uppercase tracking-wider">
                     🎨 2-Slayd • 3D & Grafika
                   </span>
-                  <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+                  <h1 id="heroSlide2Title" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
                     <span class="text-cyan-400">3D Modellar</span> va Fotorealistik<br>
                     Render Aktivlari (.blend, .fbx)
                   </h1>
                   <div class="flex flex-wrap gap-2 text-[11px] font-bold">
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-cyan-500 transition" onclick="setFilterCategory('3d')">
+                    <span id="heroSlide2Tag1" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-cyan-500 transition" onclick="setFilterCategory('3d')">
                       Blender 4.0
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-cyan-500 transition" onclick="setFilterCategory('3d')">
+                    <span id="heroSlide2Tag2" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-cyan-500 transition" onclick="setFilterCategory('3d')">
                       4K PBR Teksturalar
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-cyan-500 transition" onclick="setFilterCategory('3d')">
+                    <span id="heroSlide2Tag3" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-cyan-500 transition" onclick="setFilterCategory('3d')">
                       Game Ready
                     </span>
                   </div>
                   <div>
                     <button onclick="setFilterCategory('3d')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-lg shadow-cyan-500/30 transition transform hover:-translate-y-0.5">
                       <i data-lucide="box" class="w-4 h-4"></i>
-                      <span>3D Modellarni Ko'rish</span>
+                      <span id="heroSlide2BtnText">3D Modellarni Ko'rish</span>
                     </button>
                   </div>
                 </div>
@@ -619,15 +629,15 @@
                     <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-2">
                       <i data-lucide="box" class="w-4 h-4"></i>
                     </div>
-                    <h4 class="font-extrabold text-xs text-white">Kiberpank Uchar Avtomobil</h4>
-                    <p class="text-[10px] text-slate-400 mt-1">.blend, .fbx • 4K PBR</p>
+                    <h4 id="heroSlide2Card1Title" class="font-extrabold text-xs text-white">Kiberpank Uchar Avtomobil</h4>
+                    <p id="heroSlide2Card1Desc" class="text-[10px] text-slate-400 mt-1">.blend, .fbx • 4K PBR</p>
                   </div>
                   <div onclick="setFilterCategory('3d')" class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-md hover:border-cyan-500 transition cursor-pointer">
                     <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2">
                       <i data-lucide="layers" class="w-4 h-4"></i>
                     </div>
-                    <h4 class="font-extrabold text-xs text-white">Minimalist Interyer</h4>
-                    <p class="text-[10px] text-slate-400 mt-1">Cycles Studio Lighting</p>
+                    <h4 id="heroSlide2Card2Title" class="font-extrabold text-xs text-white">Minimalist Interyer</h4>
+                    <p id="heroSlide2Card2Desc" class="text-[10px] text-slate-400 mt-1">Cycles Studio Lighting</p>
                   </div>
                 </div>
               </div>
@@ -637,28 +647,28 @@
             <div class="w-full flex-shrink-0 p-6 sm:p-8">
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div class="lg:col-span-6 space-y-4">
-                  <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-400 text-[10px] font-bold uppercase tracking-wider">
+                  <span id="heroSlide3Badge" class="px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-400 text-[10px] font-bold uppercase tracking-wider">
                     💻 3-Slayd • Dasturlash & Botlar
                   </span>
-                  <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+                  <h1 id="heroSlide3Title" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
                     <span class="text-purple-400">Telegram To'lov Botlari</span><br>
                     va Tayyor Python / Web Kodlar
                   </h1>
                   <div class="flex flex-wrap gap-2 text-[11px] font-bold">
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-purple-500 transition" onclick="setFilterCategory('dasturlash')">
+                    <span id="heroSlide3Tag1" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-purple-500 transition" onclick="setFilterCategory('dasturlash')">
                       Python 3.11
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-purple-500 transition" onclick="setFilterCategory('dasturlash')">
+                    <span id="heroSlide3Tag2" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-purple-500 transition" onclick="setFilterCategory('dasturlash')">
                       Aiogram 3
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-purple-500 transition" onclick="setFilterCategory('dasturlash')">
+                    <span id="heroSlide3Tag3" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-purple-500 transition" onclick="setFilterCategory('dasturlash')">
                       Click / Payme
                     </span>
                   </div>
                   <div>
                     <button onclick="setFilterCategory('dasturlash')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-lg shadow-purple-500/30 transition transform hover:-translate-y-0.5">
                       <i data-lucide="code-2" class="w-4 h-4"></i>
-                      <span>Kodlar Katalogiga O'tish</span>
+                      <span id="heroSlide3BtnText">Kodlar Katalogiga O'tish</span>
                     </button>
                   </div>
                 </div>
@@ -667,15 +677,15 @@
                     <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2">
                       <i data-lucide="bot" class="w-4 h-4"></i>
                     </div>
-                    <h4 class="font-extrabold text-xs text-white">Click & Payme To'lov Boti</h4>
-                    <p class="text-[10px] text-slate-400 mt-1">PostgreSQL • Docker deploy</p>
+                    <h4 id="heroSlide3Card1Title" class="font-extrabold text-xs text-white">Click & Payme To'lov Boti</h4>
+                    <p id="heroSlide3Card1Desc" class="text-[10px] text-slate-400 mt-1">PostgreSQL • Docker deploy</p>
                   </div>
                   <div onclick="setFilterCategory('dasturlash')" class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-md hover:border-purple-500 transition cursor-pointer">
                     <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-2">
                       <i data-lucide="layout" class="w-4 h-4"></i>
                     </div>
-                    <h4 class="font-extrabold text-xs text-white">React SaaS Dashboard</h4>
-                    <p class="text-[10px] text-slate-400 mt-1">TailwindCSS • 100% Responsive</p>
+                    <h4 id="heroSlide3Card2Title" class="font-extrabold text-xs text-white">React SaaS Dashboard</h4>
+                    <p id="heroSlide3Card2Desc" class="text-[10px] text-slate-400 mt-1">TailwindCSS • 100% Responsive</p>
                   </div>
                 </div>
               </div>
@@ -685,28 +695,28 @@
             <div class="w-full flex-shrink-0 p-6 sm:p-8">
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div class="lg:col-span-6 space-y-4">
-                  <span class="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider">
+                  <span id="heroSlide4Badge" class="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-400 text-[10px] font-bold uppercase tracking-wider">
                     🖼️ 4-Slayd • UI/UX & Dizayn
                   </span>
-                  <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+                  <h1 id="heroSlide4Title" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
                     <span class="text-rose-400">Figma UI/UX To'plamlar</span><br>
                     va Grafik Dizayn Shablonlari
                   </h1>
                   <div class="flex flex-wrap gap-2 text-[11px] font-bold">
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-rose-500 transition" onclick="setFilterCategory('dizayn')">
+                    <span id="heroSlide4Tag1" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-rose-500 transition" onclick="setFilterCategory('dizayn')">
                       Auto-Layout
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-rose-500 transition" onclick="setFilterCategory('dizayn')">
+                    <span id="heroSlide4Tag2" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-rose-500 transition" onclick="setFilterCategory('dizayn')">
                       50+ Ekranlar
                     </span>
-                    <span class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-rose-500 transition" onclick="setFilterCategory('dizayn')">
+                    <span id="heroSlide4Tag3" class="px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-sm cursor-pointer hover:border-rose-500 transition" onclick="setFilterCategory('dizayn')">
                       Design System
                     </span>
                   </div>
                   <div>
                     <button onclick="setFilterCategory('dizayn')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-lg shadow-rose-500/30 transition transform hover:-translate-y-0.5">
                       <i data-lucide="palette" class="w-4 h-4"></i>
-                      <span>Dizaynlarni Ko'rish</span>
+                      <span id="heroSlide4BtnText">Dizaynlarni Ko'rish</span>
                     </button>
                   </div>
                 </div>
@@ -715,15 +725,15 @@
                     <div class="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center mb-2">
                       <i data-lucide="smartphone" class="w-4 h-4"></i>
                     </div>
-                    <h4 class="font-extrabold text-xs text-white">E-Commerce Mobil UI</h4>
-                    <p class="text-[10px] text-slate-400 mt-1">Figma Pro Component System</p>
+                    <h4 id="heroSlide4Card1Title" class="font-extrabold text-xs text-white">E-Commerce Mobil UI</h4>
+                    <p id="heroSlide4Card1Desc" class="text-[10px] text-slate-400 mt-1">Figma Pro Component System</p>
                   </div>
                   <div onclick="setFilterCategory('dizayn')" class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-md hover:border-rose-500 transition cursor-pointer">
                     <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-2">
                       <i data-lucide="image" class="w-4 h-4"></i>
                     </div>
-                    <h4 class="font-extrabold text-xs text-white">300+ Premium 3D Iconlar</h4>
-                    <p class="text-[10px] text-slate-400 mt-1">PNG & SVG Vektor to'plam</p>
+                    <h4 id="heroSlide4Card2Title" class="font-extrabold text-xs text-white">300+ Premium 3D Iconlar</h4>
+                    <p id="heroSlide4Card2Desc" class="text-[10px] text-slate-400 mt-1">PNG & SVG Vektor to'plam</p>
                   </div>
                 </div>
               </div>
@@ -743,7 +753,7 @@
 
         <!-- ⚡ MASHHUR KATEGORIYALAR (6 CARDS GRID - EXACT MATCH TO SCREENSHOT) -->
         <div class="space-y-3">
-          <h3 class="font-extrabold text-sm text-slate-900 dark:text-white">Mashhur kategoriyalar</h3>
+          <h3 id="popularCatsSectionTitle" class="font-extrabold text-sm text-slate-900 dark:text-white">Mashhur kategoriyalar</h3>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             
@@ -753,7 +763,7 @@
                 <i data-lucide="graduation-cap" class="w-5 h-5"></i>
               </div>
               <div>
-                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Ilmiy ish</h4>
+                <h4 id="popCat1Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Ilmiy ish</h4>
                 <span class="text-[11px] text-emerald-500 font-bold font-mono">1.5mln +</span>
               </div>
             </div>
@@ -764,7 +774,7 @@
                 <i data-lucide="sparkles" class="w-5 h-5"></i>
               </div>
               <div>
-                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">AI generatsiyalar</h4>
+                <h4 id="popCat2Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">AI generatsiyalar</h4>
                 <span class="text-[11px] text-emerald-500 font-bold font-mono">1K +</span>
               </div>
             </div>
@@ -775,7 +785,7 @@
                 <i data-lucide="box" class="w-5 h-5"></i>
               </div>
               <div>
-                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">3D Modellar</h4>
+                <h4 id="popCat3Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">3D Modellar</h4>
                 <span class="text-[11px] text-emerald-500 font-bold font-mono">500+</span>
               </div>
             </div>
@@ -786,7 +796,7 @@
                 <i data-lucide="palette" class="w-5 h-5"></i>
               </div>
               <div>
-                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Dizayn shablonlari</h4>
+                <h4 id="popCat4Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Dizayn shablonlari</h4>
                 <span class="text-[11px] text-emerald-500 font-bold font-mono">1.5K +</span>
               </div>
             </div>
@@ -797,7 +807,7 @@
                 <i data-lucide="code-2" class="w-5 h-5"></i>
               </div>
               <div>
-                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Veb saytlar</h4>
+                <h4 id="popCat5Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Veb saytlar</h4>
                 <span class="text-[11px] text-emerald-500 font-bold font-mono">500+</span>
               </div>
             </div>
@@ -808,7 +818,7 @@
                 <i data-lucide="layers" class="w-5 h-5"></i>
               </div>
               <div>
-                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Shablonlar</h4>
+                <h4 id="popCat6Title" class="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Shablonlar</h4>
                 <span class="text-[11px] text-emerald-500 font-bold font-mono">2k+</span>
               </div>
             </div>
@@ -828,7 +838,7 @@
 
           <button onclick="openPostModal()" class="btn-green-main px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
             <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
-            <span>+ Fayl / Xizmat Joylash</span>
+            <span id="txtAddProductBtn">+ Fayl / Xizmat Joylash</span>
           </button>
         </div>
 
@@ -1399,31 +1409,34 @@
   <!-- 2. AI KOMPYUTER & IJODIY GENERATOR (AI CREATIVE STUDIO) -->
   <div id="aiModal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto">
     <div class="modal-card rounded-3xl max-w-5xl w-full p-5 sm:p-7 relative shadow-2xl my-auto border border-cyan-500/30">
-      <button onclick="closeAIModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 transition z-10">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
+      
       <!-- Modal Header -->
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-600 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-cyan-500/20">
             <i data-lucide="sparkles" class="w-6 h-6 animate-pulse"></i>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h3 class="font-black text-lg sm:text-xl text-slate-900 dark:text-white tracking-tight">AI Kompyuter & Ijodiy Generator <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 font-mono border border-cyan-500/30">CREATIVE STUDIO</span></h3>
+              <h3 class="font-black text-lg sm:text-xl text-slate-900 dark:text-white tracking-tight" id="txtAiModalTitle">AI Kompyuter & Ijodiy Generator <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 font-mono border border-cyan-500/30">CREATIVE STUDIO</span></h3>
             </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400">3D Render promptlari, Dasturlash g'oyalari, Video darslik rejalari va Frilans xizmatlar tavsifi</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400" id="txtAiModalSubtitle">3D Render promptlari, Dasturlash g'oyalari, Video darslik rejalari va Frilans xizmatlar tavsifi</p>
           </div>
         </div>
 
-        <div class="flex items-center gap-2 text-xs font-semibold">
-          <span class="text-slate-400 hidden sm:inline">Yo'nalish:</span>
-          <select id="aiDocLanguage" class="modal-input rounded-xl px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 text-cyan-400 font-bold focus:outline-none focus:border-cyan-500">
-            <option value="uz">🇺🇿 O'zbekcha</option>
-            <option value="en">🇬🇧 English (Global Prompts)</option>
-            <option value="ru">🇷🇺 Русский</option>
-          </select>
+        <div class="flex items-center gap-3 text-xs font-semibold">
+          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5">
+            <span class="text-slate-400 text-xs hidden sm:inline" id="txtAiLangLabel">Til / Язык:</span>
+            <select id="aiDocLanguage" onchange="setGlobalLanguage(this.value)" class="bg-transparent text-cyan-400 font-bold focus:outline-none cursor-pointer">
+              <option value="uz">🇺🇿 O'zbekcha</option>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="en">🇬🇧 English</option>
+            </select>
+          </div>
+
+          <button onclick="closeAIModal()" class="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 transition" title="Yopish / Закрыть / Close">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
         </div>
       </div>
 
@@ -2274,74 +2287,372 @@
   <script>
     let uploadedFileData = null;
 
+    const TRANSLATIONS = {
+      uz: {
+        katalog: "Katalog",
+        allCategories: "Barcha Kategoriyalar",
+        searchPlaceholder: "Qidiring...",
+        orderBtn: "Buyurtma berish",
+        navMarket: "Tayyor mahsulotlar",
+        navServices: "Frilanserlik xizmatlari",
+        navStudio: "Soff Studio",
+        navAi: "AI xizmatlari",
+        navSeller: "Sotuvchi bo'lish",
+        navAdmin: "Admin",
+        balanceLabel: "Balans:",
+        currencyUnit: "so'm",
+        popularCats: "Mashhur kategoriyalar",
+        productsHeader: "Barcha Raqamli Ishlar & Xizmatlar",
+        addProductBtn: "+ Fayl / Xizmat Joylash",
+        buyBtn: "Xarid",
+        cartBtn: "Savatchaga",
+        // Categories
+        cat_all: "Barcha xizmatlar & ishlar",
+        cat_ilmiy: "Ilmiy va Akademik xizmatlar",
+        cat_dizayn: "Dizayn",
+        cat_dasturlash: "Dasturlash xizmatlari",
+        cat_3d: "3D Dizayn va Vizualizatsiya",
+        cat_marketing: "Marketing va SMM",
+        cat_video: "Audio va Video",
+        cat_biznes: "Biznes",
+        // Hero Slide 1
+        hero1_badge: "🎬 1-Slayd • Video Ta'lim",
+        hero1_title: "<span class=\"text-emerald-600 dark:text-emerald-400\">Video darslar</span> va foydali<br>kontentlarni tomosha qiling",
+        hero1_tag1: "Foydali vlog",
+        hero1_tag2: "Ingliz tili",
+        hero1_tag3: "Produktivlik",
+        hero1_tag4: "Turli yo'nalishlar",
+        hero1_btn: "Videolarni ko'rish",
+        hero1_c1_title: "Web Dasturlash",
+        hero1_c1_desc: "0 dan Full-Stack gacha • 1.2k+ talabalar",
+        hero1_c2_title: "UI/UX Design",
+        hero1_c2_desc: "Figma'da amaliy dars • 820 talaba",
+        hero1_c3_title: "Marketing Strategiya",
+        hero1_c3_desc: "Target & Konversiya • 10:15",
+        // Hero Slide 2
+        hero2_badge: "🎨 2-Slayd • 3D & Grafika",
+        hero2_title: "<span class=\"text-cyan-400\">3D Modellar</span> va Fotorealistik<br>Render Aktivlari (.blend, .fbx)",
+        hero2_btn: "3D Modellarni Ko'rish",
+        hero2_c1_title: "Kiberpank Uchar Avtomobil",
+        hero2_c1_desc: ".blend, .fbx • 4K PBR",
+        hero2_c2_title: "Minimalist Interyer",
+        hero2_c2_desc: "Cycles Studio Lighting",
+        // Hero Slide 3
+        hero3_badge: "💻 3-Slayd • Dasturlash & Botlar",
+        hero3_title: "<span class=\"text-purple-400\">Telegram To'lov Botlari</span><br>va Tayyor Python / Web Kodlar",
+        hero3_btn: "Kodlar Katalogiga O'tish",
+        hero3_c1_title: "Click & Payme To'lov Boti",
+        hero3_c1_desc: "PostgreSQL • Docker deploy",
+        hero3_c2_title: "React SaaS Dashboard",
+        hero3_c2_desc: "TailwindCSS • 100% Responsive",
+        // Hero Slide 4
+        hero4_badge: "🖼️ 4-Slayd • UI/UX & Dizayn",
+        hero4_title: "<span class=\"text-rose-400\">Figma UI/UX To'plamlar</span><br>va Grafik Dizayn Shablonlari",
+        hero4_btn: "Dizaynlarni Ko'rish",
+        hero4_c1_title: "E-Commerce Mobil UI",
+        hero4_c1_desc: "Figma Pro Component System",
+        hero4_c2_title: "300+ Premium 3D Iconlar",
+        hero4_c2_desc: "PNG & SVG Vektor to'plam",
+        // Popular Category cards
+        pop_ilmiy: "Ilmiy ish",
+        pop_ai: "AI generatsiyalar",
+        pop_3d: "3D Modellar",
+        pop_dizayn: "Dizayn shablonlari",
+        pop_web: "Veb saytlar",
+        pop_shablon: "Shablonlar",
+        // Seller Dashboard
+        sellerOrdersTitle: "Mening buyurtmalarim",
+        sellerPurchased: "Sotib olinganlar",
+        sellerOrders: "Buyurtmalarim",
+        sellerMyProducts: "Mening Mahsulotlarim",
+        sellerWishlist: "Tanlanganlar",
+        sellerCart: "Savatcha",
+        sellerChat: "Chat",
+        sellerNotifications: "Bildirishnomalar",
+        sellerProfile: "Profil",
+        // AI Modal
+        aiModalTitle: "AI Kompyuter & Ijodiy Generator",
+        aiModalSubtitle: "3D Render promptlari, Dasturlash g'oyalari, Video darslik rejalari va Frilans xizmatlar tavsifi",
+        aiGenBtn: "AI Bilan Generatsiya Qilish",
+        aiPublishBtn: "Platformaga Sotuvga Qo'yish",
+        toastLangChanged: "Til o'zgartirildi: O'zbekcha 🇺🇿"
+      },
+      ru: {
+        katalog: "Каталог",
+        allCategories: "Все Категории",
+        searchPlaceholder: "Поиск цифровых работ и услуг...",
+        orderBtn: "Заказать работу",
+        navMarket: "Готовые продукты",
+        navServices: "Фриланс услуги",
+        navStudio: "Soff Studio",
+        navAi: "AI сервисы",
+        navSeller: "Стать продавцом",
+        navAdmin: "Админ",
+        balanceLabel: "Баланс:",
+        currencyUnit: "сум",
+        popularCats: "Популярные категории",
+        productsHeader: "Все Цифровые Работы и Услуги",
+        addProductBtn: "+ Добавить Файл / Услугу",
+        buyBtn: "Купить",
+        cartBtn: "В корзину",
+        // Categories
+        cat_all: "Все услуги и работы",
+        cat_ilmiy: "Научные и академические работы",
+        cat_dizayn: "Дизайн и Графика",
+        cat_dasturlash: "Услуги программирования",
+        cat_3d: "3D Дизайн и Визуализация",
+        cat_marketing: "Маркетинг и SMM",
+        cat_video: "Аудио и Видео",
+        cat_biznes: "Бизнес и Финансы",
+        // Hero Slide 1
+        hero1_badge: "🎬 Слайд 1 • Видео Обучение",
+        hero1_title: "<span class=\"text-emerald-600 dark:text-emerald-400\">Видеоуроки</span> и полезный<br>контент для профессионалов",
+        hero1_tag1: "Полезный влог",
+        hero1_tag2: "Английский язык",
+        hero1_tag3: "Продуктивность",
+        hero1_tag4: "Разные направления",
+        hero1_btn: "Смотреть видео",
+        hero1_c1_title: "Веб-Разработка",
+        hero1_c1_desc: "С 0 до Full-Stack • 1.2k+ студентов",
+        hero1_c2_title: "UI/UX Дизайн",
+        hero1_c2_desc: "Практика в Figma • 820 студентов",
+        hero1_c3_title: "Маркетинг Стратегия",
+        hero1_c3_desc: "Таргет и Конверсия • 10:15",
+        // Hero Slide 2
+        hero2_badge: "🎨 Слайд 2 • 3D и Графика",
+        hero2_title: "<span class=\"text-cyan-400\">3D Модели</span> и Фотореалистичные<br>Рендер Активы (.blend, .fbx)",
+        hero2_btn: "Смотреть 3D Модели",
+        hero2_c1_title: "Киберпанк Автомобиль",
+        hero2_c1_desc: ".blend, .fbx • 4K PBR",
+        hero2_c2_title: "Минималистичный Интерьер",
+        hero2_c2_desc: "Cycles Studio Lighting",
+        // Hero Slide 3
+        hero3_badge: "💻 Слайд 3 • Код и Боты",
+        hero3_title: "<span class=\"text-purple-400\">Telegram Боты Оплаты</span><br>и готовый Python / Web код",
+        hero3_btn: "В Каталог Кода",
+        hero3_c1_title: "Click & Payme Бот Оплаты",
+        hero3_c1_desc: "PostgreSQL • Docker deploy",
+        hero3_c2_title: "React SaaS Панель",
+        hero3_c2_desc: "TailwindCSS • 100% Адаптив",
+        // Hero Slide 4
+        hero4_badge: "🖼️ Слайд 4 • UI/UX и Дизайн",
+        hero4_title: "<span class=\"text-rose-400\">Figma UI/UX Наборы</span><br>и Шаблоны Графики",
+        hero4_btn: "Смотреть Дизайны",
+        hero4_c1_title: "E-Commerce Мобильный UI",
+        hero4_c1_desc: "Figma Pro Component System",
+        hero4_c2_title: "300+ Premium 3D Иконок",
+        hero4_c2_desc: "PNG и SVG Векторный набор",
+        // Popular Category cards
+        pop_ilmiy: "Научные работы",
+        pop_ai: "AI генерации",
+        pop_3d: "3D Модели",
+        pop_dizayn: "Шаблоны дизайна",
+        pop_web: "Веб-сайты",
+        pop_shablon: "Шаблоны",
+        // Seller Dashboard
+        sellerOrdersTitle: "Мои заказы",
+        sellerPurchased: "Купленные файлы",
+        sellerOrders: "Мои заказы",
+        sellerMyProducts: "Мои товары",
+        sellerWishlist: "Избранное",
+        sellerCart: "Корзина",
+        sellerChat: "Чат",
+        sellerNotifications: "Уведомления",
+        sellerProfile: "Профиль",
+        // AI Modal
+        aiModalTitle: "AI Генератор Цифрового Творчества",
+        aiModalSubtitle: "Промпты для 3D рендеров, идеи кода, планы видеоуроков и описания услуг",
+        aiGenBtn: "Сгенерировать с помощью AI",
+        aiPublishBtn: "Выставить на продажу в Маркет",
+        toastLangChanged: "Язык изменен на Русский 🇷🇺"
+      },
+      en: {
+        katalog: "Catalog",
+        allCategories: "All Categories",
+        searchPlaceholder: "Search digital assets & services...",
+        orderBtn: "Place Order",
+        navMarket: "Ready Products",
+        navServices: "Freelance Services",
+        navStudio: "Soff Studio",
+        navAi: "AI Services",
+        navSeller: "Become a Seller",
+        navAdmin: "Admin",
+        balanceLabel: "Balance:",
+        currencyUnit: "UZS",
+        popularCats: "Popular Categories",
+        productsHeader: "All Digital Assets & Freelance Services",
+        addProductBtn: "+ Add Asset / Service",
+        buyBtn: "Buy Now",
+        cartBtn: "Add to Cart",
+        // Categories
+        cat_all: "All Services & Works",
+        cat_ilmiy: "Academic & Research Works",
+        cat_dizayn: "Design & UI/UX",
+        cat_dasturlash: "Programming & Code",
+        cat_3d: "3D Design & Rendering",
+        cat_marketing: "Marketing & SMM",
+        cat_video: "Audio & Video",
+        cat_biznes: "Business & Finance",
+        // Hero Slide 1
+        hero1_badge: "🎬 Slide 1 • Video Learning",
+        hero1_title: "<span class=\"text-emerald-600 dark:text-emerald-400\">Video Tutorials</span> and useful<br>masterclasses & courses",
+        hero1_tag1: "Tech Vlog",
+        hero1_tag2: "English",
+        hero1_tag3: "Productivity",
+        hero1_tag4: "Various Tracks",
+        hero1_btn: "Watch Videos",
+        hero1_c1_title: "Web Development",
+        hero1_c1_desc: "0 to Full-Stack • 1.2k+ students",
+        hero1_c2_title: "UI/UX Design",
+        hero1_c2_desc: "Figma Masterclass • 820 students",
+        hero1_c3_title: "Marketing Strategy",
+        hero1_c3_desc: "Target & Conversion • 10:15",
+        // Hero Slide 2
+        hero2_badge: "🎨 Slide 2 • 3D & Graphics",
+        hero2_title: "<span class=\"text-cyan-400\">3D Models</span> and Photorealistic<br>Render Assets (.blend, .fbx)",
+        hero2_btn: "Explore 3D Models",
+        hero2_c1_title: "Cyberpunk Flying Car",
+        hero2_c1_desc: ".blend, .fbx • 4K PBR",
+        hero2_c2_title: "Minimalist Interior",
+        hero2_c2_desc: "Cycles Studio Lighting",
+        // Hero Slide 3
+        hero3_badge: "💻 Slide 3 • Coding & Bots",
+        hero3_title: "<span class=\"text-purple-400\">Telegram Payment Bots</span><br>and Production Python / Web Code",
+        hero3_btn: "View Code Catalog",
+        hero3_c1_title: "Click & Payme Payment Bot",
+        hero3_c1_desc: "PostgreSQL • Docker deploy",
+        hero3_c2_title: "React SaaS Dashboard",
+        hero3_c2_desc: "TailwindCSS • 100% Responsive",
+        // Hero Slide 4
+        hero4_badge: "🖼️ Slide 4 • UI/UX & Design",
+        hero4_title: "<span class=\"text-rose-400\">Figma UI/UX Bundles</span><br>and Graphic Design Kits",
+        hero4_btn: "Explore UI/UX Designs",
+        hero4_c1_title: "E-Commerce Mobile UI",
+        hero4_c1_desc: "Figma Pro Component System",
+        hero4_c2_title: "300+ Premium 3D Icons",
+        hero4_c2_desc: "PNG & SVG Vector kit",
+        // Popular Category cards
+        pop_ilmiy: "Academic Work",
+        pop_ai: "AI Generations",
+        pop_3d: "3D Models",
+        pop_dizayn: "Design Templates",
+        pop_web: "Websites & Apps",
+        pop_shablon: "Templates",
+        // Seller Dashboard
+        sellerOrdersTitle: "My Orders",
+        sellerPurchased: "Purchased Files",
+        sellerOrders: "My Orders",
+        sellerMyProducts: "My Products",
+        sellerWishlist: "Wishlist",
+        sellerCart: "Cart",
+        sellerChat: "Chat",
+        sellerNotifications: "Notifications",
+        sellerProfile: "Profile",
+        // AI Modal
+        aiModalTitle: "AI Digital Creative Generator",
+        aiModalSubtitle: "3D Render prompts, coding architectures, video masterclass outlines & freelance specs",
+        aiGenBtn: "Generate with AI",
+        aiPublishBtn: "Publish to Marketplace",
+        toastLangChanged: "Language switched to English 🇬🇧"
+      }
+    };
+
     const DEFAULT_DEMO_PRODUCTS = [
       {
         id: 101,
-        title: "Mustaqil Ish & Diplom Himoyasi Taqdimot Shablonlari (100+ PPTX, PDF)",
+        title_uz: "Mustaqil Ish & Diplom Himoyasi Taqdimot Shablonlari (100+ PPTX, PDF)",
+        title_ru: "Шаблоны презентаций для дипломов и курсовых (100+ PPTX, PDF)",
+        title_en: "Thesis & Graduation Presentation Templates (100+ PPTX, PDF)",
         category: "ilmiy",
         price: 95000,
         author: "Akademik Markaz",
         format: "PPTX / PDF (45 MB)",
-        desc: "Bakalavr va magistratura diplom himoyasi, ilmiy maqolalar va hisobotlar uchun tayyor grafik shablonlar to'plami."
+        desc_uz: "Bakalavr va magistratura diplom himoyasi, ilmiy maqolalar va hisobotlar uchun tayyor grafik shablonlar to'plami.",
+        desc_ru: "Готовые графические шаблоны для защиты бакалаврских и магистерских дипломов, отчетов и статей.",
+        desc_en: "Ready-to-use graphic templates bundle for Bachelor & Master diploma defense and research reports."
       },
       {
         id: 102,
-        title: "E-Commerce Market Veb-sayt & Mobil Ilova Figma UI/UX Shablon (50+ Ekran)",
+        title_uz: "E-Commerce Market Veb-sayt & Mobil Ilova Figma UI/UX Shablon (50+ Ekran)",
+        title_ru: "Figma UI/UX Шаблон интернет-магазина и мобильного приложения (50+ Экранов)",
+        title_en: "E-Commerce Website & Mobile App Figma UI/UX Design System (50+ Screens)",
         category: "dizayn",
         price: 85000,
         author: "Soff Design Studio",
         format: ".fig (68 MB)",
-        desc: "Zamonaviy dizayn tizimi, Dark va Light rejim, to'liq Auto-layout komponentlar va mobil moslashuvchanlik."
+        desc_uz: "Zamonaviy dizayn tizimi, Dark va Light rejim, to'liq Auto-layout komponentlar va mobil moslashuvchanlik.",
+        desc_ru: "Современная дизайн-система, темная и светлая темы, компоненты с Auto-layout и адаптивностью.",
+        desc_en: "Modern design system, Dark & Light mode, full Auto-layout components and mobile responsive UI."
       },
       {
         id: 103,
-        title: "Telegram Click & Payme To'lov Boti (Python 3.11 / Aiogram 3 / PostgreSQL)",
+        title_uz: "Telegram Click & Payme To'lov Boti (Python 3.11 / Aiogram 3 / PostgreSQL)",
+        title_ru: "Telegram бот с оплатой Click & Payme (Python 3.11 / Aiogram 3 / PostgreSQL)",
+        title_en: "Telegram Click & Payme Payment Bot (Python 3.11 / Aiogram 3 / PostgreSQL)",
         category: "dasturlash",
         price: 250000,
         author: "Backend Dev Azimxon",
         format: "Python Source (.zip)",
-        desc: "Tayyor avtomatlashtirilgan to'lov boti, admin boshqaruv paneli, avtomatik Excel hisobotlar va Dockerfile."
+        desc_uz: "Tayyor avtomatlashtirilgan to'lov boti, admin boshqaruv paneli, avtomatik Excel hisobotlar va Dockerfile.",
+        desc_ru: "Готовый платежный бот, админ-панель, автоматические отчеты в Excel и готовый Dockerfile.",
+        desc_en: "Automated payment bot, admin control panel, automatic Excel reports and Dockerfile deploy."
       },
       {
         id: 104,
-        title: "Kiberpank Uchar Avtomobil 3D Modeli & Render (.blend, .fbx, 4K PBR)",
+        title_uz: "Kiberpank Uchar Avtomobil 3D Modeli & Render (.blend, .fbx, 4K PBR)",
+        title_ru: "3D Модель летающего киберпанк автомобиля (.blend, .fbx, 4K PBR)",
+        title_en: "Cyberpunk Flying Car 3D Model & Photorealistic Render (.blend, .fbx, 4K PBR)",
         category: "3d",
         price: 140000,
         author: "3D Studio Azimxon",
         format: ".blend / .fbx (120 MB)",
-        desc: "Toza topologiya, 4K PBR teksturalar (Metallic, Roughness, Normal), High-Poly, Cycles va Eevee moslashuvchan render."
+        desc_uz: "Toza topologiya, 4K PBR teksturalar (Metallic, Roughness, Normal), High-Poly, Cycles va Eevee moslashuvchan render.",
+        desc_ru: "Чистая топология, 4K PBR текстуры, High-Poly, поддержка рендера в Cycles и Eevee.",
+        desc_en: "Clean topology, 4K PBR textures (Metallic, Roughness, Normal), High-Poly, Cycles and Eevee ready."
       },
       {
         id: 105,
-        title: "Instagram & Telegram SMM Kontent Reja + 50 ta Tayyor Post Shablonlari",
+        title_uz: "Instagram & Telegram SMM Kontent Reja + 50 ta Tayyor Post Shablonlari",
+        title_ru: "Контент-план для SMM Instagram/Telegram + 50 готовых шаблонов постов",
+        title_en: "Instagram & Telegram SMM Content Plan + 50 Ready Post Templates",
         category: "marketing",
         price: 80000,
         author: "Digital Media",
         format: "Canva / PSD (90 MB)",
-        desc: "Kopirayting matnlari, 30 kunlik reja, reklama target sozlamalari va yuqori konversiya strategiyasi."
+        desc_uz: "Kopirayting matnlari, 30 kunlik reja, reklama target sozlamalari va yuqori konversiya strategiyasi.",
+        desc_ru: "Тексты для копирайтинга, 30-дневный план, настройки таргетированной рекламы.",
+        desc_en: "Copywriting texts, 30-day social calendar, ad targeting settings and high conversion strategies."
       },
       {
         id: 106,
-        title: "Adobe Premiere Pro & After Effects Master-klass Video Kursi (18 ta Dars)",
+        title_uz: "Adobe Premiere Pro & After Effects Master-klass Video Kursi (18 ta Dars)",
+        title_ru: "Видеокурс Adobe Premiere Pro и After Effects (18 уроков)",
+        title_en: "Adobe Premiere Pro & After Effects Masterclass Video Course (18 Lessons)",
         category: "video",
         price: 180000,
         author: "Video Mentor",
         format: "Full HD Video (.mp4)",
-        desc: "Noldan montaj, sound design, rang korreksiyasi va dinamik Reels/Shorts tayyorlash bo'yicha to'liq amaliy kurs."
+        desc_uz: "Noldan montaj, sound design, rang korreksiyasi va dinamik Reels/Shorts tayyorlash bo'yicha to'liq amaliy kurs.",
+        desc_ru: "Монтаж с нуля, саунд-дизайн, цветокоррекция и динамичный монтаж Reels/Shorts.",
+        desc_en: "Video editing from scratch, sound design, color grading and dynamic Reels/Shorts workflow."
       },
       {
         id: 107,
-        title: "Avtomatlashtirilgan Moliyaviy Model & Buxgalteriya Excel Shablonlari",
+        title_uz: "Avtomatlashtirilgan Moliyaviy Model & Buxgalteriya Excel Shablonlari",
+        title_ru: "Автоматизированная финансовая модель и шаблоны Excel для бухгалтерии",
+        title_en: "Automated Financial Model & Accounting Excel Spreadsheets",
         category: "biznes",
         price: 70000,
         author: "Biznes Ekspert",
         format: "Excel (.xlsx)",
-        desc: "Kirim-chiqim hisobi, P&L, Cash Flow va startap daromad-zarar prognoz formulalari bilan avtomatlashtirilgan."
+        desc_uz: "Kirim-chiqim hisobi, P&L, Cash Flow va startap daromad-zarar prognoz formulalari bilan avtomatlashtirilgan.",
+        desc_ru: "Учет доходов и расходов, P&L, Cash Flow и формулы прогнозирования для стартапов.",
+        desc_en: "Income & expense tracker, P&L, Cash Flow and startup profit/loss forecasting formulas."
       }
     ];
 
     let storedProducts = JSON.parse(localStorage.getItem('azimxon_clean_products'));
-    if (!storedProducts || storedProducts.length === 0) {
+    if (!storedProducts || storedProducts.length === 0 || !storedProducts[0].title_uz) {
       storedProducts = DEFAULT_DEMO_PRODUCTS;
       localStorage.setItem('azimxon_clean_products', JSON.stringify(storedProducts));
     }
@@ -2352,18 +2663,251 @@
       wallet: parseInt(localStorage.getItem('azimxon_clean_wallet')) || 0,
       currentCategory: 'all',
       searchQuery: '',
+      lang: localStorage.getItem('azimxon_lang') || 'uz',
       theme: localStorage.getItem('azimxon_clean_theme') || 'dark',
       activeCheckoutProduct: null,
       isAdminLoggedIn: false
     };
 
+    function getProductTitle(p) {
+      if (appState.lang === 'ru' && p.title_ru) return p.title_ru;
+      if (appState.lang === 'en' && p.title_en) return p.title_en;
+      return p.title_uz || p.title || 'Raqamli Aktiv';
+    }
+
+    function getProductDesc(p) {
+      if (appState.lang === 'ru' && p.desc_ru) return p.desc_ru;
+      if (appState.lang === 'en' && p.desc_en) return p.desc_en;
+      return p.desc_uz || p.desc || '';
+    }
+
     function formatUZS(val) {
-      return new Intl.NumberFormat('uz-UZ').format(val) + ' UZS';
+      const cur = appState.lang === 'ru' ? 'СУМ' : appState.lang === 'en' ? 'UZS' : 'UZS';
+      return new Intl.NumberFormat('uz-UZ').format(val) + ' ' + cur;
+    }
+
+    function setGlobalLanguage(lang) {
+      if (!['uz', 'ru', 'en'].includes(lang)) lang = 'uz';
+      appState.lang = lang;
+      localStorage.setItem('azimxon_lang', lang);
+
+      // Sync select boxes
+      const gSel = document.getElementById('globalLanguageSelect');
+      const aiSel = document.getElementById('aiDocLanguage');
+      if (gSel) gSel.value = lang;
+      if (aiSel) aiSel.value = lang;
+
+      const t = TRANSLATIONS[lang] || TRANSLATIONS.uz;
+
+      // 1. Header elements
+      const katalogBtn = document.getElementById('katalogBtn');
+      if (katalogBtn) {
+        const span = katalogBtn.querySelector('span');
+        if (span) span.textContent = t.katalog;
+      }
+
+      const searchInp = document.getElementById('globalSearchInput');
+      if (searchInp) searchInp.placeholder = t.searchPlaceholder;
+
+      const searchCatSelect = document.getElementById('searchCategorySelect');
+      if (searchCatSelect) {
+        const curVal = searchCatSelect.value;
+        searchCatSelect.innerHTML = `
+          <option value="all">${t.cat_all}</option>
+          <option value="ilmiy">${t.cat_ilmiy}</option>
+          <option value="dizayn">${t.cat_dizayn}</option>
+          <option value="dasturlash">${t.cat_dasturlash}</option>
+          <option value="3d">${t.cat_3d}</option>
+          <option value="marketing">${t.cat_marketing}</option>
+          <option value="video">${t.cat_video}</option>
+          <option value="biznes">${t.cat_biznes}</option>
+        `;
+        searchCatSelect.value = curVal;
+      }
+
+      const navMarket = document.getElementById('navMarketBtn');
+      if (navMarket) {
+        const s = navMarket.querySelector('span');
+        if (s) s.textContent = t.navMarket;
+      }
+      const navServices = document.getElementById('navServicesBtn');
+      if (navServices) {
+        const s = navServices.querySelector('span');
+        if (s) s.textContent = t.navServices;
+      }
+      const navSeller = document.getElementById('navSellerBtn');
+      if (navSeller) {
+        const s = navSeller.querySelector('span');
+        if (s) s.textContent = t.navSeller;
+      }
+
+      const txtAdmin = document.getElementById('txtAdminBtn');
+      if (txtAdmin) txtAdmin.textContent = t.navAdmin;
+
+      const txtBalance = document.getElementById('txtBalanceLabel');
+      if (txtBalance) txtBalance.textContent = t.balanceLabel;
+
+      const txtCur = document.getElementById('txtCurrencyUnit');
+      if (txtCur) txtCur.textContent = t.currencyUnit;
+
+      // 2. Sidebar Categories
+      const catMap = {
+        'all': t.cat_all,
+        'ilmiy': t.cat_ilmiy,
+        'dizayn': t.cat_dizayn,
+        'dasturlash': t.cat_dasturlash,
+        '3d': t.cat_3d,
+        'marketing': t.cat_marketing,
+        'video': t.cat_video,
+        'biznes': t.cat_biznes
+      };
+
+      Object.keys(catMap).forEach(key => {
+        const btn = document.getElementById('catBtn-' + key);
+        if (btn) {
+          const span = btn.querySelector('.truncate') || btn.querySelector('span > span');
+          if (span) span.textContent = catMap[key];
+        }
+      });
+
+      // 3. Hero Banner 4 Slides Dynamic Translation
+      const h1Badge = document.getElementById('heroSlide1Badge');
+      if (h1Badge) h1Badge.textContent = t.hero1_badge;
+      const h1Title = document.getElementById('heroSlide1Title');
+      if (h1Title) h1Title.innerHTML = t.hero1_title;
+      const h1Tag1 = document.getElementById('heroSlide1Tag1');
+      if (h1Tag1) h1Tag1.textContent = t.hero1_tag1;
+      const h1Tag2 = document.getElementById('heroSlide1Tag2');
+      if (h1Tag2) h1Tag2.textContent = t.hero1_tag2;
+      const h1Tag3 = document.getElementById('heroSlide1Tag3');
+      if (h1Tag3) h1Tag3.textContent = t.hero1_tag3;
+      const h1Tag4 = document.getElementById('heroSlide1Tag4');
+      if (h1Tag4) h1Tag4.textContent = t.hero1_tag4;
+      const h1Btn = document.getElementById('heroSlide1BtnText');
+      if (h1Btn) h1Btn.textContent = t.hero1_btn;
+      const h1c1 = document.getElementById('heroSlide1Card1Title');
+      if (h1c1) h1c1.textContent = t.hero1_c1_title;
+      const h1c1d = document.getElementById('heroSlide1Card1Desc');
+      if (h1c1d) h1c1d.textContent = t.hero1_c1_desc;
+      const h1c2 = document.getElementById('heroSlide1Card2Title');
+      if (h1c2) h1c2.textContent = t.hero1_c2_title;
+      const h1c2d = document.getElementById('heroSlide1Card2Desc');
+      if (h1c2d) h1c2d.textContent = t.hero1_c2_desc;
+      const h1c3 = document.getElementById('heroSlide1Card3Title');
+      if (h1c3) h1c3.textContent = t.hero1_c3_title;
+      const h1c3d = document.getElementById('heroSlide1Card3Desc');
+      if (h1c3d) h1c3d.textContent = t.hero1_c3_desc;
+
+      const h2Badge = document.getElementById('heroSlide2Badge');
+      if (h2Badge) h2Badge.textContent = t.hero2_badge;
+      const h2Title = document.getElementById('heroSlide2Title');
+      if (h2Title) h2Title.innerHTML = t.hero2_title;
+      const h2Btn = document.getElementById('heroSlide2BtnText');
+      if (h2Btn) h2Btn.textContent = t.hero2_btn;
+      const h2c1 = document.getElementById('heroSlide2Card1Title');
+      if (h2c1) h2c1.textContent = t.hero2_c1_title;
+      const h2c1d = document.getElementById('heroSlide2Card1Desc');
+      if (h2c1d) h2c1d.textContent = t.hero2_c1_desc;
+      const h2c2 = document.getElementById('heroSlide2Card2Title');
+      if (h2c2) h2c2.textContent = t.hero2_c2_title;
+      const h2c2d = document.getElementById('heroSlide2Card2Desc');
+      if (h2c2d) h2c2d.textContent = t.hero2_c2_desc;
+
+      const h3Badge = document.getElementById('heroSlide3Badge');
+      if (h3Badge) h3Badge.textContent = t.hero3_badge;
+      const h3Title = document.getElementById('heroSlide3Title');
+      if (h3Title) h3Title.innerHTML = t.hero3_title;
+      const h3Btn = document.getElementById('heroSlide3BtnText');
+      if (h3Btn) h3Btn.textContent = t.hero3_btn;
+      const h3c1 = document.getElementById('heroSlide3Card1Title');
+      if (h3c1) h3c1.textContent = t.hero3_c1_title;
+      const h3c1d = document.getElementById('heroSlide3Card1Desc');
+      if (h3c1d) h3c1d.textContent = t.hero3_c1_desc;
+      const h3c2 = document.getElementById('heroSlide3Card2Title');
+      if (h3c2) h3c2.textContent = t.hero3_c2_title;
+      const h3c2d = document.getElementById('heroSlide3Card2Desc');
+      if (h3c2d) h3c2d.textContent = t.hero3_c2_desc;
+
+      const h4Badge = document.getElementById('heroSlide4Badge');
+      if (h4Badge) h4Badge.textContent = t.hero4_badge;
+      const h4Title = document.getElementById('heroSlide4Title');
+      if (h4Title) h4Title.innerHTML = t.hero4_title;
+      const h4Btn = document.getElementById('heroSlide4BtnText');
+      if (h4Btn) h4Btn.textContent = t.hero4_btn;
+      const h4c1 = document.getElementById('heroSlide4Card1Title');
+      if (h4c1) h4c1.textContent = t.hero4_c1_title;
+      const h4c1d = document.getElementById('heroSlide4Card1Desc');
+      if (h4c1d) h4c1d.textContent = t.hero4_c1_desc;
+      const h4c2 = document.getElementById('heroSlide4Card2Title');
+      if (h4c2) h4c2.textContent = t.hero4_c2_title;
+      const h4c2d = document.getElementById('heroSlide4Card2Desc');
+      if (h4c2d) h4c2d.textContent = t.hero4_c2_desc;
+
+      // 4. Popular Categories Section
+      const popSecTitle = document.getElementById('popularCatsSectionTitle');
+      if (popSecTitle) popSecTitle.textContent = t.popularCats;
+      const p1 = document.getElementById('popCat1Title');
+      if (p1) p1.textContent = t.pop_ilmiy;
+      const p2 = document.getElementById('popCat2Title');
+      if (p2) p2.textContent = t.pop_ai;
+      const p3 = document.getElementById('popCat3Title');
+      if (p3) p3.textContent = t.pop_3d;
+      const p4 = document.getElementById('popCat4Title');
+      if (p4) p4.textContent = t.pop_dizayn;
+      const p5 = document.getElementById('popCat5Title');
+      if (p5) p5.textContent = t.pop_web;
+      const p6 = document.getElementById('popCat6Title');
+      if (p6) p6.textContent = t.pop_shablon;
+
+      // 5. Products Header Bar
+      const prodHeadTitle = document.getElementById('activeCategoryHeaderTitle');
+      if (prodHeadTitle && appState.currentCategory === 'all') {
+        prodHeadTitle.textContent = t.productsHeader;
+      }
+      const txtAddBtn = document.getElementById('txtAddProductBtn');
+      if (txtAddBtn) txtAddBtn.textContent = t.addProductBtn;
+
+      // 6. Seller Dashboard Nav & Titles
+      const sDashTitle = document.getElementById('sellerDashboardTitle');
+      if (sDashTitle) sDashTitle.textContent = t.sellerOrdersTitle;
+      const stabPur = document.getElementById('stab-purchased');
+      if (stabPur) { const s = stabPur.querySelector('span'); if (s) s.textContent = t.sellerPurchased; }
+      const stabOrd = document.getElementById('stab-orders');
+      if (stabOrd) { const s = stabOrd.querySelector('span'); if (s) s.textContent = t.sellerOrders; }
+      const stabMyP = document.getElementById('stab-my_products');
+      if (stabMyP) { const s = stabMyP.querySelector('span'); if (s) s.textContent = t.sellerMyProducts; }
+      const stabWish = document.getElementById('stab-wishlist');
+      if (stabWish) { const s = stabWish.querySelector('span'); if (s) s.textContent = t.sellerWishlist; }
+      const stabChat = document.getElementById('stab-chat');
+      if (stabChat) { const s = stabChat.querySelector('span'); if (s) s.textContent = t.sellerChat; }
+      const stabNotif = document.getElementById('stab-notifications');
+      if (stabNotif) { const s = stabNotif.querySelector('span > span'); if (s) s.textContent = t.sellerNotifications; }
+      const stabProf = document.getElementById('stab-profile');
+      if (stabProf) { const s = stabProf.querySelector('span'); if (s) s.textContent = t.sellerProfile; }
+
+      // 7. AI Studio Modal
+      const aiTitle = document.getElementById('txtAiModalTitle');
+      const aiSub = document.getElementById('txtAiModalSubtitle');
+      const aiGenBtn = document.getElementById('aiGenBtn');
+      if (aiTitle) aiTitle.innerHTML = `${t.aiModalTitle} <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 font-mono border border-cyan-500/30">CREATIVE STUDIO</span>`;
+      if (aiSub) aiSub.textContent = t.aiModalSubtitle;
+      if (aiGenBtn) {
+        const s = aiGenBtn.querySelector('span');
+        if (s) s.textContent = t.aiGenBtn;
+      }
+
+      // Re-render components
+      renderProducts();
+      updateWalletUI();
+      if (appState.isAdminLoggedIn) renderAdminDashboardData();
+      refreshLucide();
+
+      showToast(t.toastLangChanged, "info");
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       initTheme();
-      renderProducts();
+      setGlobalLanguage(appState.lang);
       updateCategoryCounts();
       updateWalletUI();
       updateCartBadge();
@@ -2754,13 +3298,20 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
 
       updateCategoryCounts();
 
+      const t = TRANSLATIONS[appState.lang] || TRANSLATIONS.uz;
+
       let filtered = appState.products.filter(p => {
+        const title = getProductTitle(p);
         const matchCat = appState.currentCategory === 'all' || p.category === appState.currentCategory;
-        const matchSearch = !appState.searchQuery || p.title.toLowerCase().includes(appState.searchQuery) || p.author.toLowerCase().includes(appState.searchQuery);
+        const matchSearch = !appState.searchQuery || title.toLowerCase().includes(appState.searchQuery) || p.author.toLowerCase().includes(appState.searchQuery);
         return matchCat && matchSearch;
       });
 
-      if (countSub) countSub.textContent = `Platformada ${filtered.length} ta mahsulot mavjud`;
+      if (countSub) {
+        if (appState.lang === 'ru') countSub.textContent = `В каталоге доступно ${filtered.length} товаров`;
+        else if (appState.lang === 'en') countSub.textContent = `${filtered.length} items available in store`;
+        else countSub.textContent = `Platformada ${filtered.length} ta mahsulot mavjud`;
+      }
 
       if (filtered.length === 0) {
         grid.innerHTML = '';
@@ -2769,52 +3320,60 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
       }
       if (emptyState) emptyState.classList.add('hidden');
 
-      grid.innerHTML = filtered.map(p => `
-        <div class="main-card rounded-2xl p-4 border flex flex-col justify-between hover:border-emerald-500 transition group shadow-sm">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/25 uppercase">
-                ${p.category || 'RAQAMLI'}
-              </span>
-              <span class="text-xs text-slate-400 font-medium">${p.author}</span>
+      grid.innerHTML = filtered.map(p => {
+        const title = getProductTitle(p);
+        const desc = getProductDesc(p);
+
+        return `
+          <div class="main-card rounded-2xl p-4 border flex flex-col justify-between hover:border-emerald-500 transition group shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/25 uppercase">
+                  ${p.category || 'DIGITAL'}
+                </span>
+                <span class="text-xs text-slate-400 font-medium">${p.author}</span>
+              </div>
+
+              <h4 class="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 mt-1 group-hover:text-emerald-500 transition">
+                ${title}
+              </h4>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                ${desc}
+              </p>
             </div>
 
-            <h4 class="font-extrabold text-xs text-slate-900 dark:text-white line-clamp-2 mt-1 group-hover:text-emerald-500 transition">
-              ${p.title}
-            </h4>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
-              ${p.desc}
-            </p>
-          </div>
-
-          <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between mt-3">
-            <span class="font-black text-sm text-slate-900 dark:text-white">${formatUZS(p.price)}</span>
-            <div class="flex items-center gap-1.5">
-              <button onclick="addToCart(${p.id})" class="p-2 rounded-xl sub-box hover:text-emerald-500 transition" title="Savatchaga">
-                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
-              </button>
-              <button onclick="openDirectCheckout(${p.id})" class="btn-green-main px-3.5 py-1.5 rounded-xl text-xs font-bold">
-                Xarid
-              </button>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between mt-3">
+              <span class="font-black text-sm text-slate-900 dark:text-white">${formatUZS(p.price)}</span>
+              <div class="flex items-center gap-1.5">
+                <button onclick="addToCart(${p.id})" class="p-2 rounded-xl sub-box hover:text-emerald-500 transition" title="${t.cartBtn}">
+                  <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="openDirectCheckout(${p.id})" class="btn-green-main px-3.5 py-1.5 rounded-xl text-xs font-bold">
+                  ${t.buyBtn}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       refreshLucide();
     }
 
-    // Category Filter Selection on Left Sidebar
-    const CATEGORY_NAMES = {
-      'all': 'Barcha Raqamli Ishlar & Xizmatlar',
-      'ilmiy': 'Ilmiy va Akademik xizmatlar',
-      'dizayn': 'Grafik Dizayn & UI/UX',
-      'dasturlash': 'Dasturlash xizmatlari & Tayyor Kodlar',
-      '3d': '3D Dizayn va Vizualizatsiya',
-      'marketing': 'Marketing va SMM xizmatlari',
-      'video': 'Audio va Video Master-klasslar',
-      'biznes': 'Biznes va Moliyaviy modellar'
-    };
+    function getCategoryHeaderTitle(cat) {
+      const t = TRANSLATIONS[appState.lang] || TRANSLATIONS.uz;
+      const map = {
+        'all': t.productsHeader,
+        'ilmiy': t.cat_ilmiy,
+        'dizayn': t.cat_dizayn,
+        'dasturlash': t.cat_dasturlash,
+        '3d': t.cat_3d,
+        'marketing': t.cat_marketing,
+        'video': t.cat_video,
+        'biznes': t.cat_biznes
+      };
+      return map[cat] || t.productsHeader;
+    }
 
     function setFilterCategory(cat) {
       appState.currentCategory = cat;
@@ -2838,8 +3397,8 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
 
       // Update Title
       const titleEl = document.getElementById('activeCategoryHeaderTitle');
-      if (titleEl && CATEGORY_NAMES[cat]) {
-        titleEl.textContent = CATEGORY_NAMES[cat];
+      if (titleEl) {
+        titleEl.textContent = getCategoryHeaderTitle(cat);
       }
 
       renderProducts();
