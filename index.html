@@ -1672,42 +1672,58 @@
 
   <!-- ================= 6. ADMIN AUTH LOGIN MODAL (GMAIL & KOD) ================= -->
   <div id="adminAuthModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="modal-card rounded-2xl max-w-sm w-full p-6 relative shadow-2xl text-center">
+  <!-- 6. ADMIN AUTH MODAL (SECURE & CONFIDENTIAL LOGIN) -->
+  <div id="adminAuthModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="modal-card rounded-3xl max-w-sm w-full p-6 relative shadow-2xl text-center border border-emerald-500/30">
       <button onclick="closeAdminAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
         <i data-lucide="x" class="w-4 h-4"></i>
       </button>
 
-      <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-3">
-        <i data-lucide="lock" class="w-6 h-6"></i>
+      <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-500/20">
+        <i data-lucide="shield-check" class="w-6 h-6"></i>
       </div>
-      <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Admin Tizimiga Kirish</h3>
-      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">Admin emailingiz va parolingizni kiriting</p>
+      <h3 class="font-black text-base text-slate-900 dark:text-white">Admin Boshqaruviga Kirish</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">Faqat tizim egasi va bosh admin uchun himoyalangan hudud</p>
 
-      <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-3 text-left">
+      <div id="adminLoginSecurityAlert" class="hidden mb-3 p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[11px] font-bold text-center"></div>
+
+      <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-3.5 text-left">
         <div>
-          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Admin Gmail:</label>
-          <input 
-            type="email" 
-            id="adminEmailInput" 
-            required 
-            placeholder="azimxonmeliyev9@gmail.com"
-            class="modal-input w-full border rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
-          >
+          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Admin Email / Login:</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="email" 
+              id="adminEmailInput" 
+              required 
+              autocomplete="username"
+              placeholder="admin@email.com"
+              class="modal-input w-full border rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-medium"
+            >
+          </div>
         </div>
 
         <div>
-          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Maxfiy Kod (Parol):</label>
-          <input 
-            type="password" 
-            id="adminCodeInput" 
-            required 
-            placeholder="Kodni kiriting (0307)"
-            class="modal-input w-full border rounded-xl px-3.5 py-2.5 text-xs text-center tracking-widest text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono"
-          >
+          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Maxfiy Kalit / Parol:</label>
+          <div class="relative">
+            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="password" 
+              id="adminCodeInput" 
+              required 
+              autocomplete="current-password"
+              placeholder="••••••••"
+              class="modal-input w-full border rounded-xl pl-9 pr-10 py-2.5 text-xs tracking-widest text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono"
+            >
+            <button type="button" onclick="toggleAdminPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 p-1 transition" title="Parolni ko'rsatish/yashirish">
+              <i data-lucide="eye" id="adminPwdEyeIcon" class="w-4 h-4"></i>
+            </button>
+          </div>
         </div>
 
-        <button type="submit" class="w-full btn-green-main py-2.5 rounded-xl font-bold text-xs mt-2">
-          Tizimga Kirish
+        <button type="submit" id="adminLoginSubmitBtn" class="w-full btn-green-main py-2.5 rounded-xl font-extrabold text-xs mt-2 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          <span>Xavfsiz Kirish</span>
         </button>
       </form>
     </div>
@@ -2206,9 +2222,31 @@
                 </div>
               </div>
 
+              <!-- Admin Security & Password Change Block -->
+              <div class="p-4 rounded-xl bg-slate-950 border border-emerald-500/20 space-y-3">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-400"></i>
+                  <h5 class="font-bold text-xs text-white uppercase tracking-wider">Admin Xavfsizlik & Kirish Ma'lumotlarini Yangilash</h5>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[11px] text-slate-400 block mb-1">Admin Email (Login):</label>
+                    <input type="email" id="adminSettingNewEmail" placeholder="Yangi admin email" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+                  </div>
+                  <div>
+                    <label class="text-[11px] text-slate-400 block mb-1">Yangi Maxfiy Parol / Kod:</label>
+                    <input type="password" id="adminSettingNewCode" placeholder="Yangi parolni kiriting" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+                  </div>
+                </div>
+                <button type="button" onclick="adminChangeCredentials()" class="px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-400 hover:text-white font-bold text-xs border border-emerald-500/30 transition flex items-center gap-1.5">
+                  <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                  <span>Login & Parolni Saqlash</span>
+                </button>
+              </div>
+
               <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
                 <button onclick="adminSaveSettings()" class="btn-green-main px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
-                  Sozlamalarni Saqlash
+                  Komissiya Sozlamalarini Saqlash
                 </button>
 
                 <div class="flex items-center gap-2">
@@ -3579,6 +3617,13 @@ ${details ? `Особенности: ${details}\n` : ''}
 
     let adminOrders = JSON.parse(localStorage.getItem('azimxon_admin_orders')) || DEFAULT_ADMIN_ORDERS;
 
+    let adminCredentials = JSON.parse(localStorage.getItem('azimxon_admin_creds')) || {
+      email: 'azimxonmeliyev9@gmail.com',
+      code: '0307'
+    };
+    let adminFailedAttempts = 0;
+    let adminLockoutUntil = 0;
+
     function handleAdminAuthClick() {
       if (appState.isAdminLoggedIn) {
         openAdminDashboardModal();
@@ -3589,6 +3634,8 @@ ${details ? `Особенности: ${details}\n` : ''}
 
     function openAdminAuthModal() {
       const m = document.getElementById('adminAuthModal');
+      const alertEl = document.getElementById('adminLoginSecurityAlert');
+      if (alertEl) alertEl.classList.add('hidden');
       if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
       refreshLucide();
     }
@@ -3597,21 +3644,87 @@ ${details ? `Особенности: ${details}\n` : ''}
       if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
     }
 
+    function toggleAdminPasswordVisibility() {
+      const codeInput = document.getElementById('adminCodeInput');
+      const icon = document.getElementById('adminPwdEyeIcon');
+      if (!codeInput) return;
+
+      if (codeInput.type === 'password') {
+        codeInput.type = 'text';
+        if (icon) icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        codeInput.type = 'password';
+        if (icon) icon.setAttribute('data-lucide', 'eye');
+      }
+      refreshLucide();
+    }
+
     function handleAdminLoginSubmit(e) {
       e.preventDefault();
+      const alertEl = document.getElementById('adminLoginSecurityAlert');
+      
+      // Check security lockout
+      const now = Date.now();
+      if (now < adminLockoutUntil) {
+        const secLeft = Math.ceil((adminLockoutUntil - now) / 1000);
+        if (alertEl) {
+          alertEl.textContent = `Xavfsizlik blokirovkasi: Iltimos, ${secLeft} soniya kuting!`;
+          alertEl.classList.remove('hidden');
+        }
+        showToast(`Tizim xavfsizlik sababli vaqtincha bloklandi. ${secLeft} soniyadan so'ng urinib ko'ring!`, 'warning');
+        return;
+      }
+
       const email = document.getElementById('adminEmailInput').value.trim().toLowerCase();
       const code = document.getElementById('adminCodeInput').value.trim();
 
-      // Check specified credentials: azimxonmeliyev9@gmail.com and 0307
-      if (email === 'azimxonmeliyev9@gmail.com' && code === '0307') {
+      if (email === adminCredentials.email.toLowerCase() && code === adminCredentials.code) {
+        adminFailedAttempts = 0;
         appState.isAdminLoggedIn = true;
+        if (alertEl) alertEl.classList.add('hidden');
         closeAdminAuthModal();
         e.target.reset();
-        showToast("Xush kelibsiz, Admin Azimxon! 🛡️", "success");
+        showToast("Xush kelibsiz, Bosh Admin! 🛡️ Tizim xavfsiz ochildi.", "success");
         openAdminDashboardModal();
       } else {
-        showToast("Noto'g'ri Gmail yoki Parol!", "warning");
+        adminFailedAttempts++;
+        if (adminFailedAttempts >= 3) {
+          adminLockoutUntil = Date.now() + 30000; // 30 seconds
+          if (alertEl) {
+            alertEl.textContent = "Xavfsizlik: 3 marta noto'g'ri urinish! Tizim 30 soniyaga bloklandi.";
+            alertEl.classList.remove('hidden');
+          }
+          showToast("Xavfsizlik blokirovkasi: 30 soniya kuting!", "warning");
+        } else {
+          const remaining = 3 - adminFailedAttempts;
+          if (alertEl) {
+            alertEl.textContent = `Noto'g'ri email yoki parol! Qolgan urinishlar: ${remaining} ta`;
+            alertEl.classList.remove('hidden');
+          }
+          showToast(`Noto'g'ri login yoki parol! Qolgan urinishlar: ${remaining}`, "warning");
+        }
       }
+    }
+
+    function adminChangeCredentials() {
+      const newEmail = document.getElementById('adminSettingNewEmail')?.value.trim().toLowerCase();
+      const newCode = document.getElementById('adminSettingNewCode')?.value.trim();
+
+      if (!newEmail || !newEmail.includes('@')) {
+        showToast("Iltimos, to'g'ri email manzilini kiriting!", "warning");
+        return;
+      }
+      if (!newCode || newCode.length < 4) {
+        showToast("Parol kamida 4 ta belgidan iborat bo'lishi kerak!", "warning");
+        return;
+      }
+
+      adminCredentials.email = newEmail;
+      adminCredentials.code = newCode;
+      localStorage.setItem('azimxon_admin_creds', JSON.stringify(adminCredentials));
+
+      document.getElementById('adminSettingNewCode').value = '';
+      showToast("Admin login va paroli muvaffaqiyatli yangilandi! 🔒", "success");
     }
 
     function openAdminDashboardModal() {
@@ -3619,6 +3732,9 @@ ${details ? `Особенности: ${details}\n` : ''}
       if (m) { 
         m.classList.remove('hidden'); 
         m.classList.add('flex'); 
+      }
+      if (document.getElementById('adminSettingNewEmail')) {
+        document.getElementById('adminSettingNewEmail').value = adminCredentials.email;
       }
       switchAdminTab(adminActiveTab || 'overview');
       renderAdminDashboardData();
