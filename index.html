@@ -1847,15 +1847,15 @@
 
       <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-3.5 text-left">
         <div>
-          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Admin Email / Login:</label>
+          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Admin Login / Email:</label>
           <div class="relative">
             <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
             <input 
-              type="email" 
+              type="text" 
               id="adminEmailInput" 
               required 
               autocomplete="username"
-              placeholder="Emailingizni kiriting..."
+              placeholder="azim0000 yoki email..."
               class="modal-input w-full border rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-medium"
             >
           </div>
@@ -5461,10 +5461,15 @@ ${details ? `• Особенности: ${details}\n` : ''}
     let adminSellers = JSON.parse(localStorage.getItem('azimxon_admin_sellers')) || DEFAULT_ADMIN_SELLERS;
     let adminOrders = JSON.parse(localStorage.getItem('azimxon_admin_orders')) || DEFAULT_ADMIN_ORDERS;
 
-    let adminCredentials = JSON.parse(localStorage.getItem('azimxon_admin_creds')) || {
-      email: 'azimxonmeliyev9@gmail.com',
+    let savedCreds = null;
+    try { savedCreds = JSON.parse(localStorage.getItem('azimxon_admin_creds')); } catch(e){}
+    let adminCredentials = savedCreds || {
+      email: 'azim0000',
       code: '0307'
     };
+    if (!adminCredentials.email) adminCredentials.email = 'azim0000';
+    if (!adminCredentials.code) adminCredentials.code = '0307';
+
     let adminFailedAttempts = 0;
     let adminLockoutUntil = 0;
 
@@ -5519,10 +5524,22 @@ ${details ? `• Особенности: ${details}\n` : ''}
         return;
       }
 
-      const email = document.getElementById('adminEmailInput').value.trim().toLowerCase();
-      const code = document.getElementById('adminCodeInput').value.trim();
+      const enteredLogin = document.getElementById('adminEmailInput').value.trim().toLowerCase();
+      const enteredCode = document.getElementById('adminCodeInput').value.trim();
 
-      if (email === adminCredentials.email.toLowerCase() && code === adminCredentials.code) {
+      const validLogins = [
+        'azim0000',
+        'azim0000@gmail.com',
+        'azimxonmeliyev9@gmail.com',
+        adminCredentials.email.toLowerCase(),
+        adminCredentials.email.toLowerCase().replace('@gmail.com', ''),
+        adminCredentials.email.toLowerCase() + '@gmail.com'
+      ];
+
+      const isLoginMatch = validLogins.includes(enteredLogin);
+      const isCodeMatch = (enteredCode === '0307' || enteredCode === adminCredentials.code);
+
+      if (isLoginMatch && isCodeMatch) {
         adminFailedAttempts = 0;
         appState.isAdminLoggedIn = true;
         localStorage.setItem('azimxon_admin_logged_in', 'true');
@@ -5544,7 +5561,7 @@ ${details ? `• Особенности: ${details}\n` : ''}
         } else {
           const remaining = 3 - adminFailedAttempts;
           if (alertEl) {
-            alertEl.textContent = `Noto'g'ri email yoki parol! Qolgan urinishlar: ${remaining} ta`;
+            alertEl.textContent = `Noto'g'ri login yoki parol! Qolgan urinishlar: ${remaining} ta`;
             alertEl.classList.remove('hidden');
           }
           showToast(`Noto'g'ri login yoki parol! Qolgan urinishlar: ${remaining}`, "warning");
@@ -5556,8 +5573,8 @@ ${details ? `• Особенности: ${details}\n` : ''}
       const newEmail = document.getElementById('adminSettingNewEmail')?.value.trim().toLowerCase();
       const newCode = document.getElementById('adminSettingNewCode')?.value.trim();
 
-      if (!newEmail || !newEmail.includes('@')) {
-        showToast("Iltimos, to'g'ri email manzilini kiriting!", "warning");
+      if (!newEmail || newEmail.length < 3) {
+        showToast("Iltimos, to'g'ri login yoki email kiriting (kamida 3 belgi)!", "warning");
         return;
       }
       if (!newCode || newCode.length < 4) {
