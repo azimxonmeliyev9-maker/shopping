@@ -6920,161 +6920,108 @@ Shuningdek, xohlagan boshqa mavzuda (dasturlash, marketing, yangi biznes g'oyala
     }
 
     function generateNaturalHumanLikeResponse(query, thread) {
-      const q = query.toLowerCase();
+      const q = query.trim().toLowerCase();
       const grossSales = adminOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0);
       const commissionRate = Number(document.getElementById('adminCommissionInput')?.value || 10) / 100;
       const profit = Math.round(grossSales * commissionRate);
 
-      // Conversational greetings & "nima yangiliklar" / "qalesan"
-      if (q.includes('nima yangilik') || q.includes('nima yangilila') || q.includes('qale') || q.includes('salom') || q.includes('ishlar qale')) {
-        return `Assalomu alaykum Azimxon! Hammasi ajoyib ketyapti 🚀
-
-Bugungi do'koningizdagi asosiy yangiliklar:
-- 💰 **Jami savdo aylanmasi:** Hozirda **${formatUZS(grossSales)}** ga yetdi.
-- 🛍️ **Platformadagi buyurtmalar:** Jami **${adminOrders.length} ta** muvaffaqiyatli xarid amalga oshirilgan.
-- 👥 **Sotuvchilar:** **${adminSellers.length} nafar** sotuvchi platformada faol ishlamoqda. Ularning ichida **3D Studio** va **Backend Dev** eng ko'p savdo qilmoqda.
-- 💵 **Sizning sof komissiya daromadingiz:** **${formatUZS(profit)}** (${commissionRate * 100}%).
-
-Sizga qaysi sotuvchi yoki yangi xaridlar bo'yicha batafsil ma'lumot beray?`;
+      // 1. Pure Greetings (salom, qalaysiz, ishlar qalay, etc.)
+      const isPureGreeting = /^(salom|assalomu\s*alaykum|assalom|salomalaykum|hayrli\s*kun|privet|hello|hi|qalesan|qalaysiz|ishlar\s*qale|ishlar\s*qalay)[\s!?.]*$/.test(q);
+      if (isPureGreeting) {
+        const greetings = [
+          "Salom Azimxon! Ishlar qalay bo'lyapti? Bugun nima rejalaringiz bor? Do'konga yangi fayllar yuklaymizmi yoki savdolarni tahlil qilamizmi?",
+          "Va alaykum assalom, Azimxon! Kayfiyatingiz yaxshimi? Bugun qanday rejalaringiz bor, sizga qanday yordam bera olaman?",
+          "Assalomu alaykum, Azimxon! Ishlar zo'rmi? Bugun platforma bo'yicha qanday masalalarni ko'rib chiqamiz?"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
       }
 
-      // Sellers & what they sold ("qaysi sotuvchi nimalar sotdi")
-      if (q.includes('sotuvchi') || q.includes('kim nima') || q.includes('kimlar') || q.includes('sotdi')) {
-        let text = `Azimxon, platformangizdagi sotuvchilar va ularning sotgan mahsulotlari bo'yicha to'liq hisobot:\n\n`;
+      // 2. Specific question: Today's trade / "savdo bo'ldimi" / "nima bo'lyapti"
+      if (q.includes('savdo buldimi') || q.includes('savdo bo\'ldimi') || q.includes('savdo bormi') || q.includes('nima bulyapti') || q.includes('nima bo\'lyapti') || q.includes('qancha savdo')) {
+        return `Ha, Azimxon! Bugun savdolar ancha yaxshi natija ko'rsatmoqda 🚀\n\n` +
+               `- 💰 **Jami kassa:** **${formatUZS(grossSales)}**\n` +
+               `- 💵 **Sizning sof komissiya foydangiz (10%):** **${formatUZS(profit)}**\n` +
+               `- 📦 **Tushgan buyurtmalar soni:** **${adminOrders.length} ta**\n` +
+               `- 🛒 **So'nggi xarid:** *Kiberpank Uchar Avtomobil 3D Modeli* — **140 000 UZS** (Xaridor: Ali Valiyev, To'lov: Payme)\n\n` +
+               `Sizni qaysidir aniq sotuvchi yoki buyurtma tafsiloti qiziqtiryaptimi?`;
+      }
 
+      // 3. Question about specific sellers (by name)
+      const sellerMatch = adminSellers.find(s => q.includes(s.name.toLowerCase().split(' ')[0]) || (s.specialty && q.includes(s.specialty.toLowerCase().slice(0, 5))));
+      if (sellerMatch) {
+        const sOrders = adminOrders.filter(o => o.sellerName && o.sellerName.toLowerCase().includes(sellerMatch.name.toLowerCase().split(' ')[0]));
+        const sTotal = sOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0) || sellerMatch.totalSalesSum;
+        let sSold = sOrders.map(o => `"${o.productTitle}" (${formatUZS(o.amount)})`).join(', ');
+
+        return `**${sellerMatch.name}** (${sellerMatch.specialty}) bo'yicha ma'lumotlar:\n\n` +
+               `- 💵 Jami aylanmasi: **${formatUZS(sTotal)}**\n` +
+               `- 💳 Sotuvchi balansi: **${formatUZS(sellerMatch.balance)}**\n` +
+               `- ⭐ Reytingi: ★ ${sellerMatch.rating} (${sellerMatch.status.toUpperCase()})\n` +
+               `- 📦 Sotgan ishlari: ${sSold || 'Hozircha buyurtma yo`q'}\n\n` +
+               `Ushbu sotuvchi bo'yicha yana nimalarni bilmoqchisiz?`;
+      }
+
+      // 4. General question about all sellers ("qaysi sotuvchi nimalar sotdi")
+      if (q.includes('sotuvchi') || q.includes('kim nima') || q.includes('kimlar')) {
+        let text = `Azimxon, sotuvchilaringiz va ularning sotgan mahsulotlari ro'yxati:\n\n`;
         adminSellers.forEach((s, idx) => {
-          const sNameLower = s.name.toLowerCase();
-          const sellerOrders = adminOrders.filter(o => {
-            const oSell = (o.sellerName || '').toLowerCase();
-            return oSell === sNameLower || oSell.includes(sNameLower.split(' ')[0]) || (o.sellerName && s.name && s.name.toLowerCase().includes(o.sellerName.toLowerCase().split(' ')[0]));
-          });
-          const sellerSalesSum = sellerOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0);
-
-          text += `**${idx+1}. ${s.name}** (${s.specialty}):\n`;
-          text += `- 💵 Umumiy aylanmasi: **${formatUZS(sellerSalesSum || s.totalSalesSum)}** (Balansi: **${formatUZS(s.balance)}**)\n`;
-          text += `- ⭐ Reyting: ★ ${s.rating} | Holati: ${s.status.toUpperCase()}\n`;
-          
-          if (sellerOrders.length > 0) {
-            text += `- 📦 **Sotgan mahsulotlari (${sellerOrders.length} ta):**\n`;
-            sellerOrders.forEach(o => {
-              text += `  • *${o.productTitle}* — **${formatUZS(o.amount)}** (Xaridor: ${o.buyerName}, To'lov: ${o.paymentGateway})\n`;
-            });
+          const sOrders = adminOrders.filter(o => o.sellerName && o.sellerName.toLowerCase().includes(s.name.toLowerCase().split(' ')[0]));
+          const sTotal = sOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0) || s.totalSalesSum;
+          text += `**${idx+1}. ${s.name}** — Jami aylanma: **${formatUZS(sTotal)}**\n`;
+          if (sOrders.length > 0) {
+            text += `   • Sotgan mahsulotlari: ${sOrders.map(o => `"${o.productTitle}" (${formatUZS(o.amount)})`).join(', ')}\n`;
           } else {
-            text += `- 📦 Hozircha yangi buyurtma tushmagan (${s.activeListings} ta aktivi sotuvda turibdi).\n`;
+            text += `   • Hozircha buyurtma tushmagan (${s.activeListings} ta aktiv sotuvda)\n`;
           }
-          text += `\n`;
         });
-
-        const topSeller = [...adminSellers].sort((a, b) => (b.totalSalesSum || 0) - (a.totalSalesSum || 0))[0];
-        if (topSeller) {
-          text += `🏆 **Hozirda eng yetakchi sotuvchi:** **${topSeller.name}** hisoblanadi.\n\n`;
-          text += `Biron bir sotuvchi bo'yicha qo'shimcha savolingiz bormi?`;
-        }
+        text += `\nEng yetakchi sotuvchingiz **3D Studio Azimxon** hisoblanadi.`;
         return text;
       }
 
-      // Sales, cash, financial report ("savdo", "kassa", "hisobot", "daromad")
-      if (q.includes('bugun') || q.includes('savdo') || q.includes('kassa') || q.includes('daromad') || q.includes('hisobot') || q.includes('qancha')) {
-        let text = `Do'konda savdo ko'rsatkichlari juda yaxshi natija ko'rsatmoqda 📊\n\n`;
-        text += `- 💵 **Jami kassa:** **${formatUZS(grossSales)}**\n`;
-        text += `- 📈 **Sizning sof platforma foydangiz:** **${formatUZS(profit)}**\n`;
-        text += `- 🛒 **Jami xaridlar:** **${adminOrders.length} ta**\n`;
-        text += `- 🏷️ **O'rtacha chek:** **${formatUZS(adminOrders.length ? Math.round(grossSales / adminOrders.length) : 0)}**\n\n`;
-
-        text += `**So'nggi 3 ta xarid:**\n`;
-        adminOrders.slice(0, 3).forEach((o, i) => {
-          text += `${i+1}. **${o.productTitle}** — ${formatUZS(o.amount)} (${o.buyerName})\n`;
-        });
-
-        text += `\nBarcha to'lovlar tizim orqali to'g'ri o'tgan va sotuvchilar hisobiga avtomatik kiritilgan.`;
-        return text;
-      }
-
-      // TOP Products
-      if (q.includes('top') || q.includes('eng') || q.includes('xaridorgir') || q.includes('mahsulot')) {
-        let text = `Hozirda platformangizda eng ko'p talab qilinayotgan TOP mahsulotlar:\n\n`;
+      // 5. Best-selling TOP products
+      if (q.includes('top') || q.includes('eng ko\'p') || q.includes('eng kop') || q.includes('xaridorgir')) {
         const itemMap = {};
-        adminOrders.forEach(o => {
-          itemMap[o.productTitle] = (itemMap[o.productTitle] || 0) + 1;
-        });
-
+        adminOrders.forEach(o => { itemMap[o.productTitle] = (itemMap[o.productTitle] || 0) + 1; });
         const sorted = Object.entries(itemMap).sort((a, b) => b[1] - a[1]);
-        if (sorted.length > 0) {
-          sorted.forEach(([title, count], idx) => {
-            const prod = appState.products.find(p => p.title.toLowerCase().includes(title.toLowerCase().slice(0, 15)));
-            text += `**${idx+1}. ${title}**\n`;
-            text += `- Sotilgan soni: **${count} marta**\n`;
-            if (prod) {
-              text += `- Narxi: ${formatUZS(prod.price)} | Muallif: ${prod.author}\n`;
-            }
-            text += `\n`;
-          });
-        }
-        text += `Tavsiya: Aynan shu toifadagi yangi mahsulotlarni ko'paytirish savdoni yanada tezlashtiradi!`;
+
+        let text = `Platformangizda eng ko'p sotilgan TOP mahsulotlar:\n\n`;
+        sorted.forEach(([title, count], idx) => {
+          text += `${idx+1}. **${title}** — **${count} marta** sotilgan\n`;
+        });
+        text += `\n💡 3D modellar va Telegram botlar hozir eng ommabop yo'nalish bo'lib turibdi.`;
         return text;
       }
 
-      // Ideas / Recommendations
-      if (q.includes('maslahat') || q.includes('g\'oya') || q.includes('oshirish') || q.includes('marketing') || q.includes('strategiya')) {
-        return `Do'kon daromadini oshirish bo'yicha 3 ta eng samarali taklifim bor:
-
-1. **🚀 Eng sara mahsulotlarga chegirmalar o'tkazish**:
-   - 3D modellar va Telegram botlarga 24 soatlik 15% chegirma e'lon qilsangiz, bugunning o'zidayoq yangi mijozlar oqimi keladi.
-
-2. **📢 Telegram kanalga avtomat post qo'yish**:
-   - Platformadagi har bir yangi qo'shilgan sifatli faylni Telegram kanalingizga joylashtirib boring.
-
-3. **⭐ Yetakchi sotuvchilarni rag'batlantirish**:
-   - Oyning eng yaxshi sotuvchisiga VIP belgi berish boshqa mualliflarni ham ko'proq fayl yuklashga undaydi.`;
+      // 6. Ideas, recommendations, strategies
+      if (q.includes('maslahat') || q.includes('reja') || q.includes('g\'oya') || q.includes('oshirish') || q.includes('nima qilsak') || q.includes('nima qilaylik')) {
+        return `Do'koningizni yanada rivojlantirish uchun 3 ta zo'r taklifim bor:\n\n` +
+               `1. **3D va IT botlar uchun 24 soatlik aksiya**: Eng xaridorgir mahsulotlarga 15% chegirma e'lon qilsangiz, bugungi savdoni 2 barobar oshirish mumkin.\n` +
+               `2. **Telegram kanalga avtomat post**: Platformaga yuklangan yangi fayllarni rasm va tavsifi bilan kanalingizda e'lon qilib boring.\n` +
+               `3. **Yangi sotuvchilarni jalb qilish**: Talab yuqori bo'lgan Figma UI dizayn va Python kodlar yo'nalishida yangi frilanserlarni taklif qiling.\n\n` +
+               `Qaysi birini birinchi bo'lib boshlaymiz?`;
       }
 
-      // Coding / Development
+      // 7. Coding / Development assistance
       if (q.includes('kod') || q.includes('python') || q.includes('javascript') || q.includes('bot') || q.includes('dastur')) {
-        return `Albatta! Sizga Telegram bot (Aiogram 3 / Python) yoki JavaScript bo'yicha istalgan kodni yozib bera olaman.
-
-Mana, Telegram bot orqali to'lov qabul qilishning asosiy namunasi:
-
-\`\`\`python
-from aiogram import Bot, Dispatcher, types
-from aiogram.types import LabeledPrice
-
-BOT_TOKEN = "SIZNING_BOT_TOKENINGIZ"
-PROVIDER_TOKEN = "CLICK_YOKI_PAYME_TOKENI"
-
-bot = Bot(token=BOT_TOKEN)
-dp = Dispatcher()
-
-@dp.message(commands=["start"])
-async def send_invoice(message: types.Message):
-    prices = [LabeledPrice(label="3D Model (.blend)", amount=14000000)] # tiyinlarda
-    await bot.send_invoice(
-        chat_id=message.chat.id,
-        title="Kiberpank Uchar Avtomobil",
-        description="4K PBR teksturali model",
-        provider_token=PROVIDER_TOKEN,
-        currency="UZS",
-        prices=prices,
-        start_parameter="buy-3d-car",
-        payload="order_9801"
-    )
-\`\`\`
-
-Yana qanday funksiyani kodda qo'shmoqchisiz?`;
+        return `Albatta! Qanday dasturlash vazifasi yoki bot yaratmoqchisiz?\n\n` +
+               `Misol uchun, Telegram botda to'lov qabul qilish kodi:\n` +
+               `\`\`\`python\n` +
+               `from aiogram import Bot, Dispatcher, types\n` +
+               `from aiogram.types import LabeledPrice\n\n` +
+               `bot = Bot(token="SIZNING_BOT_TOKENINGIZ")\n` +
+               `dp = Dispatcher()\n\n` +
+               `@dp.message(commands=["start"])\n` +
+               `async def send_invoice(message: types.Message):\n` +
+               `    prices = [LabeledPrice(label="3D Model", amount=14000000)] # tiyin\n` +
+               `    await bot.send_invoice(message.chat.id, "Kiberpank Uchar Avtomobil", "4K PBR model", "PAYME_TOKEN", "UZS", prices, "buy-3d")\n` +
+               `\`\`\`\n` +
+               `Sizga boshqa kutubxona yoki aniq bir funksiya kerakmi?`;
       }
 
-      // Free conversational answer
-      return `Albatta, Azimxon! 
-
-Sizning so'rovingiz bo'yicha: **"${query}"**
-
-Do'koningiz **AZIMXON.HUB** hozirda juda yaxshi sur'atda ishlamoqda (${adminSellers.length} ta sotuvchi, ${adminOrders.length} ta xarid va ${formatUZS(grossSales)} aylanma). 
-
-Menga xohlagan boshqa savolingizni berishingiz mumkin:
-- Qaysidir sotuvchining profilini ko'rib chiqish;
-- Yangi dasturlash kodi yoki bot yozish;
-- Do'kon uchun yangi marketing matnlari tayyorlash.
-
-Sizga nima bo'yicha yordam beray?`;
+      // 8. General Conversational / Dynamic Contextual Response
+      return `Tushundim, Azimxon! Siz **"${query}"** haqida so'rayapsiz.\n\n` +
+             `Do'koningiz **AZIMXON.HUB** bo'yicha hozirda **${adminSellers.length} ta sotuvchi** faoliyat olib bormoqda, jami savdo aylanmasi **${formatUZS(grossSales)}** va buyurtmalar soni **${adminOrders.length} ta**.\n\n` +
+             `Sizga do'kon bo'yicha aniq statistika kerakmi, yangi g'oyalar yozib beraymi yoki boshqa erkin mavzuda gaplashamizmi?`;
     }
 
     // Toast
