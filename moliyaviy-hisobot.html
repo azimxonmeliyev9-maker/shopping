@@ -1,0 +1,1173 @@
+﻿<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moliyaviy Hisobot & Daromadlar вЂ” SOFF HUB / AZIMXON.HUB</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#0a0e16',
+              surface: '#0f172a',
+              card: '#121826',
+              border: '#1e293b',
+              green: '#22c55e',
+              emerald: '#10b981',
+              cyan: '#06b6d4',
+              blue: '#3b82f6',
+              amber: '#f59e0b',
+              rose: '#f43f5e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0a0e16;
+      --panel: #121826;
+      --panel-hover: #1e293b;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.12);
+      --green: #22c55e;
+      --green-glow: rgba(34, 197, 94, 0.25);
+      --cyan: #06b6d4;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg);
+      color: #f8fafc;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      min-height: 100vh;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(34, 197, 94, 0.4);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(34, 197, 94, 0.8);
+    }
+
+    /* Glass & Card styles */
+    .card-panel {
+      background-color: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+    }
+
+    .card-panel-interactive {
+      background-color: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-panel-interactive:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      box-shadow: 0 8px 24px -6px var(--green-glow);
+      transform: translateY(-2px);
+    }
+
+    .sub-box {
+      background: #0f172a;
+      border: 1px solid var(--border);
+    }
+
+    /* Green Gradient Buttons */
+    .btn-green-main {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: #ffffff;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    }
+    .btn-green-main:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.55);
+    }
+
+    /* Custom animations */
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.03); }
+    }
+    .animate-pulse-glow {
+      animation: pulse-subtle 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-[#0a0e16] text-slate-100 min-h-screen antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- ================= TOP NAVIGATION BAR (SOFF / AZIMXON MARKET STYLE) ================= -->
+  <header class="sticky top-0 z-40 border-b border-slate-800 bg-[#0a0e16]/95 backdrop-blur-xl transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- 1. MAIN TOP ROW: LOGO, SEARCH / STATS, PROFILE & ACTIONS -->
+      <div class="py-3 flex items-center justify-between gap-3 sm:gap-4">
+        
+        <!-- Brand Logo -->
+        <a href="index.html" class="flex items-center gap-2.5 cursor-pointer flex-shrink-0 text-decoration-none">
+          <div class="flex items-center gap-1.5">
+            <span class="text-2xl font-black italic tracking-tighter text-emerald-500 font-sans">//</span>
+            <span class="font-extrabold text-2xl tracking-tight text-white flex items-center">
+              SOFF<span class="text-emerald-500 text-xs ml-1 font-mono uppercase bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/30">HUB</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Breadcrumbs & Section Title -->
+        <div class="hidden md:flex items-center gap-2 text-xs font-semibold text-slate-400">
+          <a href="index.html" class="hover:text-emerald-400 transition flex items-center gap-1">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+            <span>Bozor</span>
+          </a>
+          <span>/</span>
+          <a href="index.html" onclick="sessionStorage.setItem('openSellerTab', 'orders')" class="hover:text-emerald-400 transition flex items-center gap-1">
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+            <span>Sotuvchi CRM</span>
+          </a>
+          <span>/</span>
+          <span class="text-emerald-400 font-bold flex items-center gap-1">
+            <i data-lucide="circle-dollar-sign" class="w-3.5 h-3.5"></i>
+            <span>Moliyaviy Hisobot</span>
+          </span>
+        </div>
+
+        <!-- Right Action Buttons -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Back to Market -->
+          <a href="index.html" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-300 flex items-center gap-1.5 transition">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Bozorga qaytish</span>
+          </a>
+
+          <!-- Quick Withdraw Trigger -->
+          <button onclick="openWithdrawModal()" class="btn-green-main px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+            <span>Pul Yechish</span>
+          </button>
+
+          <!-- User Profile -->
+          <div class="p-1 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-2 px-2.5">
+            <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[11px]">
+              AZ
+            </div>
+            <span class="text-xs font-bold text-slate-200 hidden sm:inline">Azimxon M.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2. SUB-NAVIGATION ROW -->
+      <div class="flex items-center justify-between py-2 border-t border-slate-800 text-xs font-semibold text-slate-400 overflow-x-auto scrollbar-none gap-6">
+        <div class="flex items-center gap-6 whitespace-nowrap">
+          <a href="index.html" class="flex items-center gap-1.5 hover:text-emerald-400 transition text-slate-300">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Tayyor mahsulotlar</span>
+          </a>
+          <a href="index.html" class="flex items-center gap-1.5 hover:text-emerald-400 transition text-slate-300">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+            <span>Frilanserlik xizmatlari</span>
+          </a>
+          <span class="flex items-center gap-1.5 text-emerald-400 font-extrabold bg-emerald-500/10 px-2.5 py-0.5 rounded-lg border border-emerald-500/20">
+            <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i>
+            <span>Sotuvchi Moliya Markazi</span>
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Balance Pill -->
+          <div class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold text-xs border border-emerald-500/20 flex items-center gap-1.5">
+            <i data-lucide="coins" class="w-3.5 h-3.5"></i>
+            <span>Sof Balans:</span>
+            <span id="headerNetBalance" class="text-white font-extrabold font-mono">1,836,000</span>
+            <span class="text-[10px] text-emerald-400">UZS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN APP CONTAINER ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Top Breadcrumb & Page Actions Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-extrabold uppercase tracking-wider">
+            CRM вЂў Moliya va Daromadlar
+          </span>
+          <span class="text-xs text-slate-500">вЂў Jonli statistika</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-white mt-1 flex items-center gap-2.5">
+          <span>рџ’° Moliyaviy Hisobot & Savdo Tahlili</span>
+        </h1>
+        <p class="text-xs text-slate-400 mt-1">
+          Barcha savdo tushumlari, oylik dinamika grafigi, soliq kalkulyatori va mablag' yechish boshqaruvi.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <!-- Date filter selector -->
+        <div class="flex items-center bg-[#121826] border border-slate-800 rounded-xl p-1 text-xs">
+          <button onclick="changePeriod('7d', this)" class="period-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-bold">7 Kun</button>
+          <button onclick="changePeriod('30d', this)" class="period-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-black shadow-sm transition">30 Kun</button>
+          <button onclick="changePeriod('12m', this)" class="period-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-bold">12 Oy</button>
+          <button onclick="changePeriod('all', this)" class="period-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-bold">Barchasi</button>
+        </div>
+
+        <!-- CSV Export Button -->
+        <button onclick="exportToCSV()" class="px-3.5 py-2 rounded-xl bg-[#121826] hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-emerald-400 text-xs font-bold flex items-center gap-2 transition shadow-sm" title="Tranzaksiyalarni CSV formatida yuklab olish">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
+          <span>CSV Eksport</span>
+        </button>
+
+        <!-- Pul yechish Button -->
+        <button onclick="openWithdrawModal()" class="btn-green-main px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 shadow-sm">
+          <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          <span>Pul Yechish So'rovi</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= MAIN LAYOUT GRID (SIDEBAR + CONTENT) ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- ================= LEFT SIDEBAR (CRM NAVIGATION) ================= -->
+      <aside class="lg:col-span-3 space-y-4">
+        
+        <!-- Navigation Menu -->
+        <div class="card-panel p-4 space-y-4 sticky top-28">
+          
+          <!-- User Profile Summary -->
+          <div class="flex items-center gap-3 pb-3 border-b border-slate-800">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 font-black flex items-center justify-center text-sm shadow-md flex-shrink-0">
+              AZ
+            </div>
+            <div class="truncate">
+              <h4 class="font-extrabold text-xs text-white truncate">Azimxon Meliyev</h4>
+              <p class="text-[11px] text-slate-400 truncate">Top Sotuvchi & Frilanser</p>
+              <div class="flex items-center gap-1 mt-0.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-[10px] text-emerald-400 font-bold">Hisob faol</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CRM Nav Menu Links -->
+          <nav class="space-y-1 text-xs font-semibold" id="crmSidebarNav">
+            
+            <a href="index.html" onclick="sessionStorage.setItem('openSellerTab', 'purchased')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition text-left">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Sotib olinganlar</span>
+            </a>
+
+            <a href="index.html" onclick="sessionStorage.setItem('openSellerTab', 'orders')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition text-left">
+              <i data-lucide="truck" class="w-4 h-4"></i>
+              <span>Buyurtmalarim</span>
+            </a>
+
+            <!-- Active Financial Report Tab -->
+            <a href="moliyaviy-hisobot.html" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black shadow-md transition text-left">
+              <span class="flex items-center gap-3">
+                <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                <span>рџ’° Moliyaviy Hisobot</span>
+              </span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/20 text-white font-mono">LIVE</span>
+            </a>
+
+            <a href="index.html" onclick="sessionStorage.setItem('openSellerTab', 'my_products')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition text-left">
+              <i data-lucide="package" class="w-4 h-4"></i>
+              <span>Mening Mahsulotlarim</span>
+            </a>
+
+            <a href="index.html" onclick="sessionStorage.setItem('openSellerTab', 'wishlist')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition text-left">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+              <span>Tanlanganlar</span>
+            </a>
+
+            <a href="index.html" onclick="sessionStorage.setItem('openSellerTab', 'chat')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition text-left">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              <span>Mijozlar bilan Chat</span>
+            </a>
+
+            <div class="pt-2 border-t border-slate-800 space-y-1">
+              <a href="index.html" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-rose-400 hover:bg-rose-500/10 font-bold transition text-left">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Bozorga qaytish</span>
+              </a>
+            </div>
+
+          </nav>
+
+          <!-- Quick Balance Card in Sidebar -->
+          <div class="p-3.5 rounded-xl bg-gradient-to-br from-slate-900 to-[#0a0e16] border border-emerald-500/20 space-y-2">
+            <div class="flex items-center justify-between text-[11px] text-slate-400">
+              <span>Yechib olish mumkin</span>
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            </div>
+            <div class="text-lg font-black text-emerald-400 font-mono" id="sidebarWithdrawable">
+              1,836,000 UZS
+            </div>
+            <button onclick="openWithdrawModal()" class="w-full py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 font-bold text-xs transition flex items-center justify-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Hisobga yechish</span>
+            </button>
+          </div>
+
+        </div>
+
+      </aside>
+
+      <!-- ================= RIGHT MAIN CONTENT COLUMN ================= -->
+      <section class="lg:col-span-9 space-y-6">
+
+        <!-- 1. KPI STATISTIC SUMMARY CARDS (4-COLUMNS) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- KPI 1: JAMI SAVDO TUSHUMI -->
+          <div class="card-panel-interactive p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Jami Savdo Tushumi</span>
+              <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-xl font-black text-white font-mono" id="kpiGrossRevenue">2,040,000 <span class="text-xs font-sans text-slate-400 font-semibold">UZS</span></div>
+              <div class="flex items-center gap-1 text-[11px] text-emerald-400 font-semibold mt-1">
+                <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                <span>+24.5% o'tgan oyga nisbatan</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 2: SOF DAROMAD (90%) -->
+          <div class="card-panel-interactive p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Sof Daromad (90%)</span>
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="wallet" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-xl font-black text-emerald-400 font-mono" id="kpiNetRevenue">1,836,000 <span class="text-xs font-sans text-slate-400 font-semibold">UZS</span></div>
+              <div class="flex items-center gap-1 text-[11px] text-slate-400 font-semibold mt-1">
+                <span>Platforma komissiyasi: -10%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 3: MUVAFFAQIYATLI SOTUVLAR -->
+          <div class="card-panel-interactive p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Muvaffaqiyatli Xaridlar</span>
+              <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-xl font-black text-purple-400 font-mono" id="kpiTotalOrders">16 <span class="text-xs font-sans text-slate-400 font-semibold">ta buyurtma</span></div>
+              <div class="flex items-center gap-1 text-[11px] text-emerald-400 font-semibold mt-1">
+                <i data-lucide="check-circle" class="w-3 h-3"></i>
+                <span>Konversiya 98.2%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 4: YECHIB OLINGAN SUMMA -->
+          <div class="card-panel-interactive p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Yechib Olingan</span>
+              <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <i data-lucide="landmark" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <div class="text-xl font-black text-amber-400 font-mono" id="kpiTotalWithdrawn">450,000 <span class="text-xs font-sans text-slate-400 font-semibold">UZS</span></div>
+              <div class="flex items-center gap-1 text-[11px] text-slate-400 font-semibold mt-1">
+                <span>Oxirgi yechish: Kecha 18:20</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. REVENUE CHART (CHART.JS) -->
+        <div class="card-panel p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-extrabold text-base text-white flex items-center gap-2">
+                  <i data-lucide="line-chart" class="w-4 h-4 text-emerald-400"></i>
+                  <span>Oylik Daromad & Savdo Dinamikasi</span>
+                </h3>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-bold font-mono">Chart.js</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Kunlik tushumlar va sotilgan raqamli fayllar grafigi</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-4 text-xs font-bold text-slate-400">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                  <span>Savdo Tushumi (UZS)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                  <span>Sof Daromad (90%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart Canvas Container -->
+          <div class="relative w-full h-72 sm:h-80 pt-2">
+            <canvas id="revenueChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- 3. TAX CALCULATOR & WITHDRAWAL PREVIEW GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          
+          <!-- SOLIQ VA KOMISSIYA KALKULYATORI -->
+          <div class="md:col-span-7 card-panel p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  <i data-lucide="calculator" class="w-4 h-4 text-cyan-400"></i>
+                  <span>Soliq va Sof Foyda Kalkulyatori</span>
+                </h3>
+                <p class="text-xs text-slate-400">Daromadingizdan soliq va platforma xarajatlarini hisoblang</p>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-400 font-bold border border-cyan-500/20">
+                Avto Hisob
+              </span>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Kutilayotgan umumiy savdo summasi (UZS)</label>
+                <div class="relative">
+                  <input 
+                    type="number" 
+                    id="calcGrossInput" 
+                    value="1000000" 
+                    oninput="calculateTaxes()"
+                    class="w-full bg-[#0a0e16] border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-white focus:outline-none focus:border-emerald-500 transition"
+                    placeholder="Masalan: 1,000,000"
+                  >
+                  <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">UZS</span>
+                </div>
+              </div>
+
+              <!-- Calculation breakdown -->
+              <div class="p-3.5 rounded-xl sub-box space-y-2.5 text-xs">
+                <div class="flex items-center justify-between text-slate-300">
+                  <span>SOFF HUB Komissiyasi (10%):</span>
+                  <span class="font-mono font-bold text-rose-400" id="calcPlatformFee">-100,000 UZS</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-300">
+                  <span class="flex items-center gap-1">
+                    <span>O'zini o'zi band qilish solig'i (0% / Imtiyozli):</span>
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5 text-slate-500" title="Raqamli xizmatlar uchun imtiyoz"></i>
+                  </span>
+                  <span class="font-mono font-bold text-emerald-400" id="calcTaxAmount">0 UZS (0%)</span>
+                </div>
+                <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-sm font-black">
+                  <span class="text-white">Qo'lga tegadigan sof summa:</span>
+                  <span class="font-mono text-emerald-400 text-base" id="calcNetTakeHome">900,000 UZS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEZKOR PUL YECHISH KARTASI -->
+          <div class="md:col-span-5 card-panel p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  <i data-lucide="credit-card" class="w-4 h-4 text-emerald-400"></i>
+                  <span>Pul Yechish</span>
+                </h3>
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              </div>
+              <p class="text-xs text-slate-400">Kartangizga 5-15 daqiqa ichida o'tkazib beriladi</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-[#0a0e16] to-slate-900 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between text-xs text-slate-400">
+                <span>Mavjud balans:</span>
+                <span class="font-mono text-emerald-400 font-extrabold text-sm" id="cardAvailableBalance">1,836,000 UZS</span>
+              </div>
+              <div class="text-[11px] text-slate-500">
+                Minimal summa: <strong class="text-slate-300">50,000 UZS</strong> вЂў Humo / Uzcard / Visa
+              </div>
+              <button onclick="openWithdrawModal()" class="w-full btn-green-main py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-md">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                <span>So'rov Yuborish</span>
+              </button>
+            </div>
+
+            <div class="text-[11px] text-slate-500 text-center">
+              рџ”’ Barcha tranzaksiyalar 256-bit SSL bilan himoyalangan
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 4. TRANSACTIONS HISTORY TABLE -->
+        <div class="card-panel p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i>
+                <span>Moliyaviy Tranzaksiyalar Tarixi</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">Sotuvlar, pul yechishlar va hisob-kitoblar arxivi</p>
+            </div>
+
+            <!-- Search & Filter within Table -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="relative">
+                <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input 
+                  type="text" 
+                  id="txSearchInput" 
+                  oninput="filterTransactions()"
+                  placeholder="Qidirish..." 
+                  class="bg-[#0a0e16] border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+                >
+              </div>
+
+              <select id="txTypeFilter" onchange="filterTransactions()" class="bg-[#0a0e16] border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500 cursor-pointer font-medium">
+                <option value="all">Barcha Turlar</option>
+                <option value="sale">Sotuv tushumi</option>
+                <option value="withdraw">Pul yechish</option>
+                <option value="commission">Komissiya</option>
+              </select>
+
+              <button onclick="exportToCSV()" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 transition">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span>CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-left text-xs text-slate-300" id="txTable">
+              <thead class="bg-slate-900/90 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                <tr>
+                  <th class="p-3.5">ID & Sana</th>
+                  <th class="p-3.5">Turi</th>
+                  <th class="p-3.5">Tafsilot / Mahsulot</th>
+                  <th class="p-3.5 text-right">Summa</th>
+                  <th class="p-3.5 text-center">Holati</th>
+                  <th class="p-3.5 text-right">Amal</th>
+                </tr>
+              </thead>
+              <tbody id="txTableBody" class="divide-y divide-slate-800/60 bg-[#121826]">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
+            <span id="txCountLabel">Jami 8 ta tranzaksiya ko'rsatilmoqda</span>
+            <span class="text-[11px] text-slate-500">Avtomatik yangilanish: Har 60 soniyada</span>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ================= PUL YECHISH (WITHDRAWAL) MODAL ================= -->
+  <div id="withdrawModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="card-panel max-w-md w-full p-6 space-y-4 border border-slate-700 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="wallet" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-white">Mablag' Yechib Olish</h3>
+            <p class="text-[11px] text-slate-400">Humo, Uzcard yoki xalqaro kartaga o'tkazish</p>
+          </div>
+        </div>
+        <button onclick="closeWithdrawModal()" class="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form id="withdrawForm" onsubmit="handleWithdrawSubmit(event)" class="space-y-4 text-xs">
+        
+        <!-- Balance Info -->
+        <div class="p-3 rounded-xl bg-[#0a0e16] border border-slate-800 flex items-center justify-between">
+          <span class="text-slate-400">Yechish mumkin bo'lgan balans:</span>
+          <span class="font-mono text-emerald-400 font-extrabold text-sm" id="modalMaxBalance">1,836,000 UZS</span>
+        </div>
+
+        <!-- Card Number -->
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Karta raqami (Humo / Uzcard / Visa)</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="withdrawCardNumber" 
+              required
+              maxlength="19"
+              placeholder="8600 0000 0000 0000" 
+              oninput="formatCardNumberInput(this)"
+              class="w-full bg-[#0a0e16] border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-mono text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+            >
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-slate-400">
+              <i data-lucide="credit-card" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Holder Name -->
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Karta egasining to'liq ismi (F.I.Sh)</label>
+          <input 
+            type="text" 
+            id="withdrawCardHolder" 
+            required
+            placeholder="AZIMXON MELIYEV" 
+            class="w-full bg-[#0a0e16] border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 uppercase focus:outline-none focus:border-emerald-500 transition font-bold"
+          >
+        </div>
+
+        <!-- Amount to withdraw -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="font-bold text-slate-300">Yechish summasi (UZS)</label>
+            <span class="text-[10px] text-slate-400">Min: 50,000 UZS</span>
+          </div>
+          <div class="relative">
+            <input 
+              type="number" 
+              id="withdrawAmount" 
+              required
+              min="50000" 
+              max="1836000"
+              placeholder="500000" 
+              class="w-full bg-[#0a0e16] border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-white focus:outline-none focus:border-emerald-500 transition"
+            >
+            <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">UZS</span>
+          </div>
+
+          <!-- Quick Amount Presets -->
+          <div class="grid grid-cols-4 gap-1.5 mt-2">
+            <button type="button" onclick="setWithdrawPercent(0.25)" class="py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] transition">25%</button>
+            <button type="button" onclick="setWithdrawPercent(0.50)" class="py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] transition">50%</button>
+            <button type="button" onclick="setWithdrawPercent(0.75)" class="py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] transition">75%</button>
+            <button type="button" onclick="setWithdrawPercent(1.00)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30 font-bold text-[11px] transition">100% (Barchasi)</button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2 flex items-center gap-2">
+          <button type="button" onclick="closeWithdrawModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition">
+            Bekor qilish
+          </button>
+          <button type="submit" class="flex-1 btn-green-main py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-md">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>So'rovni Tasdiqlash</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Initial Financial & Transaction Data
+    let financialState = {
+      grossRevenue: 2040000,
+      netBalance: 1836000,
+      withdrawnTotal: 450000,
+      transactions: [
+        { id: 'TX-9041', date: '2026-09-11 14:15', type: 'sale', title: "E-Commerce Mobil App UI Kit", amount: 150000, net: 135000, status: 'completed' },
+        { id: 'TX-9040', date: '2026-09-11 11:30', type: 'sale', title: "Telegram To'lov Boti (Aiogram 3)", amount: 350000, net: 315000, status: 'completed' },
+        { id: 'TX-9039', date: '2026-09-10 18:20', type: 'withdraw', title: "Pul yechish (Humo вЂўвЂў4409)", amount: -450000, net: -450000, status: 'completed' },
+        { id: 'TX-9038', date: '2026-09-09 16:45', type: 'sale', title: "Kiberpank Uchar Avtomobil 3D", amount: 200000, net: 180000, status: 'completed' },
+        { id: 'TX-9037', date: '2026-09-08 12:10', type: 'sale', title: "SMM Marketing Masterklass Darsi", amount: 90000, net: 81000, status: 'completed' },
+        { id: 'TX-9036', date: '2026-09-07 09:15', type: 'sale', title: "React SaaS Boshqaruv Paneli", amount: 450000, net: 405000, status: 'completed' },
+        { id: 'TX-9035', date: '2026-09-05 15:40', type: 'sale', title: "300+ 3D Minimalist Icon To'plami", amount: 120000, net: 108000, status: 'completed' },
+        { id: 'TX-9034', date: '2026-09-03 14:00', type: 'sale', title: "Blender 4.0 Fotorealistik Render", amount: 280000, net: 252000, status: 'completed' }
+      ]
+    };
+
+    let revenueChart = null;
+
+    // Load from localStorage if available
+    function loadSavedFinanceData() {
+      try {
+        const saved = localStorage.getItem('azimxon_finance_state_v1');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          financialState = { ...financialState, ...parsed };
+        }
+      } catch (e) {
+        console.error('Error loading finance state:', e);
+      }
+    }
+
+    function saveFinanceData() {
+      try {
+        localStorage.setItem('azimxon_finance_state_v1', JSON.stringify(financialState));
+      } catch (e) {
+        console.error('Error saving finance state:', e);
+      }
+    }
+
+    // Refresh UI Numbers
+    function refreshKPIs() {
+      document.getElementById('headerNetBalance').textContent = financialState.netBalance.toLocaleString('uz-UZ');
+      document.getElementById('sidebarWithdrawable').textContent = financialState.netBalance.toLocaleString('uz-UZ') + ' UZS';
+      document.getElementById('kpiGrossRevenue').innerHTML = financialState.grossRevenue.toLocaleString('uz-UZ') + ' <span class="text-xs font-sans text-slate-400 font-semibold">UZS</span>';
+      document.getElementById('kpiNetRevenue').innerHTML = financialState.netBalance.toLocaleString('uz-UZ') + ' <span class="text-xs font-sans text-slate-400 font-semibold">UZS</span>';
+      document.getElementById('kpiTotalWithdrawn').innerHTML = financialState.withdrawnTotal.toLocaleString('uz-UZ') + ' <span class="text-xs font-sans text-slate-400 font-semibold">UZS</span>';
+      document.getElementById('cardAvailableBalance').textContent = financialState.netBalance.toLocaleString('uz-UZ') + ' UZS';
+      document.getElementById('modalMaxBalance').textContent = financialState.netBalance.toLocaleString('uz-UZ') + ' UZS';
+      
+      const withdrawInput = document.getElementById('withdrawAmount');
+      if (withdrawInput) {
+        withdrawInput.max = financialState.netBalance;
+      }
+    }
+
+    // Initialize Chart.js
+    function initRevenueChart() {
+      const ctx = document.getElementById('revenueChartCanvas');
+      if (!ctx) return;
+
+      const labels = ['1-Hafta', '2-Hafta', '3-Hafta', '4-Hafta', '5-Hafta', '6-Hafta', '7-Hafta', '8-Hafta'];
+      const grossData = [350000, 480000, 620000, 850000, 1100000, 1450000, 1800000, 2040000];
+      const netData = grossData.map(v => Math.round(v * 0.9));
+
+      if (revenueChart) {
+        revenueChart.destroy();
+      }
+
+      const gradientGross = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
+      gradientGross.addColorStop(0, 'rgba(34, 197, 94, 0.35)');
+      gradientGross.addColorStop(1, 'rgba(34, 197, 94, 0.0)');
+
+      const gradientNet = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
+      gradientNet.addColorStop(0, 'rgba(6, 182, 212, 0.25)');
+      gradientNet.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+
+      revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Savdo Tushumi (UZS)',
+              data: grossData,
+              borderColor: '#22c55e',
+              backgroundColor: gradientGross,
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4,
+              pointBackgroundColor: '#22c55e',
+              pointBorderColor: '#ffffff',
+              pointRadius: 4,
+              pointHoverRadius: 7
+            },
+            {
+              label: 'Sof Daromad (UZS)',
+              data: netData,
+              borderColor: '#06b6d4',
+              backgroundColor: gradientNet,
+              borderWidth: 2,
+              borderDash: [4, 4],
+              fill: true,
+              tension: 0.4,
+              pointBackgroundColor: '#06b6d4',
+              pointBorderColor: '#ffffff',
+              pointRadius: 3,
+              pointHoverRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              bodyColor: '#e2e8f0',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              padding: 12,
+              boxPadding: 6,
+              usePointStyle: true,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y.toLocaleString('uz-UZ') + ' UZS';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)',
+                drawBorder: false
+              },
+              ticks: {
+                color: '#94a3b8',
+                font: { family: 'Plus Jakarta Sans', size: 11 }
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)',
+                drawBorder: false
+              },
+              ticks: {
+                color: '#94a3b8',
+                font: { family: 'Plus Jakarta Sans', size: 11 },
+                callback: function(value) {
+                  return (value / 1000).toLocaleString('uz-UZ') + 'k';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Change Period
+    function changePeriod(period, btn) {
+      document.querySelectorAll('.period-btn').forEach(b => {
+        b.className = 'period-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-bold';
+      });
+      btn.className = 'period-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-black shadow-sm transition';
+
+      let labels = [];
+      let grossData = [];
+
+      if (period === '7d') {
+        labels = ['Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan', 'Yak'];
+        grossData = [120000, 250000, 180000, 310000, 290000, 420000, 470000];
+      } else if (period === '30d') {
+        labels = ['1-Hafta', '2-Hafta', '3-Hafta', '4-Hafta'];
+        grossData = [450000, 520000, 780000, 1100000];
+      } else if (period === '12m') {
+        labels = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun', 'Iyul', 'Avg', 'Sen'];
+        grossData = [300000, 450000, 600000, 950000, 1200000, 1500000, 1750000, 1900000, 2040000];
+      } else {
+        labels = ['2025 Q3', '2025 Q4', '2026 Q1', '2026 Q2', '2026 Q3'];
+        grossData = [800000, 1400000, 2100000, 3200000, 4500000];
+      }
+
+      if (revenueChart) {
+        revenueChart.data.labels = labels;
+        revenueChart.data.datasets[0].data = grossData;
+        revenueChart.data.datasets[1].data = grossData.map(v => Math.round(v * 0.9));
+        revenueChart.update();
+      }
+    }
+
+    // Render Transactions Table
+    function renderTransactions(listToRender = null) {
+      const list = listToRender || financialState.transactions;
+      const tbody = document.getElementById('txTableBody');
+      const countLabel = document.getElementById('txCountLabel');
+      if (!tbody) return;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="p-8 text-center text-slate-500">
+              <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-60"></i>
+              <p class="font-bold">Tranzaksiyalar topilmadi</p>
+            </td>
+          </tr>
+        `;
+        if (countLabel) countLabel.textContent = "0 ta tranzaksiya";
+        refreshLucide();
+        return;
+      }
+
+      tbody.innerHTML = list.map(tx => {
+        const isWithdraw = tx.type === 'withdraw';
+        const isPositive = tx.amount > 0;
+        const amountDisplay = (isPositive ? '+' : '') + Math.abs(tx.amount).toLocaleString('uz-UZ') + ' UZS';
+        const badgeClass = isWithdraw 
+          ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30' 
+          : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+        const typeLabel = isWithdraw ? 'Pul Yechish' : 'Sotuv Tushumi';
+        const typeIcon = isWithdraw ? 'arrow-up-right' : 'arrow-down-left';
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="p-3.5">
+              <span class="font-mono font-bold text-white block">${tx.id}</span>
+              <span class="text-[10px] text-slate-500">${tx.date}</span>
+            </td>
+            <td class="p-3.5">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold ${badgeClass}">
+                <i data-lucide="${typeIcon}" class="w-3 h-3"></i>
+                <span>${typeLabel}</span>
+              </span>
+            </td>
+            <td class="p-3.5">
+              <span class="font-semibold text-slate-200 block">${tx.title}</span>
+              <span class="text-[10px] text-slate-400 font-mono">${isWithdraw ? 'Karta orqali to\'lov' : 'Sof: +' + tx.net.toLocaleString('uz-UZ') + ' UZS'}</span>
+            </td>
+            <td class="p-3.5 text-right font-mono font-bold text-sm ${isPositive ? 'text-emerald-400' : 'text-amber-400'}">
+              ${amountDisplay}
+            </td>
+            <td class="p-3.5 text-center">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Bajarildi</span>
+              </span>
+            </td>
+            <td class="p-3.5 text-right">
+              <button onclick="viewTxDetail('${tx.id}')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition" title="Chekni ko'rish">
+                <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      if (countLabel) {
+        countLabel.textContent = `Jami ${list.length} ta tranzaksiya ko'rsatilmoqda`;
+      }
+
+      refreshLucide();
+    }
+
+    // Filter Transactions
+    function filterTransactions() {
+      const query = (document.getElementById('txSearchInput')?.value || '').toLowerCase().trim();
+      const type = document.getElementById('txTypeFilter')?.value || 'all';
+
+      let filtered = financialState.transactions.filter(tx => {
+        const matchesQuery = !query || tx.id.toLowerCase().includes(query) || tx.title.toLowerCase().includes(query);
+        const matchesType = type === 'all' || (type === 'sale' && tx.type === 'sale') || (type === 'withdraw' && tx.type === 'withdraw') || (type === 'commission' && tx.type === 'commission');
+        return matchesQuery && matchesType;
+      });
+
+      renderTransactions(filtered);
+    }
+
+    // Soliq Kalkulyatori Logikasi
+    function calculateTaxes() {
+      const gross = parseFloat(document.getElementById('calcGrossInput').value) || 0;
+      const platformFee = Math.round(gross * 0.10);
+      const taxRate = 0.00; // 0% Imtiyoz
+      const taxAmount = Math.round(gross * taxRate);
+      const takeHome = gross - platformFee - taxAmount;
+
+      document.getElementById('calcPlatformFee').textContent = '-' + platformFee.toLocaleString('uz-UZ') + ' UZS';
+      document.getElementById('calcTaxAmount').textContent = taxAmount.toLocaleString('uz-UZ') + ' UZS (0%)';
+      document.getElementById('calcNetTakeHome').textContent = takeHome.toLocaleString('uz-UZ') + ' UZS';
+    }
+
+    // Pul Yechish Modal
+    function openWithdrawModal() {
+      const modal = document.getElementById('withdrawModal');
+      if (modal) {
+        refreshKPIs();
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        refreshLucide();
+      }
+    }
+
+    function closeWithdrawModal() {
+      const modal = document.getElementById('withdrawModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function formatCardNumberInput(input) {
+      let val = input.value.replace(/\D/g, '');
+      val = val.substring(0, 16);
+      const parts = [];
+      for (let i = 0; i < val.length; i += 4) {
+        parts.push(val.substring(i, i + 4));
+      }
+      input.value = parts.join(' ');
+    }
+
+    function setWithdrawPercent(percent) {
+      const max = financialState.netBalance;
+      const amount = Math.floor(max * percent);
+      const input = document.getElementById('withdrawAmount');
+      if (input) {
+        input.value = amount;
+      }
+    }
+
+    function handleWithdrawSubmit(e) {
+      e.preventDefault();
+      const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+      const card = document.getElementById('withdrawCardNumber').value;
+      const holder = document.getElementById('withdrawCardHolder').value;
+
+      if (amount < 50000) {
+        alert("Minimal pul yechish summasi 50,000 UZS");
+        return;
+      }
+
+      if (amount > financialState.netBalance) {
+        alert("Hisobingizda yetarli mablag' mavjud emas!");
+        return;
+      }
+
+      // Process withdrawal
+      financialState.netBalance -= amount;
+      financialState.withdrawnTotal += amount;
+
+      const newTx = {
+        id: 'TX-' + Math.floor(1000 + Math.random() * 9000),
+        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+        type: 'withdraw',
+        title: `Pul yechish (${card.slice(0, 4)}вЂўвЂўвЂўвЂў${card.slice(-4)})`,
+        amount: -amount,
+        net: -amount,
+        status: 'completed'
+      };
+
+      financialState.transactions.unshift(newTx);
+      saveFinanceData();
+
+      closeWithdrawModal();
+      refreshKPIs();
+      renderTransactions();
+
+      // Trigger Confetti
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      } catch (err) {}
+
+      alert(`вњ… Muvaffaqiyatli! ${amount.toLocaleString('uz-UZ')} UZS miqdoridagi so'rovingiz qabul qilindi va kartangizga yuborildi.`);
+    }
+
+    // Export to CSV
+    function exportToCSV() {
+      if (financialState.transactions.length === 0) {
+        alert("Eksport qilish uchun tranzaksiyalar mavjud emas!");
+        return;
+      }
+
+      const headers = ["Tranzaksiya ID", "Sana", "Turi", "Mahsulot / Izoh", "Brutto Summa (UZS)", "Sof Summa (UZS)", "Holati"];
+      const rows = financialState.transactions.map(tx => [
+        tx.id,
+        tx.date,
+        tx.type === 'withdraw' ? 'Pul yechish' : 'Sotuv tushumi',
+        `"${tx.title.replace(/"/g, '""')}"`,
+        tx.amount,
+        tx.net,
+        tx.status
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
+        + headers.join(",") + "\n"
+        + rows.map(e => e.join(",")).join("\n");
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `SOFF_HUB_Moliyaviy_Hisobot_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function viewTxDetail(txId) {
+      const tx = financialState.transactions.find(t => t.id === txId);
+      if (tx) {
+        alert(`рџ“„ TRANZAKSIYA CHEKI:\n\nID: ${tx.id}\nSana: ${tx.date}\nIzoh: ${tx.title}\nSumma: ${Math.abs(tx.amount).toLocaleString('uz-UZ')} UZS\nHolati: Muvaffaqiyatli bajarilgan`);
+      }
+    }
+
+    function refreshLucide() {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    // Init on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSavedFinanceData();
+      refreshKPIs();
+      initRevenueChart();
+      calculateTaxes();
+      renderTransactions();
+      refreshLucide();
+    });
+  </script>
+
+</body>
+</html>
