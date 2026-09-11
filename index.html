@@ -2283,7 +2283,8 @@
                       <th class="py-3 px-3">Summa</th>
                       <th class="py-3 px-3">To'lov Turi</th>
                       <th class="py-3 px-3">Sana & Vaqt</th>
-                      <th class="py-3 px-4 text-center">Holati</th>
+                      <th class="py-3 px-3 text-center">Holati</th>
+                      <th class="py-3 px-4 text-right">Boshqarish</th>
                     </tr>
                   </thead>
                   <tbody id="adminOrdersTableBody" class="divide-y divide-slate-800/60">
@@ -2590,6 +2591,10 @@
 
           <!-- Quick Action Buttons on Seller Profile -->
           <div class="flex flex-wrap items-center gap-2">
+            <button onclick="adminEditSelectedSeller()" class="px-3.5 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-white border border-cyan-500/30 text-xs font-bold transition flex items-center gap-1.5" title="Sotuvchi ma'lumotlarini tahrirlash">
+              <i data-lucide="edit-3" class="w-4 h-4"></i>
+              <span>Tahrirlash</span>
+            </button>
             <button id="adminSelProfToggleStatusBtn" onclick="adminToggleSelectedSellerStatus()" class="px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-white border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5">
               <i data-lucide="pause-circle" class="w-4 h-4"></i>
               <span>Hisobni Muzlatish</span>
@@ -4547,11 +4552,22 @@ USHBU AKTIV BO'YICHA HUQUQLAR:
               <i data-lucide="download" class="w-3.5 h-3.5"></i>
               <span>Yuklab Olish</span>
             </button>
+            <button onclick="deletePurchasedItem(${item.id})" class="p-2 rounded-xl bg-rose-500/15 text-rose-400 hover:bg-rose-500/25 border border-rose-500/30 transition" title="Tarixdan o'chirish">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
           </div>
         </div>
       `).join('');
 
       refreshLucide();
+    }
+
+    function deletePurchasedItem(id) {
+      if (!confirm("Ushbu xarid yozuvini tarixdan o'chirishni tasdiqlaysizmi?")) return;
+      appState.purchased = appState.purchased.filter(i => i.id !== id);
+      localStorage.setItem('azimxon_clean_purchased', JSON.stringify(appState.purchased));
+      renderPurchasedItems();
+      showToast("Xarid yozuvi o'chirildi", "info");
     }
 
     function toggleWishlist(id) {
@@ -6109,6 +6125,39 @@ ${details ? `• Особенности: ${details}\n` : ''}
       adminDeleteSeller(adminSelectedSellerId);
     }
 
+    function adminEditSelectedSeller() {
+      if (!adminSelectedSellerId) return;
+      const seller = adminSellers.find(s => s.id === adminSelectedSellerId);
+      if (!seller) return;
+
+      const newName = prompt("Sotuvchi ismini tahrirlash:", seller.name);
+      if (newName === null) return;
+      if (newName.trim()) {
+        seller.name = newName.trim();
+        seller.avatar = seller.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'ST';
+      }
+
+      const newSpecialty = prompt("Sotuvchi sohasi/mutaxassisligi:", seller.specialty || "");
+      if (newSpecialty !== null && newSpecialty.trim()) seller.specialty = newSpecialty.trim();
+
+      const newPhone = prompt("Sotuvchi telefon raqami:", seller.phone || "");
+      if (newPhone !== null && newPhone.trim()) seller.phone = newPhone.trim();
+
+      const newEmail = prompt("Sotuvchi emaili:", seller.email || "");
+      if (newEmail !== null && newEmail.trim()) seller.email = newEmail.trim();
+
+      const newRatingStr = prompt("Sotuvchi reytingi (0.0 dan 5.0 gacha):", seller.rating || 5.0);
+      if (newRatingStr !== null) {
+        const r = parseFloat(newRatingStr);
+        if (!isNaN(r) && r >= 0 && r <= 5) seller.rating = r;
+      }
+
+      localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+      renderAdminDashboardData();
+      adminOpenSellerProfile(adminSelectedSellerId);
+      showToast(`"${seller.name}" ma'lumotlari muvaffaqiyatli yangilandi! ✏️`, "success");
+    }
+
     function adminDeleteSeller(sellerId) {
       const seller = adminSellers.find(s => s.id === sellerId);
       if (!seller) return;
@@ -6270,6 +6319,11 @@ ${details ? `• Особенности: ${details}\n` : ''}
         list = list.filter(o => o.id.toLowerCase().includes(q) || o.buyerName.toLowerCase().includes(q) || o.productTitle.toLowerCase().includes(q) || o.sellerName.toLowerCase().includes(q));
       }
 
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-500 text-xs">Buyurtmalar mavjud emas (Barcha buyurtmalar o'chirilgan yoki bo'sh)</td></tr>`;
+        return;
+      }
+
       tbody.innerHTML = list.map(o => `
         <tr class="hover:bg-slate-800/40 transition">
           <td class="py-3 px-4 font-mono font-bold text-amber-400">${o.id}</td>
@@ -6277,18 +6331,50 @@ ${details ? `• Особенности: ${details}\n` : ''}
             <div class="font-bold text-white">${o.buyerName}</div>
             <div class="text-[10px] text-slate-400 font-mono">${o.buyerPhone}</div>
           </td>
-          <td class="py-3 px-3 font-semibold text-slate-200 max-w-xs truncate">${o.productTitle}</td>
+          <td class="py-3 px-3 font-semibold text-slate-200 max-w-xs truncate" title="${o.productTitle}">${o.productTitle}</td>
           <td class="py-3 px-3 text-slate-400 font-medium">${o.sellerName}</td>
           <td class="py-3 px-3 font-mono font-bold text-emerald-400">${formatUZS(o.amount)}</td>
           <td class="py-3 px-3">
             <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-slate-300 font-bold text-[10px] border border-slate-700 font-mono">${o.paymentGateway}</span>
           </td>
           <td class="py-3 px-3 font-mono text-[10px] text-slate-400">${o.date}</td>
-          <td class="py-3 px-4 text-center">
-            <span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">✓ ${o.status}</span>
+          <td class="py-3 px-3 text-center">
+            <button onclick="adminToggleOrderStatus('${o.id}')" class="px-2 py-0.5 rounded-full ${o.status === 'Muvaffaqiyatli' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/25' : o.status === 'Bekor qilindi' ? 'bg-rose-500/15 text-rose-400 border-rose-500/30 hover:bg-rose-500/25' : 'bg-amber-500/15 text-amber-400 border-amber-500/30 hover:bg-amber-500/25'} border text-[10px] font-bold transition" title="Holatni o'zgartirish">
+              ${o.status === 'Muvaffaqiyatli' ? '✓ ' : o.status === 'Bekor qilindi' ? '✕ ' : '⏳ '}${o.status}
+            </button>
+          </td>
+          <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
+            <button onclick="adminDeleteOrder('${o.id}')" class="p-1.5 rounded-lg bg-rose-500/15 text-rose-400 hover:bg-rose-600 hover:text-white border border-rose-500/30 transition" title="Buyurtmani o'chirish">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i>
+            </button>
           </td>
         </tr>
       `).join('');
+    }
+
+    function adminDeleteOrder(orderId) {
+      if (!confirm(`Haqiqatan ham "${orderId}" raqamli buyurtmani tizimdan o'chirmoqchimisiz?`)) return;
+      adminOrders = adminOrders.filter(o => o.id !== orderId);
+      localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
+      renderAdminDashboardData();
+      renderSellerOrders();
+      showToast(`"${orderId}" buyurtmasi o'chirildi! 🗑️`, "info");
+    }
+
+    function adminToggleOrderStatus(orderId) {
+      const ord = adminOrders.find(o => o.id === orderId);
+      if (!ord) return;
+      if (ord.status === 'Muvaffaqiyatli') {
+        ord.status = 'Bekor qilindi';
+      } else if (ord.status === 'Bekor qilindi') {
+        ord.status = 'Kutilmoqda';
+      } else {
+        ord.status = 'Muvaffaqiyatli';
+      }
+      localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
+      renderAdminDashboardData();
+      renderSellerOrders();
+      showToast(`Buyurtma (${orderId}) holati: "${ord.status}" ga o'zgartirildi`, "info");
     }
 
     function renderAdminAnalyticsGrid() {
@@ -6360,23 +6446,38 @@ ${details ? `• Особенности: ${details}\n` : ''}
     }
 
     function adminEditProductPrice(id) {
+      adminEditProduct(id);
+    }
+
+    function adminEditProduct(id) {
       const prod = appState.products.find(p => p.id === id);
       if (!prod) return;
 
-      const newPriceStr = prompt(`"${prod.title}" uchun yangi narxni kiriting (UZS):`, prod.price);
+      const newTitle = prompt(`"${prod.title}" nomini tahrirlash:`, prod.title);
+      if (newTitle === null) return;
+      if (newTitle.trim()) {
+        prod.title = newTitle.trim();
+        prod.title_uz = newTitle.trim();
+      }
+
+      const newPriceStr = prompt(`"${prod.title}" uchun yangi narx (UZS):`, prod.price);
       if (newPriceStr !== null) {
         const newPrice = parseInt(newPriceStr);
         if (!isNaN(newPrice) && newPrice > 0) {
           prod.price = newPrice;
-          localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
-          renderProducts();
-          renderSellerProducts();
-          renderAdminDashboardData();
-          showToast(`Narx yangilandi: ${formatUZS(newPrice)}`, 'success');
-        } else {
-          showToast("Noto'g'ri narx kiritildi", "warning");
         }
       }
+
+      const newFormat = prompt("Fayl formati (masalan: Blender .blend, Python .zip, Figma .fig):", prod.format || "");
+      if (newFormat !== null && newFormat.trim()) {
+        prod.format = newFormat.trim();
+      }
+
+      localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+      renderProducts();
+      renderSellerProducts();
+      renderAdminDashboardData();
+      showToast(`"${prod.title}" ma'lumotlari yangilandi! ✏️`, 'success');
     }
 
     function adminDeleteProduct(id) {
@@ -6456,37 +6557,68 @@ Men sizning do'koningiz **AZIMXON.HUB** bo'yicha shaxsiy AI maslahatchisiman. Pl
 
 Shuningdek, xohlagan boshqa mavzuda (dasturlash, marketing, yangi biznes g'oyalar) ham xuddi ChatGPT / Gemini kabi bemalol gaplashaveramiz. Qanday savolingiz bor?`;
 
-    let adminAIThreads = JSON.parse(localStorage.getItem('azimxon_admin_ai_threads_v4')) || [
-      {
-        id: "thread-default",
-        title: "💬 Asosiy AI Suhbat",
-        createdAt: new Date().toLocaleDateString('uz-UZ') + ' ' + new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }),
-        messages: [
+    let storedThreadsRaw = localStorage.getItem('azimxon_admin_ai_threads_v4');
+    let adminAIThreads;
+    if (storedThreadsRaw === null) {
+      adminAIThreads = [
+        {
+          id: "thread-default",
+          title: "💬 Asosiy AI Suhbat",
+          createdAt: new Date().toLocaleDateString('uz-UZ') + ' ' + new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }),
+          messages: [
+            {
+              role: 'assistant',
+              content: DEFAULT_AI_INITIAL_MESSAGE,
+              time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+            }
+          ]
+        }
+      ];
+      localStorage.setItem('azimxon_admin_ai_threads_v4', JSON.stringify(adminAIThreads));
+    } else {
+      try {
+        const parsed = JSON.parse(storedThreadsRaw);
+        adminAIThreads = Array.isArray(parsed) && parsed.length > 0 ? parsed : [
           {
-            role: 'assistant',
-            content: DEFAULT_AI_INITIAL_MESSAGE,
-            time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+            id: "thread-default",
+            title: "💬 Asosiy AI Suhbat",
+            createdAt: new Date().toLocaleDateString('uz-UZ') + ' ' + new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }),
+            messages: [{ role: 'assistant', content: DEFAULT_AI_INITIAL_MESSAGE, time: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) }]
           }
-        ]
+        ];
+      } catch(e) {
+        adminAIThreads = [{ id: "thread-default", title: "💬 Asosiy AI Suhbat", createdAt: "", messages: [] }];
       }
-    ];
+    }
 
     let adminActiveThreadId = localStorage.getItem('azimxon_admin_active_thread_id') || adminAIThreads[0]?.id || "thread-default";
 
-    let adminNotes = JSON.parse(localStorage.getItem('azimxon_admin_notes_v2')) || [
-      {
-        id: "note-1",
-        title: "📌 Do'kon rivojlantirish rejasi",
-        content: "1. 3D modellar kategoriyasiga yangi mualliflarni jalb qilish.\n2. Telegram kanal orqali har kuni yangi aktivlarni reklama qilib borish.\n3. Sotuvchilar uchun komissiya tizimini optimallashtirish.",
-        date: new Date().toLocaleDateString('uz-UZ')
-      },
-      {
-        id: "note-2",
-        title: "💡 Yangi g'oyalar & Botlar",
-        content: "Payme va Click avtomatlashgan billing boti tizimini yanada takomillashtirish.",
-        date: new Date().toLocaleDateString('uz-UZ')
+    let storedNotesRaw = localStorage.getItem('azimxon_admin_notes_v2');
+    let adminNotes;
+    if (storedNotesRaw === null) {
+      adminNotes = [
+        {
+          id: "note-1",
+          title: "📌 Do'kon rivojlantirish rejasi",
+          content: "1. 3D modellar kategoriyasiga yangi mualliflarni jalb qilish.\n2. Telegram kanal orqali har kuni yangi aktivlarni reklama qilib borish.\n3. Sotuvchilar uchun komissiya tizimini optimallashtirish.",
+          date: new Date().toLocaleDateString('uz-UZ')
+        },
+        {
+          id: "note-2",
+          title: "💡 Yangi g'oyalar & Botlar",
+          content: "Payme va Click avtomatlashgan billing boti tizimini yanada takomillashtirish.",
+          date: new Date().toLocaleDateString('uz-UZ')
+        }
+      ];
+      localStorage.setItem('azimxon_admin_notes_v2', JSON.stringify(adminNotes));
+    } else {
+      try {
+        const parsed = JSON.parse(storedNotesRaw);
+        adminNotes = Array.isArray(parsed) ? parsed : [];
+      } catch(e) {
+        adminNotes = [];
       }
-    ];
+    }
 
     let adminAISearchQuery = "";
 
