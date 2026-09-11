@@ -3077,29 +3077,39 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      setGlobalLanguage(appState.lang, false);
-      renderProducts();
-      renderSellerProducts();
-      updateCategoryCounts();
-      updateWalletUI();
-      updateCartBadge();
-      initDragAndDrop();
-      initHeroBannerCarousel();
+    function initApp() {
+      try {
+        initTheme();
+        setGlobalLanguage(appState.lang, false);
+        renderProducts();
+        renderSellerProducts();
+        updateCategoryCounts();
+        updateWalletUI();
+        updateCartBadge();
+        initDragAndDrop();
+        initHeroBannerCarousel();
 
-      // Restore view if seller or admin
-      const savedView = localStorage.getItem('azimxon_app_view');
-      if (savedView === 'seller') {
-        switchAppView('seller');
+        // Restore view if seller or admin
+        const savedView = localStorage.getItem('azimxon_app_view');
+        if (savedView === 'seller') {
+          switchAppView('seller');
+        }
+
+        if (appState.isAdminLoggedIn && localStorage.getItem('azimxon_admin_modal_open') === 'true') {
+          openAdminDashboardModal();
+        }
+
+        refreshLucide();
+      } catch (err) {
+        console.error("Initialization error:", err);
       }
+    }
 
-      if (appState.isAdminLoggedIn && localStorage.getItem('azimxon_admin_modal_open') === 'true') {
-        openAdminDashboardModal();
-      }
-
-      refreshLucide();
-    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
 
     function refreshLucide() {
       if (window.lucide) lucide.createIcons();
@@ -4344,8 +4354,6 @@ ${details ? `Особенности: ${details}\n` : ''}
         joinedDate: "2026-03-10"
       }
     ];
-
-    let adminSellers = JSON.parse(localStorage.getItem('azimxon_admin_sellers')) || DEFAULT_ADMIN_SELLERS;
 
     const DEFAULT_ADMIN_ORDERS = [
       {
