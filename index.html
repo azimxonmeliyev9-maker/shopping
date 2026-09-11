@@ -1670,9 +1670,7 @@
     </div>
   </div>
 
-  <!-- ================= 6. ADMIN AUTH LOGIN MODAL (GMAIL & KOD) ================= -->
-  <div id="adminAuthModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-  <!-- 6. ADMIN AUTH MODAL (SECURE & CONFIDENTIAL LOGIN) -->
+  <!-- ================= 6. ADMIN AUTH LOGIN MODAL (SECURE & CONFIDENTIAL) ================= -->
   <div id="adminAuthModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
     <div class="modal-card rounded-3xl max-w-sm w-full p-6 relative shadow-2xl text-center border border-emerald-500/30">
       <button onclick="closeAdminAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
@@ -1697,7 +1695,7 @@
               id="adminEmailInput" 
               required 
               autocomplete="username"
-              placeholder="admin@email.com"
+              placeholder="Emailingizni kiriting..."
               class="modal-input w-full border rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-medium"
             >
           </div>
@@ -1712,8 +1710,8 @@
               id="adminCodeInput" 
               required 
               autocomplete="current-password"
-              placeholder="••••••••"
-              class="modal-input w-full border rounded-xl pl-9 pr-10 py-2.5 text-xs tracking-widest text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono"
+              placeholder="Parolingizni kiriting..."
+              class="modal-input w-full border rounded-xl pl-9 pr-10 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono"
             >
             <button type="button" onclick="toggleAdminPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 p-1 transition" title="Parolni ko'rsatish/yashirish">
               <i data-lucide="eye" id="adminPwdEyeIcon" class="w-4 h-4"></i>
