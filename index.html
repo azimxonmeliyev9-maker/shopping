@@ -2082,11 +2082,14 @@
           <div id="adminPane-sellers" class="admin-tab-pane hidden space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-slate-900 border border-slate-800">
               <div>
-                <h4 class="font-black text-sm text-white">Ro'yxatdan O'tgan Sotuvchilar Bazasi</h4>
-                <p class="text-[11px] text-slate-400">Platformada faoliyat yuritayotgan barcha sotuvchilar statistikasi va boshqaruvi</p>
+                <h4 class="font-black text-sm text-white flex items-center gap-2">
+                  <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+                  <span>Ro'yxatdan O'tgan Sotuvchilar Bazasi</span>
+                </h4>
+                <p class="text-[11px] text-slate-400">Platformadagi barcha sotuvchilarni ko'rish, profilini tekshirish, muzlatish va sotuvchilikdan chiqarish</p>
               </div>
 
-              <div class="flex items-center gap-2">
+              <div class="flex items-center flex-wrap gap-2">
                 <select id="adminSellerFilterCat" onchange="filterAdminSellersTable()" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none">
                   <option value="all">Barcha Yo'nalishlar</option>
                   <option value="3d">3D Dizaynerlar</option>
@@ -2094,7 +2097,13 @@
                   <option value="dizayn">UI/UX Dizaynerlar</option>
                   <option value="video">Video Makerlar</option>
                   <option value="ilmiy">Akademik Mualliflar</option>
+                  <option value="biznes">Biznes Mualliflar</option>
                 </select>
+
+                <button onclick="adminOpenAddSellerModal()" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md">
+                  <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                  <span>+ Yangi Sotuvchi Qo'shish</span>
+                </button>
               </div>
             </div>
 
@@ -2111,7 +2120,7 @@
                       <th class="py-3 px-3">Balans</th>
                       <th class="py-3 px-3 text-center">Reyting</th>
                       <th class="py-3 px-3 text-center">Holati</th>
-                      <th class="py-3 px-4 text-right">Amallar</th>
+                      <th class="py-3 px-4 text-right">Amallar & Nazorat</th>
                     </tr>
                   </thead>
                   <tbody id="adminSellersTableBody" class="divide-y divide-slate-800/60">
@@ -2276,6 +2285,199 @@
         </div>
 
       </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 8. ADMIN SELLER DETAILED PROFILE & REMOVAL MODAL ================= -->
+  <div id="adminSellerProfileModal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-black/90 backdrop-blur-md overflow-y-auto">
+    <div class="modal-card rounded-3xl max-w-4xl w-full p-5 sm:p-7 relative shadow-2xl my-auto border border-cyan-500/30 bg-[#0b1120] text-slate-100 max-h-[90vh] flex flex-col overflow-hidden">
+      
+      <!-- Top Bar: Title & Close -->
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800 flex-shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-white flex items-center gap-2">
+              <span>Sotuvchi Shaxsiy Profili & Boshqaruvi</span>
+              <span id="adminSelProfStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold uppercase">FAOL</span>
+            </h3>
+            <p class="text-xs text-slate-400">Admin nazorati: sotuvchi faoliyati, barcha mahsulotlari va daromadlarini boshqarish</p>
+          </div>
+        </div>
+
+        <button onclick="adminCloseSellerProfile()" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Profile Content -->
+      <div class="overflow-y-auto pr-1 space-y-5 flex-1">
+        
+        <!-- Seller Info Header Card -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div id="adminSelProfAvatar" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-600 to-emerald-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 flex-shrink-0">
+              AM
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 id="adminSelProfName" class="font-black text-lg text-white">Azimxon Meliyev</h4>
+                <span class="px-2 py-0.5 rounded-md bg-cyan-500/15 text-cyan-400 text-[10px] font-bold border border-cyan-500/20">Tasdiqlangan</span>
+              </div>
+              <p id="adminSelProfSpecialty" class="text-xs text-slate-300 font-semibold mt-0.5">3D Modeller & Founder</p>
+              <div class="flex flex-wrap items-center gap-3 text-[11px] text-slate-400 mt-2 font-mono">
+                <span class="flex items-center gap-1"><i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500"></i> <span id="adminSelProfEmail">azimxonmeliyev9@gmail.com</span></span>
+                <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i> <span id="adminSelProfPhone">+998 90 123 45 67</span></span>
+                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i> A'zo: <span id="adminSelProfJoined">2025-11-14</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons on Seller Profile -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="adminSelProfToggleStatusBtn" onclick="adminToggleSelectedSellerStatus()" class="px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-white border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5">
+              <i data-lucide="pause-circle" class="w-4 h-4"></i>
+              <span>Hisobni Muzlatish</span>
+            </button>
+            <button id="adminSelProfDeleteBtn" onclick="adminDeleteSelectedSeller()" class="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/40 text-xs font-extrabold transition flex items-center gap-1.5 shadow-lg shadow-rose-500/20" title="Ushbu sotuvchini tizimdan butunlay o'chirish">
+              <i data-lucide="user-x" class="w-4 h-4"></i>
+              <span>Sotuvchilikdan Chiqarish (O'chirish)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Key Financial & Listing Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Jami Savdosi</span>
+            <div id="adminSelProfTotalSales" class="text-base font-black text-emerald-400 font-mono">0 UZS</div>
+            <span class="text-[10px] text-slate-500">Platformadagi umumiy aylanma</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mavjud Balansi</span>
+            <div id="adminSelProfBalance" class="text-base font-black text-white font-mono">0 UZS</div>
+            <span class="text-[10px] text-slate-500">Yechib olishga tayyor summa</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Sotuvdagi Aktivlari</span>
+            <div id="adminSelProfListingsCount" class="text-base font-black text-cyan-400 font-mono">0 ta</div>
+            <span class="text-[10px] text-slate-500">Bozordagi yuklangan ishlari</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mijozlar Reytingi</span>
+            <div id="adminSelProfRating" class="text-base font-black text-amber-400 flex items-center gap-1 font-mono">★ 5.0</div>
+            <span class="text-[10px] text-slate-500">Xaridorlar ijobiy fikrlari</span>
+          </div>
+        </div>
+
+        <!-- Seller Products Table -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-extrabold text-sm text-white flex items-center gap-2">
+              <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
+              <span>Ushbu Sotuvchining Sotuvga Qo'ygan Barcha Ishlari</span>
+            </h4>
+            <span id="adminSelProfProductsTotalBadge" class="text-xs font-mono font-bold text-slate-400">0 ta aktiv</span>
+          </div>
+
+          <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-slate-950/80 text-[10px] text-slate-400 uppercase font-bold border-b border-slate-800">
+                  <tr>
+                    <th class="py-2.5 px-3">ID</th>
+                    <th class="py-2.5 px-3">Mahsulot Nomi</th>
+                    <th class="py-2.5 px-3">Kategoriya</th>
+                    <th class="py-2.5 px-3">Format</th>
+                    <th class="py-2.5 px-3">Narxi</th>
+                    <th class="py-2.5 px-3 text-right">Amallar</th>
+                  </tr>
+                </thead>
+                <tbody id="adminSelProfProductsTableBody" class="divide-y divide-slate-800/60">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 9. ADMIN ADD NEW SELLER MODAL ================= -->
+  <div id="adminAddSellerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="modal-card rounded-3xl max-w-md w-full p-6 relative shadow-2xl my-auto border border-emerald-500/30 bg-[#0b1120] text-slate-100">
+      
+      <button onclick="adminCloseAddSellerModal()" class="absolute right-5 top-5 text-slate-400 hover:text-white p-1">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+          <i data-lucide="user-plus" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-base text-white">Yangi Sotuvchi Qo'shish</h3>
+          <p class="text-xs text-slate-400">Platformaga yangi tasdiqlangan sotuvchini ro'yxatdan o'tkazing</p>
+        </div>
+      </div>
+
+      <form onsubmit="adminHandleAddSellerSubmit(event)" class="space-y-3">
+        <div>
+          <label class="text-xs font-semibold text-slate-300 block mb-1">Ism va Familiya <span class="text-rose-500">*</span></label>
+          <input type="text" id="addSellerName" required placeholder="Masalan: Sardor Rustamov" class="modal-input w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-emerald-500 font-medium">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Email <span class="text-rose-500">*</span></label>
+            <input type="email" id="addSellerEmail" required placeholder="seller@domain.uz" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Telefon <span class="text-rose-500">*</span></label>
+            <input type="tel" id="addSellerPhone" required placeholder="+998 90 123 45 67" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-300 block mb-1">Yo'nalish / Kategoriya <span class="text-rose-500">*</span></label>
+          <select id="addSellerCategory" required class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500">
+            <option value="3d">3D Dizayn & Renderlar</option>
+            <option value="dasturlash">Dasturlash & Botlar</option>
+            <option value="dizayn">UI/UX & Grafik Dizayn</option>
+            <option value="video">Video Kurslar & Montaj</option>
+            <option value="marketing">Marketing & SMM</option>
+            <option value="ilmiy">Ilmiy & Akademik ishlar</option>
+            <option value="biznes">Biznes & Excel Modellar</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-slate-300 block mb-1">Mutaxassislik Tavsifi</label>
+          <input type="text" id="addSellerSpecialty" placeholder="Masalan: Blender 3D Artist & Motion Designer" class="modal-input w-full border rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Boshlang'ich Balans (UZS)</label>
+            <input type="number" id="addSellerBalance" value="0" min="0" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 font-mono">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Reyting (1.0 - 5.0)</label>
+            <input type="number" step="0.1" id="addSellerRating" value="5.0" min="1.0" max="5.0" class="modal-input w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 font-mono">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full btn-green-main py-2.5 rounded-xl font-bold text-xs mt-2 flex items-center justify-center gap-1.5 shadow-md">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Sotuvchini Qo'shish</span>
+        </button>
+      </form>
 
     </div>
   </div>
@@ -4384,6 +4586,8 @@ ${details ? `Особенности: ${details}\n` : ''}
       refreshLucide();
     }
 
+    let adminSelectedSellerId = null;
+
     function renderAdminOverviewPanes() {
       const recentOrdersEl = document.getElementById('adminOverviewRecentOrders');
       const topSellersEl = document.getElementById('adminOverviewTopSellers');
@@ -4408,13 +4612,13 @@ ${details ? `Особенности: ${details}\n` : ''}
 
       if (topSellersEl) {
         topSellersEl.innerHTML = adminSellers.slice(0, 4).map(s => `
-          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs hover:border-emerald-500/40 transition">
+          <div onclick="adminOpenSellerProfile(${s.id})" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs hover:border-cyan-500/50 hover:bg-slate-900 cursor-pointer transition group" title="Sotuvchi profilini ko'rish">
             <div class="flex items-center gap-2.5 truncate flex-1">
-              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center flex-shrink-0">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
                 ${s.avatar}
               </div>
               <div class="truncate">
-                <h5 class="font-bold text-white truncate">${s.name}</h5>
+                <h5 class="font-bold text-white group-hover:text-cyan-400 transition truncate">${s.name}</h5>
                 <span class="text-[10px] text-slate-400">${s.specialty} • ${s.activeListings} ta ish</span>
               </div>
             </div>
@@ -4450,17 +4654,20 @@ ${details ? `Особенности: ${details}\n` : ''}
       tbody.innerHTML = list.map(s => `
         <tr class="hover:bg-slate-800/40 transition">
           <td class="py-3 px-4">
-            <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center">
+            <div class="flex items-center gap-2.5 cursor-pointer group" onclick="adminOpenSellerProfile(${s.id})" title="Profilni to'liq ko'rish">
+              <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-600 to-emerald-500 text-white font-bold text-xs flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition shadow-sm">
                 ${s.avatar}
               </div>
               <div>
-                <div class="font-bold text-white">${s.name}</div>
-                <div class="text-[10px] text-slate-400 font-mono">${s.email}</div>
+                <div class="font-bold text-white group-hover:text-cyan-400 transition flex items-center gap-1.5">
+                  <span>${s.name}</span>
+                  <i data-lucide="external-link" class="w-3 h-3 text-slate-500 group-hover:text-cyan-400 opacity-0 group-hover:opacity-100 transition"></i>
+                </div>
+                <div class="text-[10px] text-slate-400 font-mono">${s.email} • ${s.phone || '+998 90 *** ** **'}</div>
               </div>
             </div>
           </td>
-          <td class="py-3 px-3 font-semibold text-slate-300">${s.specialty}</td>
+          <td class="py-3 px-3 font-semibold text-slate-300 text-xs">${s.specialty}</td>
           <td class="py-3 px-3 text-center font-mono font-bold text-cyan-400">${s.activeListings} ta</td>
           <td class="py-3 px-3 font-mono font-bold text-emerald-400">${formatUZS(s.totalSalesSum)}</td>
           <td class="py-3 px-3 font-mono text-slate-300">${formatUZS(s.balance)}</td>
@@ -4472,13 +4679,219 @@ ${details ? `Особенности: ${details}\n` : ''}
               ${s.status}
             </span>
           </td>
-          <td class="py-3 px-4 text-right">
-            <button onclick="adminToggleSellerStatus(${s.id})" class="px-2.5 py-1 rounded-lg ${s.status === 'faol' ? 'bg-amber-500/15 text-amber-400 hover:bg-amber-500/25 border-amber-500/30' : 'bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25 border-emerald-500/30'} border text-[11px] font-bold transition">
-              ${s.status === 'faol' ? 'Muzlatish' : 'Faollashtirish'}
+          <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+            <button onclick="adminOpenSellerProfile(${s.id})" class="px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300 hover:bg-cyan-500 hover:text-white border border-cyan-500/30 text-[11px] font-bold transition inline-flex items-center gap-1" title="Sotuvchi profilini va barcha ishlarini ko'rish">
+              <i data-lucide="user" class="w-3 h-3"></i>
+              <span>Profil</span>
+            </button>
+            <button onclick="adminToggleSellerStatus(${s.id})" class="px-2 py-1 rounded-lg ${s.status === 'faol' ? 'bg-amber-500/15 text-amber-400 hover:bg-amber-500 hover:text-white border-amber-500/30' : 'bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500 hover:text-white border-emerald-500/30'} border text-[11px] font-bold transition" title="${s.status === 'faol' ? 'Hisobni vaqtincha muzlatish' : 'Hisobni faollashtirish'}">
+              ${s.status === 'faol' ? 'Muzlatish' : 'Faol'}
+            </button>
+            <button onclick="adminDeleteSeller(${s.id})" class="px-2 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/30 text-[11px] font-bold transition" title="Sotuvchilikdan butunlay chiqarish (O'chirish)">
+              <i data-lucide="trash-2" class="w-3 h-3 inline"></i>
             </button>
           </td>
         </tr>
       `).join('');
+    }
+
+    // ================= SELLER PROFILE DETAIL CONTROLLER =================
+    function adminOpenSellerProfile(sellerId) {
+      const seller = adminSellers.find(s => s.id === sellerId);
+      if (!seller) return;
+      adminSelectedSellerId = sellerId;
+
+      const m = document.getElementById('adminSellerProfileModal');
+      if (!m) return;
+
+      document.getElementById('adminSelProfAvatar').textContent = seller.avatar || seller.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+      document.getElementById('adminSelProfName').textContent = seller.name;
+      document.getElementById('adminSelProfSpecialty').textContent = seller.specialty || 'Raqamli Muallif';
+      document.getElementById('adminSelProfEmail').textContent = seller.email || '—';
+      document.getElementById('adminSelProfPhone').textContent = seller.phone || '+998 90 123 45 67';
+      document.getElementById('adminSelProfJoined').textContent = seller.joinedDate || '2025-11-14';
+
+      const statusBadge = document.getElementById('adminSelProfStatusBadge');
+      if (statusBadge) {
+        if (seller.status === 'faol') {
+          statusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold uppercase";
+          statusBadge.textContent = "FAOL";
+        } else {
+          statusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold uppercase";
+          statusBadge.textContent = "MUZLATILGAN";
+        }
+      }
+
+      const toggleBtn = document.getElementById('adminSelProfToggleStatusBtn');
+      if (toggleBtn) {
+        if (seller.status === 'faol') {
+          toggleBtn.className = "px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-400 hover:text-white border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5";
+          toggleBtn.innerHTML = `<i data-lucide="pause-circle" class="w-4 h-4"></i> <span>Hisobni Muzlatish</span>`;
+        } else {
+          toggleBtn.className = "px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5";
+          toggleBtn.innerHTML = `<i data-lucide="play-circle" class="w-4 h-4"></i> <span>Hisobni Faollashtirish</span>`;
+        }
+      }
+
+      document.getElementById('adminSelProfTotalSales').textContent = formatUZS(seller.totalSalesSum || 0);
+      document.getElementById('adminSelProfBalance').textContent = formatUZS(seller.balance || 0);
+      document.getElementById('adminSelProfListingsCount').textContent = `${seller.activeListings || 0} ta`;
+      document.getElementById('adminSelProfRating').innerHTML = `★ ${seller.rating || 5.0}`;
+
+      // Render all products belonging to this seller
+      const sellerProducts = appState.products.filter(p => {
+        const sNameLower = seller.name.toLowerCase();
+        const pAuthLower = (p.author || '').toLowerCase();
+        return pAuthLower === sNameLower || pAuthLower.includes(sNameLower.split(' ')[0]) || (p.category && p.category === seller.category);
+      });
+
+      const totalBadge = document.getElementById('adminSelProfProductsTotalBadge');
+      if (totalBadge) totalBadge.textContent = `${sellerProducts.length} ta aktiv mavjud`;
+
+      const pTbody = document.getElementById('adminSelProfProductsTableBody');
+      if (pTbody) {
+        if (sellerProducts.length === 0) {
+          pTbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-500 text-xs">Ushbu sotuvchining hozircha mahsulotlari mavjud emas</td></tr>`;
+        } else {
+          pTbody.innerHTML = sellerProducts.map(p => `
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-2.5 px-3 font-mono text-[10px] text-slate-400">#${p.id}</td>
+              <td class="py-2.5 px-3 font-bold text-white truncate max-w-xs">${getProductTitle(p)}</td>
+              <td class="py-2.5 px-3 uppercase text-[10px] font-mono text-cyan-400 font-bold">${p.category}</td>
+              <td class="py-2.5 px-3 text-[11px] text-slate-400">${p.format || 'Fayl'}</td>
+              <td class="py-2.5 px-3 font-mono font-bold text-emerald-400">${formatUZS(p.price)}</td>
+              <td class="py-2.5 px-3 text-right">
+                <button onclick="adminDeleteSellerProduct(${p.id}, ${seller.id})" class="p-1 rounded-lg bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white transition" title="Mahsulotni o'chirish">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+      refreshLucide();
+    }
+
+    function adminCloseSellerProfile() {
+      const m = document.getElementById('adminSellerProfileModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+      adminSelectedSellerId = null;
+    }
+
+    function adminToggleSelectedSellerStatus() {
+      if (!adminSelectedSellerId) return;
+      adminToggleSellerStatus(adminSelectedSellerId);
+      adminOpenSellerProfile(adminSelectedSellerId);
+    }
+
+    function adminDeleteSelectedSeller() {
+      if (!adminSelectedSellerId) return;
+      adminDeleteSeller(adminSelectedSellerId);
+    }
+
+    function adminDeleteSeller(sellerId) {
+      const seller = adminSellers.find(s => s.id === sellerId);
+      if (!seller) return;
+
+      const confirmMsg = `Haqiqatan ham "${seller.name}" sotuvchisini platformadan va barcha ro'yxatlardan butunlay o'chirib (sotuvchilikdan chiqarib) yubormoqchimisiz?\n\nUnga tegishli barcha profil ma'lumotlari va mahsulotlar tozalanadi.`;
+      if (!confirm(confirmMsg)) return;
+
+      // Remove seller
+      adminSellers = adminSellers.filter(s => s.id !== sellerId);
+      localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+
+      // Remove or keep products: remove products matching author name
+      const sNameLower = seller.name.toLowerCase();
+      appState.products = appState.products.filter(p => {
+        const pAuth = (p.author || '').toLowerCase();
+        return !(pAuth === sNameLower || (pAuth.includes(sNameLower.split(' ')[0]) && sNameLower.length > 3));
+      });
+      localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+
+      adminCloseSellerProfile();
+      renderProducts();
+      renderAdminDashboardData();
+      showToast(`"${seller.name}" sotuvchilikdan butunlay chiqarildi va o'chirildi! 🗑️`, "success");
+    }
+
+    function adminDeleteSellerProduct(prodId, sellerId) {
+      if (!confirm("Ushbu sotuvchining mahsulotini o'chirishni tasdiqlaysizmi?")) return;
+      
+      appState.products = appState.products.filter(p => p.id !== prodId);
+      localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+
+      const seller = adminSellers.find(s => s.id === sellerId);
+      if (seller && seller.activeListings > 0) {
+        seller.activeListings--;
+        localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+      }
+
+      renderProducts();
+      renderAdminDashboardData();
+      if (adminSelectedSellerId) adminOpenSellerProfile(adminSelectedSellerId);
+      showToast("Mahsulot muvaffaqiyatli o'chirildi!", "info");
+    }
+
+    // ================= ADD NEW SELLER MODAL HANDLERS =================
+    function adminOpenAddSellerModal() {
+      const m = document.getElementById('adminAddSellerModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+      refreshLucide();
+    }
+
+    function adminCloseAddSellerModal() {
+      const m = document.getElementById('adminAddSellerModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function adminHandleAddSellerSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('addSellerName').value.trim();
+      const email = document.getElementById('addSellerEmail').value.trim();
+      const phone = document.getElementById('addSellerPhone').value.trim();
+      const category = document.getElementById('addSellerCategory').value;
+      const specialty = document.getElementById('addSellerSpecialty').value.trim() || `${category.toUpperCase()} Mutaxassisi`;
+      const balance = parseInt(document.getElementById('addSellerBalance').value) || 0;
+      const rating = parseFloat(document.getElementById('addSellerRating').value) || 5.0;
+
+      const newId = Date.now();
+      const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'ST';
+
+      const newSeller = {
+        id: newId,
+        name: name,
+        email: email,
+        phone: phone,
+        specialty: specialty,
+        category: category,
+        activeListings: 0,
+        totalSalesSum: 0,
+        balance: balance,
+        rating: rating,
+        status: "faol",
+        avatar: initials,
+        joinedDate: new Date().toLocaleDateString('uz-UZ')
+      };
+
+      adminSellers.unshift(newSeller);
+      localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+
+      adminCloseAddSellerModal();
+      e.target.reset();
+      renderAdminDashboardData();
+      showToast(`Yangi sotuvchi "${name}" muvaffaqiyatli ro'yxatdan o'tkazildi! 🎉`, "success");
     }
 
     function renderAdminProductsTable() {
