@@ -2868,7 +2868,7 @@
       lang: localStorage.getItem('azimxon_lang') || 'uz',
       theme: localStorage.getItem('azimxon_clean_theme') || 'dark',
       activeCheckoutProduct: null,
-      isAdminLoggedIn: false
+      isAdminLoggedIn: localStorage.getItem('azimxon_admin_logged_in') === 'true'
     };
 
     function getProductTitle(p) {
@@ -3115,6 +3115,17 @@
       updateCartBadge();
       initDragAndDrop();
       initHeroBannerCarousel();
+
+      // Restore view if seller or admin
+      const savedView = localStorage.getItem('azimxon_app_view');
+      if (savedView === 'seller') {
+        switchAppView('seller');
+      }
+
+      if (appState.isAdminLoggedIn && localStorage.getItem('azimxon_admin_modal_open') === 'true') {
+        openAdminDashboardModal();
+      }
+
       refreshLucide();
     });
 
@@ -3664,6 +3675,7 @@ Sana: ${new Date().toLocaleDateString('uz-UZ')}
 
     // ================= SELLER DASHBOARD & VIEW NAVIGATION =================
     function switchAppView(view) {
+      localStorage.setItem('azimxon_app_view', view);
       const marketView = document.getElementById('marketView');
       const sellerView = document.getElementById('sellerDashboardView');
       const navMarket = document.getElementById('navMarketBtn');
@@ -4227,7 +4239,7 @@ ${details ? `Особенности: ${details}\n` : ''}
     }
 
     // ================= ENTERPRISE ADMIN CRM & ANALYTICS DATA STORE & LOGIC =================
-    let adminActiveTab = 'overview';
+    let adminActiveTab = localStorage.getItem('azimxon_admin_active_tab') || 'overview';
     let adminSearchQuery = '';
 
     const DEFAULT_ADMIN_SELLERS = [
@@ -4440,6 +4452,8 @@ ${details ? `Особенности: ${details}\n` : ''}
       if (email === adminCredentials.email.toLowerCase() && code === adminCredentials.code) {
         adminFailedAttempts = 0;
         appState.isAdminLoggedIn = true;
+        localStorage.setItem('azimxon_admin_logged_in', 'true');
+        localStorage.setItem('azimxon_admin_modal_open', 'true');
         if (alertEl) alertEl.classList.add('hidden');
         closeAdminAuthModal();
         e.target.reset();
@@ -4492,6 +4506,7 @@ ${details ? `Особенности: ${details}\n` : ''}
         m.classList.remove('hidden'); 
         m.classList.add('flex'); 
       }
+      localStorage.setItem('azimxon_admin_modal_open', 'true');
       if (document.getElementById('adminSettingNewEmail')) {
         document.getElementById('adminSettingNewEmail').value = adminCredentials.email;
       }
@@ -4503,16 +4518,21 @@ ${details ? `Особенности: ${details}\n` : ''}
     function closeAdminDashboardModal() {
       const m = document.getElementById('adminDashboardModal');
       if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+      localStorage.removeItem('azimxon_admin_modal_open');
     }
 
     function adminLogout() {
       appState.isAdminLoggedIn = false;
+      localStorage.removeItem('azimxon_admin_logged_in');
+      localStorage.removeItem('azimxon_admin_modal_open');
+      localStorage.removeItem('azimxon_admin_active_tab');
       closeAdminDashboardModal();
       showToast("Admin hisobidan muvaffaqiyatli chiqildi", "info");
     }
 
     function switchAdminTab(tabName) {
       adminActiveTab = tabName;
+      localStorage.setItem('azimxon_admin_active_tab', tabName);
 
       // Update Tab Navigation buttons active style
       const tabs = ['overview', 'sellers', 'products', 'orders', 'analytics', 'settings'];
