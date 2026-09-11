@@ -3152,16 +3152,18 @@
       }
     ];
 
+    let storedProductsRaw = localStorage.getItem('azimxon_clean_products');
     let storedProducts = null;
-    try {
-      storedProducts = JSON.parse(localStorage.getItem('azimxon_clean_products'));
-    } catch(e) {
-      storedProducts = null;
-    }
-
-    if (!Array.isArray(storedProducts) || storedProducts.length === 0 || !storedProducts[0]?.title_uz) {
+    if (storedProductsRaw === null) {
       storedProducts = JSON.parse(JSON.stringify(DEFAULT_DEMO_PRODUCTS));
       localStorage.setItem('azimxon_clean_products', JSON.stringify(storedProducts));
+    } else {
+      try {
+        const parsed = JSON.parse(storedProductsRaw);
+        storedProducts = Array.isArray(parsed) ? parsed : [];
+      } catch(e) {
+        storedProducts = [];
+      }
     }
 
     const DEFAULT_DEMO_PURCHASED = [
@@ -5422,19 +5424,33 @@ ${details ? `• Особенности: ${details}\n` : ''}
       }
     ];
 
-    let storedSellers = null;
-    try { storedSellers = JSON.parse(localStorage.getItem('azimxon_admin_sellers')); } catch(e){}
-    let adminSellers = (storedSellers && Array.isArray(storedSellers) && storedSellers.length > 0) 
-      ? storedSellers 
-      : JSON.parse(JSON.stringify(DEFAULT_ADMIN_SELLERS));
-    localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+    let storedSellersRaw = localStorage.getItem('azimxon_admin_sellers');
+    let adminSellers;
+    if (storedSellersRaw === null) {
+      adminSellers = JSON.parse(JSON.stringify(DEFAULT_ADMIN_SELLERS));
+      localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+    } else {
+      try {
+        const parsed = JSON.parse(storedSellersRaw);
+        adminSellers = Array.isArray(parsed) ? parsed : [];
+      } catch(e) {
+        adminSellers = [];
+      }
+    }
 
-    let storedOrders = null;
-    try { storedOrders = JSON.parse(localStorage.getItem('azimxon_admin_orders')); } catch(e){}
-    let adminOrders = (storedOrders && Array.isArray(storedOrders) && storedOrders.length > 0)
-      ? storedOrders
-      : JSON.parse(JSON.stringify(DEFAULT_ADMIN_ORDERS));
-    localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
+    let storedOrdersRaw = localStorage.getItem('azimxon_admin_orders');
+    let adminOrders;
+    if (storedOrdersRaw === null) {
+      adminOrders = JSON.parse(JSON.stringify(DEFAULT_ADMIN_ORDERS));
+      localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
+    } else {
+      try {
+        const parsed = JSON.parse(storedOrdersRaw);
+        adminOrders = Array.isArray(parsed) ? parsed : [];
+      } catch(e) {
+        adminOrders = [];
+      }
+    }
 
     let savedCreds = null;
     try { savedCreds = JSON.parse(localStorage.getItem('azimxon_admin_creds')); } catch(e){}
@@ -5746,18 +5762,15 @@ ${details ? `• Особенности: ${details}\n` : ''}
     }
 
     function renderAdminDashboardData() {
-      // 0. Ensure sellers, orders and products collections are populated
-      if (!adminSellers || !Array.isArray(adminSellers) || adminSellers.length === 0) {
-        adminSellers = JSON.parse(JSON.stringify(DEFAULT_ADMIN_SELLERS));
-        localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+      // 0. Ensure collections are valid arrays (do NOT overwrite empty arrays)
+      if (!adminSellers || !Array.isArray(adminSellers)) {
+        adminSellers = [];
       }
-      if (!adminOrders || !Array.isArray(adminOrders) || adminOrders.length === 0) {
-        adminOrders = JSON.parse(JSON.stringify(DEFAULT_ADMIN_ORDERS));
-        localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
+      if (!adminOrders || !Array.isArray(adminOrders)) {
+        adminOrders = [];
       }
-      if (!appState.products || !Array.isArray(appState.products) || appState.products.length === 0) {
-        appState.products = JSON.parse(JSON.stringify(DEFAULT_DEMO_PRODUCTS));
-        localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+      if (!appState.products || !Array.isArray(appState.products)) {
+        appState.products = [];
       }
 
       // 1. Calculate Core Financial & Inventory Metrics
@@ -5768,20 +5781,20 @@ ${details ? `• Особенности: ${details}\n` : ''}
       
       // Update each seller's active listings count and total sales dynamically
       adminSellers.forEach(s => {
-        const sNameLower = s.name.toLowerCase();
+        const sNameLower = (s.name || '').toLowerCase();
         const sellerProducts = appState.products.filter(p => {
           const pAuth = (p.author || '').toLowerCase();
-          return pAuth === sNameLower || pAuth.includes(sNameLower.split(' ')[0]) || (p.category && p.category === s.category);
+          return pAuth === sNameLower || (sNameLower && pAuth.includes(sNameLower.split(' ')[0])) || (p.category && p.category === s.category);
         });
-        s.activeListings = sellerProducts.length > 0 ? sellerProducts.length : 1;
+        s.activeListings = sellerProducts.length;
 
         const sellerOrders = adminOrders.filter(o => {
           const oSell = (o.sellerName || '').toLowerCase();
-          return oSell === sNameLower || oSell.includes(sNameLower.split(' ')[0]) || (o.sellerName && s.name && s.name.toLowerCase().includes(o.sellerName.toLowerCase().split(' ')[0]));
+          return oSell === sNameLower || (sNameLower && oSell.includes(sNameLower.split(' ')[0])) || (o.sellerName && s.name && s.name.toLowerCase().includes(o.sellerName.toLowerCase().split(' ')[0]));
         });
         const sellerOrdersSum = sellerOrders.reduce((sum, ord) => sum + (Number(ord.amount) || 0), 0);
         if (sellerOrdersSum > 0 || !s.totalSalesSum) {
-          s.totalSalesSum = sellerOrdersSum > 0 ? sellerOrdersSum : (s.totalSalesSum || 80000);
+          s.totalSalesSum = sellerOrdersSum > 0 ? sellerOrdersSum : (s.totalSalesSum || 0);
         }
         s.balance = Math.round(s.totalSalesSum * (1 - commissionRate));
       });
@@ -5845,22 +5858,26 @@ ${details ? `• Особенности: ${details}\n` : ''}
         });
 
         const catKeys = Object.keys(catCounts);
-        catContainer.innerHTML = catKeys.map(ck => {
-          const meta = catMap[ck] || { name: ck.toUpperCase(), color: "emerald", icon: "file" };
-          const count = catCounts[ck];
-          const percent = totalProductsCount > 0 ? Math.round((count / totalProductsCount) * 100) : 0;
-          return `
-            <div>
-              <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
-                <span class="flex items-center gap-1.5"><i data-lucide="${meta.icon}" class="w-3.5 h-3.5 text-${meta.color}-400"></i> ${meta.name} (${count} ta)</span>
-                <span class="font-mono text-${meta.color}-400 font-bold">${percent}%</span>
+        if (catKeys.length === 0) {
+          catContainer.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs">Mahsulotlar mavjud emas</div>`;
+        } else {
+          catContainer.innerHTML = catKeys.map(ck => {
+            const meta = catMap[ck] || { name: ck.toUpperCase(), color: "emerald", icon: "file" };
+            const count = catCounts[ck];
+            const percent = totalProductsCount > 0 ? Math.round((count / totalProductsCount) * 100) : 0;
+            return `
+              <div>
+                <div class="flex items-center justify-between text-slate-300 font-semibold mb-1">
+                  <span class="flex items-center gap-1.5"><i data-lucide="${meta.icon}" class="w-3.5 h-3.5 text-${meta.color}-400"></i> ${meta.name} (${count} ta)</span>
+                  <span class="font-mono text-${meta.color}-400 font-bold">${percent}%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div class="bg-${meta.color}-400 h-2 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                </div>
               </div>
-              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                <div class="bg-${meta.color}-400 h-2 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
-              </div>
-            </div>
-          `;
-        }).join('');
+            `;
+          }).join('');
+        }
       }
 
       // Render tab specific components
@@ -5881,42 +5898,50 @@ ${details ? `• Особенности: ${details}\n` : ''}
       const topSellersEl = document.getElementById('adminOverviewTopSellers');
 
       if (recentOrdersEl) {
-        recentOrdersEl.innerHTML = adminOrders.slice(0, 4).map(o => `
-          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs hover:border-emerald-500/40 transition">
-            <div class="truncate flex-1">
-              <div class="flex items-center gap-1.5 mb-0.5">
-                <span class="font-mono text-[10px] text-amber-400 font-bold">${o.id}</span>
-                <span class="font-bold text-white truncate">${o.productTitle}</span>
+        if (!adminOrders || adminOrders.length === 0) {
+          recentOrdersEl.innerHTML = `<div class="p-6 text-center text-slate-500 text-xs">Hozircha buyurtmalar mavjud emas</div>`;
+        } else {
+          recentOrdersEl.innerHTML = adminOrders.slice(0, 4).map(o => `
+            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs hover:border-emerald-500/40 transition">
+              <div class="truncate flex-1">
+                <div class="flex items-center gap-1.5 mb-0.5">
+                  <span class="font-mono text-[10px] text-amber-400 font-bold">${o.id}</span>
+                  <span class="font-bold text-white truncate">${o.productTitle}</span>
+                </div>
+                <span class="text-[10px] text-slate-400">Xaridor: <strong class="text-slate-300">${o.buyerName}</strong> • ${o.paymentGateway}</span>
               </div>
-              <span class="text-[10px] text-slate-400">Xaridor: <strong class="text-slate-300">${o.buyerName}</strong> • ${o.paymentGateway}</span>
+              <div class="text-right ml-2 flex-shrink-0">
+                <span class="font-bold text-emerald-400 block">${formatUZS(o.amount)}</span>
+                <span class="text-[9px] text-emerald-500 font-semibold font-mono">✓ Bajarildi</span>
+              </div>
             </div>
-            <div class="text-right ml-2 flex-shrink-0">
-              <span class="font-bold text-emerald-400 block">${formatUZS(o.amount)}</span>
-              <span class="text-[9px] text-emerald-500 font-semibold font-mono">✓ Bajarildi</span>
-            </div>
-          </div>
-        `).join('');
+          `).join('');
+        }
       }
 
       if (topSellersEl) {
-        const sortedSellers = [...adminSellers].sort((a, b) => (Number(b.totalSalesSum) || 0) - (Number(a.totalSalesSum) || 0));
-        topSellersEl.innerHTML = sortedSellers.slice(0, 4).map(s => `
-          <div onclick="adminOpenSellerProfile(${s.id})" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs hover:border-cyan-500/50 hover:bg-slate-900 cursor-pointer transition group" title="Sotuvchi profilini ko'rish">
-            <div class="flex items-center gap-2.5 truncate flex-1">
-              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
-                ${s.avatar}
+        if (!adminSellers || adminSellers.length === 0) {
+          topSellersEl.innerHTML = `<div class="p-6 text-center text-slate-500 text-xs">Hozircha sotuvchilar mavjud emas</div>`;
+        } else {
+          const sortedSellers = [...adminSellers].sort((a, b) => (Number(b.totalSalesSum) || 0) - (Number(a.totalSalesSum) || 0));
+          topSellersEl.innerHTML = sortedSellers.slice(0, 4).map(s => `
+            <div onclick="adminOpenSellerProfile(${s.id})" class="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs hover:border-cyan-500/50 hover:bg-slate-900 cursor-pointer transition group" title="Sotuvchi profilini ko'rish">
+              <div class="flex items-center gap-2.5 truncate flex-1">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition">
+                  ${s.avatar}
+                </div>
+                <div class="truncate">
+                  <h5 class="font-bold text-white group-hover:text-cyan-400 transition truncate">${s.name}</h5>
+                  <span class="text-[10px] text-slate-400">${s.specialty} • ${s.activeListings} ta ish</span>
+                </div>
               </div>
-              <div class="truncate">
-                <h5 class="font-bold text-white group-hover:text-cyan-400 transition truncate">${s.name}</h5>
-                <span class="text-[10px] text-slate-400">${s.specialty} • ${s.activeListings} ta ish</span>
+              <div class="text-right ml-2 flex-shrink-0">
+                <span class="font-bold text-emerald-400 block">${formatUZS(s.totalSalesSum)}</span>
+                <span class="text-[9px] text-amber-400 font-bold">★ ${s.rating}</span>
               </div>
             </div>
-            <div class="text-right ml-2 flex-shrink-0">
-              <span class="font-bold text-emerald-400 block">${formatUZS(s.totalSalesSum)}</span>
-              <span class="text-[9px] text-amber-400 font-bold">★ ${s.rating}</span>
-            </div>
-          </div>
-        `).join('');
+          `).join('');
+        }
       }
     }
 
@@ -6102,9 +6127,6 @@ ${details ? `• Особенности: ${details}\n` : ''}
         return pAuth !== sNameLower && (p.sellerId !== seller.id);
       });
 
-      if (!appState.products || appState.products.length === 0) {
-        appState.products = [...DEFAULT_DEMO_PRODUCTS];
-      }
       localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
 
       adminCloseSellerProfile();
@@ -6377,12 +6399,12 @@ ${details ? `• Особенности: ${details}\n` : ''}
 
     function adminResetDatabase() {
       if (confirm("Barcha ma'lumotlarni asl (standart) holatiga qaytarishni xohlaysizmi?")) {
-        localStorage.removeItem('azimxon_clean_products');
-        localStorage.removeItem('azimxon_admin_sellers');
-        localStorage.removeItem('azimxon_admin_orders');
-        appState.products = DEFAULT_DEMO_PRODUCTS;
-        adminSellers = DEFAULT_ADMIN_SELLERS;
-        adminOrders = DEFAULT_ADMIN_ORDERS;
+        appState.products = JSON.parse(JSON.stringify(DEFAULT_DEMO_PRODUCTS));
+        adminSellers = JSON.parse(JSON.stringify(DEFAULT_ADMIN_SELLERS));
+        adminOrders = JSON.parse(JSON.stringify(DEFAULT_ADMIN_ORDERS));
+        localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
+        localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
+        localStorage.setItem('azimxon_admin_orders', JSON.stringify(adminOrders));
         renderProducts();
         renderSellerProducts();
         renderAdminDashboardData();
