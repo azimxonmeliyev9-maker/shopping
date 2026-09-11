@@ -374,7 +374,7 @@
           <!-- Global Language Switcher (UZ / RU / EN) -->
           <div class="flex items-center bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg px-2 py-0.5 shadow-sm">
             <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-500 mr-1.5 flex-shrink-0"></i>
-            <select id="globalLanguageSelect" onchange="setGlobalLanguage(this.value)" class="bg-transparent text-[11px] font-extrabold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer pr-1">
+            <select id="globalLanguageSelect" onchange="setGlobalLanguage(this.value, true)" class="bg-transparent text-[11px] font-extrabold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer pr-1">
               <option value="uz">🇺🇿 O'zbek</option>
               <option value="ru">🇷🇺 Русский</option>
               <option value="en">🇬🇧 English</option>
@@ -1427,7 +1427,7 @@
         <div class="flex items-center gap-3 text-xs font-semibold">
           <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5">
             <span class="text-slate-400 text-xs hidden sm:inline" id="txtAiLangLabel">Til / Язык:</span>
-            <select id="aiDocLanguage" onchange="setGlobalLanguage(this.value)" class="bg-transparent text-cyan-400 font-bold focus:outline-none cursor-pointer">
+            <select id="aiDocLanguage" onchange="setGlobalLanguage(this.value, true)" class="bg-transparent text-cyan-400 font-bold focus:outline-none cursor-pointer">
               <option value="uz">🇺🇿 O'zbekcha</option>
               <option value="ru">🇷🇺 Русский</option>
               <option value="en">🇬🇧 English</option>
@@ -2814,10 +2814,17 @@
       }
     ];
 
-    let storedProducts = JSON.parse(localStorage.getItem('azimxon_clean_products'));
-    if (!storedProducts || storedProducts.length === 0 || !storedProducts[0].title_uz) {
-      storedProducts = DEFAULT_DEMO_PRODUCTS;
+    let storedProducts = null;
+    try {
+      storedProducts = JSON.parse(localStorage.getItem('azimxon_clean_products'));
+    } catch(e) {
+      storedProducts = null;
+    }
+
+    if (!localStorage.getItem('azimxon_force_restore_v5') || !Array.isArray(storedProducts) || storedProducts.length === 0 || !storedProducts[0]?.title_uz) {
+      storedProducts = [...DEFAULT_DEMO_PRODUCTS];
       localStorage.setItem('azimxon_clean_products', JSON.stringify(storedProducts));
+      localStorage.setItem('azimxon_force_restore_v5', 'true');
     }
 
     let appState = {
@@ -2849,7 +2856,7 @@
       return new Intl.NumberFormat('uz-UZ').format(val) + ' ' + cur;
     }
 
-    function setGlobalLanguage(lang) {
+    function setGlobalLanguage(lang, showToastNotification = false) {
       if (!['uz', 'ru', 'en'].includes(lang)) lang = 'uz';
       appState.lang = lang;
       localStorage.setItem('azimxon_lang', lang);
@@ -3065,12 +3072,16 @@
       if (appState.isAdminLoggedIn) renderAdminDashboardData();
       refreshLucide();
 
-      showToast(t.toastLangChanged, "info");
+      if (showToastNotification) {
+        showToast(t.toastLangChanged, "info");
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       initTheme();
-      setGlobalLanguage(appState.lang);
+      setGlobalLanguage(appState.lang, false);
+      renderProducts();
+      renderSellerProducts();
       updateCategoryCounts();
       updateWalletUI();
       updateCartBadge();
@@ -4915,23 +4926,28 @@ ${details ? `Особенности: ${details}\n` : ''}
       const seller = adminSellers.find(s => s.id === sellerId);
       if (!seller) return;
 
-      const confirmMsg = `Haqiqatan ham "${seller.name}" sotuvchisini platformadan va barcha ro'yxatlardan butunlay o'chirib (sotuvchilikdan chiqarib) yubormoqchimisiz?\n\nUnga tegishli barcha profil ma'lumotlari va mahsulotlar tozalanadi.`;
+      const confirmMsg = `Haqiqatan ham "${seller.name}" sotuvchisini platformadan va barcha ro'yxatlardan butunlay o'chirib (sotuvchilikdan chiqarib) yubormoqchimisiz?\n\nUnga tegishli barcha profil ma'lumotlari tozalanadi.`;
       if (!confirm(confirmMsg)) return;
 
       // Remove seller
       adminSellers = adminSellers.filter(s => s.id !== sellerId);
       localStorage.setItem('azimxon_admin_sellers', JSON.stringify(adminSellers));
 
-      // Remove or keep products: remove products matching author name
-      const sNameLower = seller.name.toLowerCase();
+      // Remove only products that strictly belong to this seller
+      const sNameLower = seller.name.toLowerCase().trim();
       appState.products = appState.products.filter(p => {
-        const pAuth = (p.author || '').toLowerCase();
-        return !(pAuth === sNameLower || (pAuth.includes(sNameLower.split(' ')[0]) && sNameLower.length > 3));
+        const pAuth = (p.author || '').toLowerCase().trim();
+        return pAuth !== sNameLower && (p.sellerId !== seller.id);
       });
+
+      if (!appState.products || appState.products.length === 0) {
+        appState.products = [...DEFAULT_DEMO_PRODUCTS];
+      }
       localStorage.setItem('azimxon_clean_products', JSON.stringify(appState.products));
 
       adminCloseSellerProfile();
       renderProducts();
+      renderSellerProducts();
       renderAdminDashboardData();
       showToast(`"${seller.name}" sotuvchilikdan butunlay chiqarildi va o'chirildi! 🗑️`, "success");
     }
