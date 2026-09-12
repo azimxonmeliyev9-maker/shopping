@@ -319,6 +319,12 @@
 
         <!-- Right Action Buttons -->
         <div class="flex items-center gap-1.5 sm:gap-2.5">
+          <!-- Role Selection / Admin & Seller Login Button -->
+          <button onclick="openRolePortalModal('select')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold text-xs shadow-md shadow-cyan-500/20 transition cursor-pointer" title="Tizimga kirish (Rahbar / Sotuvchi)">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span>Kirish / Rol</span>
+          </button>
+
           <!-- Buyurtma berish Button -->
           <button onclick="openPostModal()" class="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold transition">
             <i data-lucide="list-plus" class="w-4 h-4 text-emerald-500"></i>
@@ -1832,60 +1838,212 @@
     </div>
   </div>
 
-  <!-- ================= 6. ADMIN AUTH LOGIN MODAL (SECURE & CONFIDENTIAL) ================= -->
-  <div id="adminAuthModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-    <div class="modal-card rounded-3xl max-w-sm w-full p-6 relative shadow-2xl text-center border border-emerald-500/30">
-      <button onclick="closeAdminAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
+  <!-- ================= 6. ROLE SELECTION & AUTH PORTAL (EXACT MATCH TO SCREENSHOTS) ================= -->
+  <div id="rolePortalModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-[#050811]/95 backdrop-blur-2xl overflow-y-auto">
+    <!-- Dotted background grid effect -->
+    <div class="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none"></div>
+    <div class="absolute w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -top-20 -left-20"></div>
+    <div class="absolute w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -bottom-20 -right-20"></div>
+
+    <div class="relative z-10 w-full max-w-[420px] bg-[#0b1222] border border-[#1e2d4a]/80 shadow-[0_0_50px_rgba(0,180,216,0.15)] rounded-[32px] p-7 sm:p-8 text-center backdrop-blur-xl my-4">
+      
+      <!-- Close button on top right -->
+      <button onclick="closeRolePortalModal()" class="absolute right-5 top-5 w-8 h-8 rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition" title="Bozorga o'tish">
         <i data-lucide="x" class="w-4 h-4"></i>
       </button>
 
-      <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-500/20">
-        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      <!-- STEP 1: ROLE SELECTION (SCREENSHOT 1) -->
+      <div id="roleStep-select" class="space-y-6">
+        <!-- Top App Icon -->
+        <div class="flex justify-center">
+          <div class="w-16 h-16 rounded-2xl border-2 border-cyan-400/80 bg-cyan-500/10 flex items-center justify-center shadow-[0_0_20px_rgba(0,180,216,0.25)]">
+            <i data-lucide="layout-grid" class="w-8 h-8 text-cyan-400"></i>
+          </div>
+        </div>
+
+        <!-- Headings -->
+        <div class="space-y-1.5">
+          <h2 class="text-3xl font-black text-white tracking-tight">Xush Kelibsiz!</h2>
+          <p class="text-xs text-slate-400 font-medium">Davom etish uchun tizimdagi rolingizni tanlang</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3.5 pt-2">
+          <!-- Button 1: RAHBAR / ADMIN -->
+          <button 
+            type="button"
+            onclick="goToRoleStep('adminLogin')" 
+            class="w-full py-4 px-6 rounded-2xl bg-[#00a6fb] hover:bg-[#0096c7] active:scale-[0.98] text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_0_25px_rgba(0,166,251,0.5)] hover:shadow-[0_0_35px_rgba(0,166,251,0.7)] cursor-pointer"
+          >
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+            <span>RAHBAR</span>
+          </button>
+
+          <!-- Button 2: XODIMLAR / SOTUVCHILAR -->
+          <button 
+            type="button"
+            onclick="goToRoleStep('sellerLogin')" 
+            class="w-full py-4 px-6 rounded-2xl bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 active:scale-[0.98] text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-3 transition-all duration-300 shadow-md cursor-pointer"
+          >
+            <i data-lucide="user" class="w-5 h-5 text-slate-300"></i>
+            <span>XODIMLAR & SOTUVCHI</span>
+          </button>
+
+          <!-- Button 3: XARIDOR / BOZOR -->
+          <button 
+            type="button"
+            onclick="closeRolePortalModal(); switchAppView('market');" 
+            class="w-full py-2.5 px-4 rounded-xl text-slate-400 hover:text-cyan-400 text-xs font-bold transition flex items-center justify-center gap-2 hover:bg-slate-800/40 cursor-pointer"
+          >
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <span>Xaridor (Bozorni ko'rish) →</span>
+          </button>
+        </div>
+
+        <!-- Footer Note -->
+        <p class="text-[11px] text-slate-500 pt-3 font-mono">
+          AZIMXON.HUB © 2026 Barcha huquqlar himoyalangan
+        </p>
       </div>
-      <h3 class="font-black text-base text-slate-900 dark:text-white">Admin Boshqaruviga Kirish</h3>
-      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">Faqat tizim egasi va bosh admin uchun himoyalangan hudud</p>
 
-      <div id="adminLoginSecurityAlert" class="hidden mb-3 p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[11px] font-bold text-center"></div>
+      <!-- STEP 2: RAHBAR / ADMIN LOGIN (SCREENSHOT 2) -->
+      <div id="roleStep-adminLogin" class="hidden space-y-6 text-left">
+        <!-- Back Button & Badge -->
+        <div class="flex items-center justify-between">
+          <button 
+            type="button"
+            onclick="goToRoleStep('select')" 
+            class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer" 
+            title="Ortga"
+          >
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+          </button>
+          <span class="text-[10px] font-mono px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-bold">RAHBAR KIRISHI</span>
+        </div>
 
-      <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-3.5 text-left">
-        <div>
-          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Admin Login / Email:</label>
-          <div class="relative">
-            <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+        <!-- Heading -->
+        <div class="text-center space-y-1.5">
+          <h2 class="text-2xl font-black text-white tracking-tight">Rahbar Kirishi</h2>
+          <p class="text-xs text-slate-400">Tizimga kirish uchun ma'lumotlarni kiriting</p>
+        </div>
+
+        <!-- Login Form -->
+        <form onsubmit="handleRahbarLoginSubmit(event)" class="space-y-4">
+          <!-- Login Field -->
+          <div class="space-y-1.5">
+            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">LOGIN (USERNAME)</label>
             <input 
               type="text" 
-              id="adminEmailInput" 
+              id="rahbarLoginInput" 
               required 
               autocomplete="username"
-              placeholder="azim0000 yoki email..."
-              class="modal-input w-full border rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-medium"
+              value="azim0000"
+              placeholder="rahbar yoki usta..." 
+              class="w-full bg-[#0c1322] border border-[#1e2d4a] rounded-2xl px-4 py-3.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition font-medium"
             >
           </div>
+
+          <!-- Password Field -->
+          <div class="space-y-1.5">
+            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">PAROL</label>
+            <div class="relative rounded-2xl border-2 border-cyan-400 shadow-[0_0_15px_rgba(0,180,216,0.25)] bg-[#0c1322]">
+              <input 
+                type="password" 
+                id="rahbarPasswordInput" 
+                required 
+                autocomplete="current-password"
+                value="0307"
+                placeholder="••••••••" 
+                class="w-full bg-transparent rounded-2xl pl-4 pr-11 py-3 text-sm text-white placeholder-slate-500 focus:outline-none font-mono"
+              >
+              <button 
+                type="button" 
+                onclick="toggleRahbarPasswordVisibility()" 
+                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cyan-400 p-1 transition cursor-pointer"
+                title="Parolni ko'rsatish/yashirish"
+              >
+                <i data-lucide="eye" id="rahbarEyeIcon" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Alert / Error message -->
+          <div id="rahbarLoginError" class="hidden p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+            <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+            <span id="rahbarLoginErrorText">Login yoki parol noto'g'ri! (Parol: 0307)</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            class="w-full py-3.5 px-6 rounded-2xl bg-[#00a6fb] hover:bg-[#0096c7] active:scale-[0.98] text-white font-black text-sm tracking-wide transition duration-300 shadow-[0_0_25px_rgba(0,166,251,0.5)] hover:shadow-[0_0_35px_rgba(0,166,251,0.7)] mt-2 cursor-pointer"
+          >
+            Tizimga kirish
+          </button>
+        </form>
+
+        <p class="text-[10px] text-center text-slate-500 pt-2 font-mono">
+          Boshqaruv paroli: <strong class="text-cyan-400 font-bold">0307</strong>
+        </p>
+      </div>
+
+      <!-- STEP 3: SOTUVCHI / XODIMLAR LOGIN -->
+      <div id="roleStep-sellerLogin" class="hidden space-y-6 text-left">
+        <!-- Back Button & Badge -->
+        <div class="flex items-center justify-between">
+          <button 
+            type="button"
+            onclick="goToRoleStep('select')" 
+            class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer" 
+            title="Ortga"
+          >
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+          </button>
+          <span class="text-[10px] font-mono px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold">SOTUVCHI PORTALI</span>
         </div>
 
-        <div>
-          <label class="text-[11px] text-slate-400 block mb-1 font-semibold">Maxfiy Kalit / Parol:</label>
-          <div class="relative">
-            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+        <!-- Heading -->
+        <div class="text-center space-y-1.5">
+          <h2 class="text-2xl font-black text-white tracking-tight">Sotuvchi Kirishi</h2>
+          <p class="text-xs text-slate-400">Sotuvchi shaxsiy kabinetiga kirish</p>
+        </div>
+
+        <!-- Seller Form -->
+        <form onsubmit="handleSellerLoginSubmit(event)" class="space-y-4">
+          <div class="space-y-1.5">
+            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">SOTUVCHI NOMI / EMAIL</label>
             <input 
-              type="password" 
-              id="adminCodeInput" 
+              type="text" 
+              id="sellerPortalLoginInput" 
               required 
-              autocomplete="current-password"
-              placeholder="Parolingizni kiriting..."
-              class="modal-input w-full border rounded-xl pl-9 pr-10 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono"
+              placeholder="Masalan: Azimxon Meliyev yoki email..." 
+              value="Azimxon Meliyev"
+              class="w-full bg-[#0c1322] border border-[#1e2d4a] rounded-2xl px-4 py-3.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition font-medium"
             >
-            <button type="button" onclick="toggleAdminPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400 p-1 transition" title="Parolni ko'rsatish/yashirish">
-              <i data-lucide="eye" id="adminPwdEyeIcon" class="w-4 h-4"></i>
-            </button>
           </div>
-        </div>
 
-        <button type="submit" id="adminLoginSubmitBtn" class="w-full btn-green-main py-2.5 rounded-xl font-extrabold text-xs mt-2 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25">
-          <i data-lucide="lock" class="w-4 h-4"></i>
-          <span>Xavfsiz Kirish</span>
-        </button>
-      </form>
+          <div class="space-y-1.5">
+            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">PAROL</label>
+            <div class="relative rounded-2xl border-2 border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.25)] bg-[#0c1322]">
+              <input 
+                type="password" 
+                id="sellerPortalPasswordInput" 
+                placeholder="••••••••" 
+                value="0307"
+                class="w-full bg-transparent rounded-2xl pl-4 pr-11 py-3 text-sm text-white placeholder-slate-500 focus:outline-none font-mono"
+              >
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="w-full py-3.5 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-slate-950 font-black text-sm tracking-wide transition duration-300 shadow-[0_0_25px_rgba(16,185,129,0.5)] mt-2 cursor-pointer"
+          >
+            Sotuvchi Kabinetiga Kirish
+          </button>
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -3683,6 +3841,8 @@
 
         if (appState.isAdminLoggedIn && localStorage.getItem('azimxon_admin_modal_open') === 'true') {
           openAdminDashboardModal();
+        } else {
+          openRolePortalModal('select');
         }
 
         refreshLucide();
@@ -5480,100 +5640,121 @@ ${details ? `• Особенности: ${details}\n` : ''}
     let adminFailedAttempts = 0;
     let adminLockoutUntil = 0;
 
-    function handleAdminAuthClick() {
-      if (appState.isAdminLoggedIn) {
-        openAdminDashboardModal();
-      } else {
-        openAdminAuthModal();
+    function openRolePortalModal(step = 'select') {
+      const m = document.getElementById('rolePortalModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+      goToRoleStep(step);
+      refreshLucide();
+    }
+
+    function closeRolePortalModal() {
+      const m = document.getElementById('rolePortalModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
       }
     }
 
-    function openAdminAuthModal() {
-      const m = document.getElementById('adminAuthModal');
-      const alertEl = document.getElementById('adminLoginSecurityAlert');
-      if (alertEl) alertEl.classList.add('hidden');
-      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+    function goToRoleStep(step) {
+      const sSelect = document.getElementById('roleStep-select');
+      const sAdmin = document.getElementById('roleStep-adminLogin');
+      const sSeller = document.getElementById('roleStep-sellerLogin');
+      
+      if (sSelect) sSelect.classList.add('hidden');
+      if (sAdmin) sAdmin.classList.add('hidden');
+      if (sSeller) sSeller.classList.add('hidden');
+
+      if (step === 'adminLogin') {
+        if (sAdmin) sAdmin.classList.remove('hidden');
+      } else if (step === 'sellerLogin') {
+        if (sSeller) sSeller.classList.remove('hidden');
+      } else {
+        if (sSelect) sSelect.classList.remove('hidden');
+      }
       refreshLucide();
     }
-    function closeAdminAuthModal() {
-      const m = document.getElementById('adminAuthModal');
-      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
-    }
 
-    function toggleAdminPasswordVisibility() {
-      const codeInput = document.getElementById('adminCodeInput');
-      const icon = document.getElementById('adminPwdEyeIcon');
-      if (!codeInput) return;
-
-      if (codeInput.type === 'password') {
-        codeInput.type = 'text';
+    function toggleRahbarPasswordVisibility() {
+      const inp = document.getElementById('rahbarPasswordInput');
+      const icon = document.getElementById('rahbarEyeIcon');
+      if (!inp) return;
+      if (inp.type === 'password') {
+        inp.type = 'text';
         if (icon) icon.setAttribute('data-lucide', 'eye-off');
       } else {
-        codeInput.type = 'password';
+        inp.type = 'password';
         if (icon) icon.setAttribute('data-lucide', 'eye');
       }
       refreshLucide();
     }
 
-    function handleAdminLoginSubmit(e) {
+    function handleRahbarLoginSubmit(e) {
       e.preventDefault();
-      const alertEl = document.getElementById('adminLoginSecurityAlert');
-      
-      // Check security lockout
-      const now = Date.now();
-      if (now < adminLockoutUntil) {
-        const secLeft = Math.ceil((adminLockoutUntil - now) / 1000);
-        if (alertEl) {
-          alertEl.textContent = `Xavfsizlik blokirovkasi: Iltimos, ${secLeft} soniya kuting!`;
-          alertEl.classList.remove('hidden');
-        }
-        showToast(`Tizim xavfsizlik sababli vaqtincha bloklandi. ${secLeft} soniyadan so'ng urinib ko'ring!`, 'warning');
-        return;
-      }
+      const login = (document.getElementById('rahbarLoginInput')?.value || '').trim().toLowerCase();
+      const pass = (document.getElementById('rahbarPasswordInput')?.value || '').trim();
+      const errEl = document.getElementById('rahbarLoginError');
 
-      const enteredLogin = document.getElementById('adminEmailInput').value.trim().toLowerCase();
-      const enteredCode = document.getElementById('adminCodeInput').value.trim();
+      const isLoginMatch = login === 'azim0000' || 
+                           login === 'admin' || 
+                           login === 'rahbar' || 
+                           login === 'usta' || 
+                           login === 'azimxon' || 
+                           login.includes('azimxon') || 
+                           login === adminCredentials.email.toLowerCase() ||
+                           login === adminCredentials.email.toLowerCase().replace('@gmail.com', '');
 
-      const validLogins = [
-        'azim0000',
-        'azim0000@gmail.com',
-        'azimxonmeliyev9@gmail.com',
-        adminCredentials.email.toLowerCase(),
-        adminCredentials.email.toLowerCase().replace('@gmail.com', ''),
-        adminCredentials.email.toLowerCase() + '@gmail.com'
-      ];
+      const isPassMatch = pass === '0307' || pass === adminCredentials.code;
 
-      const isLoginMatch = validLogins.includes(enteredLogin);
-      const isCodeMatch = (enteredCode === '0307' || enteredCode === adminCredentials.code);
-
-      if (isLoginMatch && isCodeMatch) {
-        adminFailedAttempts = 0;
+      if (isLoginMatch && isPassMatch) {
+        if (errEl) errEl.classList.add('hidden');
         appState.isAdminLoggedIn = true;
         localStorage.setItem('azimxon_admin_logged_in', 'true');
         localStorage.setItem('azimxon_admin_modal_open', 'true');
-        if (alertEl) alertEl.classList.add('hidden');
-        closeAdminAuthModal();
-        e.target.reset();
-        showToast("Xush kelibsiz, Bosh Admin! 🛡️ Tizim xavfsiz ochildi.", "success");
+        closeRolePortalModal();
+        openAdminDashboardModal();
+        showToast("Xush kelibsiz, Rahbar Azimxon! 🛡️", "success");
+      } else {
+        if (errEl) {
+          errEl.classList.remove('hidden');
+          document.getElementById('rahbarLoginErrorText').textContent = "Login yoki parol noto'g'ri! (Parol: 0307)";
+        }
+        showToast("Login yoki parol noto'g'ri (Parol: 0307)", "error");
+      }
+    }
+
+    function handleSellerLoginSubmit(e) {
+      e.preventDefault();
+      const sName = document.getElementById('sellerPortalLoginInput')?.value.trim() || 'Sotuvchi';
+      closeRolePortalModal();
+      switchAppView('seller');
+      showToast(`Sotuvchi kabinetiga xush kelibsiz, ${sName}! 🚀`, "success");
+    }
+
+    function handleAdminAuthClick() {
+      if (appState.isAdminLoggedIn) {
         openAdminDashboardModal();
       } else {
-        adminFailedAttempts++;
-        if (adminFailedAttempts >= 3) {
-          adminLockoutUntil = Date.now() + 30000; // 30 seconds
-          if (alertEl) {
-            alertEl.textContent = "Xavfsizlik: 3 marta noto'g'ri urinish! Tizim 30 soniyaga bloklandi.";
-            alertEl.classList.remove('hidden');
-          }
-          showToast("Xavfsizlik blokirovkasi: 30 soniya kuting!", "warning");
-        } else {
-          const remaining = 3 - adminFailedAttempts;
-          if (alertEl) {
-            alertEl.textContent = `Noto'g'ri login yoki parol! Qolgan urinishlar: ${remaining} ta`;
-            alertEl.classList.remove('hidden');
-          }
-          showToast(`Noto'g'ri login yoki parol! Qolgan urinishlar: ${remaining}`, "warning");
-        }
+        openRolePortalModal('select');
       }
+    }
+
+    function openAdminAuthModal() {
+      openRolePortalModal('adminLogin');
+    }
+
+    function closeAdminAuthModal() {
+      closeRolePortalModal();
+    }
+
+    function toggleAdminPasswordVisibility() {
+      toggleRahbarPasswordVisibility();
+    }
+
+    function handleAdminLoginSubmit(e) {
+      handleRahbarLoginSubmit(e);
     }
 
     function adminChangeCredentials() {
@@ -5624,7 +5805,8 @@ ${details ? `• Особенности: ${details}\n` : ''}
       localStorage.removeItem('azimxon_admin_modal_open');
       localStorage.removeItem('azimxon_admin_active_tab');
       closeAdminDashboardModal();
-      showToast("Admin hisobidan muvaffaqiyatli chiqildi", "info");
+      openRolePortalModal('select');
+      showToast("Tizimdan muvaffaqiyatli chiqildi. Xavfsiz qulflangan! 🔒", "info");
     }
 
     function switchAdminTab(tabName) {
